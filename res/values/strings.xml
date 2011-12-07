@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, AndroidShopActivity!</string>
+    <string name="app_name">FypShop</string>
+    <string name="Welcome">Welcome to Android Shop</string>
+    <string name="login">Please login/register to continue</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="registration">Registration</string>
+    <string name="name">Name:</string>
+    <string name="cfmPassword">Confirm Password:</string>
+    <string name="gender">Gender:</string>
+    <string name="birthdate">Birthdate:</string>
+    <string name="setBirthdate">Set/Change Birthdate</string>
+</resources>

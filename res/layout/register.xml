@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/reglayout"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal">
+		<TextView
+			android:layout_height="wrap_content"
+			android:id="@+id/registerTxt"
+			android:layout_width="wrap_content"
+			android:textSize="20dp"
+			android:layout_marginTop="15dp"
+			android:text="@string/registration">
+		</TextView>
+	</RelativeLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingLeft="20px"
+		android:paddingTop="10px">
+		<TextView
+			android:id="@+id/nameTxt"
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:text="@string/name"
+			android:layout_gravity="center">
+		</TextView>
+
+		<EditText
+			android:layout_width="200dp"
+			android:inputType="text"
+			android:textSize="10px"
+			android:layout_height="30dp"
+			android:id="@+id/nameTxtBox">
+		</EditText>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingLeft="20px"
+		android:paddingTop="10px">
+		<TextView
+			android:id="@+id/emailTxt"
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:text="@string/email"
+			android:layout_gravity="center">
+		</TextView>
+
+		<EditText
+			android:layout_width="200dp"
+			android:inputType="textEmailAddress"
+			android:textSize="10px"
+			android:layout_height="30dp"
+			android:id="@+id/emailTxtBox">
+		</EditText>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingLeft="20px"
+		android:paddingTop="10px">
+		<TextView
+			android:id="@+id/passwordTxt"
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:text="@string/password"
+			android:layout_gravity="center">
+		</TextView>
+		<EditText
+			android:id="@+id/passwordTxtBox"
+			android:layout_width="200dp"
+			android:inputType="textPassword"
+			android:textSize="10px"
+			android:layout_height="30dp">
+		</EditText>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingLeft="20px"
+		android:paddingTop="10px">
+		<TextView
+			android:id="@+id/cfmPwTxt"
+			android:layout_height="35dp"
+			android:text="@string/cfmPassword"
+			android:layout_width="80dp"
+			android:layout_gravity="center">
+		</TextView>
+
+		<EditText
+			android:id="@+id/cfmPwTxtBox"
+			android:inputType="textPassword"
+			android:layout_width="200dp"
+			android:layout_height="30dp"
+			android:textSize="10px">
+		</EditText>
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:paddingTop="20px">
+		<Button
+			android:text="Register"
+			android:id="@+id/regBtn"
+			android:layout_width="100dp"
+			android:layout_height="40dp">
+		</Button>
+	</RelativeLayout>
+
+</LinearLayout>

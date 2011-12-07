@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="C:/Users/Sky/Downloads/FYP/Twitter/signpost-commonshttp4-1.2.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sky/Downloads/FYP/Twitter/signpost-core-1.2.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sky/Downloads/FYP/Twitter/signpost-jetty6-1.2.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sky/Downloads/FYP/Twitter/twitter4j-android-2.2.4/lib/twitter4j-core-android-2.2.4.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

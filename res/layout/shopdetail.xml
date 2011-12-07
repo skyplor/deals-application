@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/productdetailLayout">
+<com.google.android.maps.MapView
+			android:id="@+id/shopMap"
+			android:layout_height="150dp"
+			android:clickable="true"
+			android:layout_width="150dp"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="50dp"
+			android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ">
+</com.google.android.maps.MapView>
+    	
+<ImageView android:layout_height="50dip"
+		   android:id="@+id/imgShop" 
+		   android:layout_width="50dip" 
+		   android:src="@drawable/stub"
+		   android:layout_toRightOf="@+id/shopMap"
+		   android:layout_alignParentTop="true"
+		   android:layout_marginTop="50dip">
+</ImageView>       
+<TextView android:text="Shop name" 
+		  android:layout_height="wrap_content" 
+		  android:textAppearance="?android:attr/textAppearanceLarge" 
+		  android:id="@+id/shopdetailName" 
+		  android:layout_width="wrap_content" 
+		  android:textColor="#FFFFFF"
+		  android:layout_below="@+id/imgShop"
+		  android:layout_toRightOf="@+id/shopMap"
+		  android:layout_marginLeft="10dip">
+</TextView>
+<TextView android:text="Shop address" 
+		  android:layout_height="wrap_content" 
+		  android:textAppearance="?android:attr/textAppearanceMedium" 
+		  android:id="@+id/lblDetailshopaddress" 
+		  android:layout_width="wrap_content" 
+		  android:textColor="#FFFFFF"
+		  android:layout_below="@+id/shopdetailName"
+		  android:layout_toRightOf="@+id/shopMap"
+		  android:layout_marginLeft="10dip">
+</TextView>
+<TextView android:text="Related Products" 
+		  android:layout_height="wrap_content" 
+		  android:textAppearance="?android:attr/textAppearanceLarge" 
+		  android:id="@+id/lblRelatedProducts" 
+		  android:layout_width="wrap_content" 
+		  android:layout_alignParentLeft="true"
+		  android:layout_below="@+id/shopMap"
+		  android:layout_marginLeft="10dip"
+		  android:textColor="#98AFC7"
+		  android:layout_marginTop="5dip">
+</TextView>
+<ListView android:id="@+id/listDetailBrowse" 
+		  android:layout_width="fill_parent"
+		  android:layout_height="200dip"
+		  android:layout_alignParentBottom="true"
+		  android:layout_below="@+id/lblRelatedProducts">
+</ListView>
+</RelativeLayout>

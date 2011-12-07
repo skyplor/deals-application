@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TableLayout android:layout_width="match_parent"
+		android:id="@+id/tableLayout1" android:layout_height="wrap_content">
+		<TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<EditText android:id="@+id/txtSearch" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_weight="1" />
+			<Button android:id="@+id/btnSearch" android:text="Search"
+				android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		</TableRow>
+		<TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<RadioGroup android:id="@+id/radSearch"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:orientation="horizontal">
+				<RadioButton android:text="Product" android:id="@+id/radio0"
+					android:layout_height="wrap_content" android:layout_width="wrap_content"
+					android:checked="true"></RadioButton>
+				<RadioButton android:text="Shop" android:id="@+id/radio1"
+					android:layout_height="wrap_content" android:layout_width="wrap_content"></RadioButton>
+			</RadioGroup>
+			<Button android:id="@+id/btnMap" android:text="Map"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical" />
+		</TableRow>
+	</TableLayout>
+	<ListView android:id="@+id/listSearch" android:layout_width="fill_parent"
+		android:layout_height="fill_parent"></ListView>
+</LinearLayout>

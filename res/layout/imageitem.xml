@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	android:id="@+id/relativeLayout1"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:padding="5dip">
+    <TextView
+    	android:textAppearance="?android:attr/textAppearanceLarge"
+    	android:layout_height="wrap_content"
+    	android:text="30%"
+    	android:layout_width="wrap_content"
+    	android:layout_below="@+id/image2"
+    	android:layout_marginRight="5dip"
+    	android:layout_alignParentRight="true"
+    	android:textSize="40dip"
+    	android:id="@+id/percentTesting"
+    	android:layout_marginBottom="10dip">
+    </TextView>
+    <ImageView
+    	android:layout_width="50dip"
+    	android:layout_height="50dip"
+    	android:id="@+id/typeLogo"
+    	android:src="@drawable/stub"
+    	android:layout_alignParentLeft="true"
+    	android:layout_below="@+id/image2"
+    	android:layout_marginLeft="15dip">
+    </ImageView>
+<ImageView
+    	android:layout_width="260dip"
+    	android:layout_height="260dip"
+    	android:id="@+id/image2"
+    	android:src="@drawable/stub"
+    	android:layout_centerHorizontal="true"
+    	android:scaleType="fitXY"
+    	android:background="@drawable/border">
+    </ImageView>
+    <TextView
+    	android:textAppearance="?android:attr/textAppearanceLarge"
+    	android:layout_height="wrap_content"
+    	android:text="TextView"
+    	android:layout_width="150dip"
+    	android:id="@+id/text"
+    	android:layout_below="@+id/image2"
+    	android:layout_toRightOf="@+id/typeLogo"
+    	android:layout_marginLeft="5dip">
+    </TextView>
+    <TextView
+    	android:layout_height="wrap_content"
+    	android:text="TextView"
+    	android:layout_width="wrap_content"
+    	android:id="@+id/txtDescription"
+    	android:layout_below="@+id/text"
+    	android:layout_toRightOf="@+id/typeLogo"
+    	android:layout_marginLeft="5dip">
+    </TextView>
+</RelativeLayout>

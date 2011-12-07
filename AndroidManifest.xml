@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="socialtour.socialtour"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	
+	
+    <application android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:name=".GlobalVariable">
+        <uses-library android:name="com.google.android.maps"/>
+        <activity android:name=".SocialTourActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.SOCIALTOURACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Home"
+                  android:label="Home">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Attraction"
+                  android:label="Attraction">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.ATTRACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Checkin"
+                  android:label="Check-in">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.CHECKIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Food"
+                  android:label="Food">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.FOOD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Profile"
+                  android:label="Profile">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.PROFILE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Browseplace"
+                  android:label="Browseplace">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.BROWSEPLACE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Startcamera"
+                  android:label="Startcamera">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.STARTCAMERA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Productdetail"
+                  android:label="Productdetail">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.PRODUCTDETAIL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Search"
+                  android:label="Search">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Addplace"
+                  android:label="Addplace">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.ADDPLACE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Main"
+                  android:label="Main">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Shopdetail"
+                  android:label="Shopdetail">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.SHOPDETAIL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Registration"
+                  android:label="Registration">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.REGISTRATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MapResult"
+                  android:label="MapResult">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.MAPRESULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MapResult"
+                  android:label="MapResult">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.MAPRESULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginPage"
+                  android:label="LoginPage">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.LOGINPAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ProductPage"
+                  android:label="ProductPage">
+            <intent-filter>
+                <action android:name="socialtour.socialtour.PRODUCTPAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="TabGroup1Activity"></activity>
+        <activity android:name="TabGroup2Activity"></activity>
+        <activity android:name="TabGroup3Activity"></activity>
+        
+        <activity android:name=".Container" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar">
+          <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+          </activity>
+    </application>
+</manifest>
