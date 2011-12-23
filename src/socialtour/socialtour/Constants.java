@@ -11,8 +11,9 @@ public class Constants {
 	public static final String FACEBOOK_PERMISSION = "publish_stream";
 	public static final String UPLOAD_PATH = "C:/wamp/www/FYP/FYP/uploads/";
 //	public static final String CONNECTIONSTRING = "http://192.168.1.80/FYP/";
-	public static final String CONNECTIONSTRING = "http://10.0.2.2/FYP/";
+//	public static final String CONNECTIONSTRING = "http://10.0.2.2/FYP/";
 	//public static final String CONNECTIONSTRING = "http://172.22.177.204/FYP/";
+	public static final String CONNECTIONSTRING = "http://192.168.0.196/FYP/";
 	private static final int THUMBNAIL_SIZE = 4;
 	
 	public Bitmap getPreview(URI uri) {

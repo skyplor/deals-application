@@ -13,7 +13,7 @@
 	
     <application android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:name=".GlobalVariable">
+        android:name=".GlobalVariable" android:debuggable="true">
         <uses-library android:name="com.google.android.maps"/>
         <activity android:name=".SocialTourActivity"
                   android:label="@string/app_name">

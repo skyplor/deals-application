@@ -204,27 +204,29 @@ public final class R {
     }
     public static final class layout {
         public static final int addplace=0x7f030000;
-        public static final int attraction=0x7f030001;
-        public static final int balloon_layout=0x7f030002;
-        public static final int browse=0x7f030003;
-        public static final int checkin=0x7f030004;
-        public static final int container=0x7f030005;
-        public static final int food=0x7f030006;
-        public static final int home=0x7f030007;
-        public static final int imageitem=0x7f030008;
-        public static final int item=0x7f030009;
-        public static final int main=0x7f03000a;
-        public static final int main2=0x7f03000b;
-        public static final int mapresult=0x7f03000c;
-        public static final int placeselection=0x7f03000d;
-        public static final int product=0x7f03000e;
-        public static final int productdetail=0x7f03000f;
-        public static final int profile=0x7f030010;
-        public static final int register=0x7f030011;
-        public static final int search=0x7f030012;
-        public static final int shopdetail=0x7f030013;
-        public static final int startcamera=0x7f030014;
-        public static final int twitter_post=0x7f030015;
+        public static final int addplace2=0x7f030001;
+        public static final int addplace_edittext=0x7f030002;
+        public static final int attraction=0x7f030003;
+        public static final int balloon_layout=0x7f030004;
+        public static final int browse=0x7f030005;
+        public static final int checkin=0x7f030006;
+        public static final int container=0x7f030007;
+        public static final int food=0x7f030008;
+        public static final int home=0x7f030009;
+        public static final int imageitem=0x7f03000a;
+        public static final int item=0x7f03000b;
+        public static final int main=0x7f03000c;
+        public static final int main2=0x7f03000d;
+        public static final int mapresult=0x7f03000e;
+        public static final int placeselection=0x7f03000f;
+        public static final int product=0x7f030010;
+        public static final int productdetail=0x7f030011;
+        public static final int profile=0x7f030012;
+        public static final int register=0x7f030013;
+        public static final int search=0x7f030014;
+        public static final int shopdetail=0x7f030015;
+        public static final int startcamera=0x7f030016;
+        public static final int twitter_post=0x7f030017;
     }
     public static final class string {
         public static final int Welcome=0x7f040002;

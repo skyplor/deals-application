@@ -57,7 +57,9 @@ public class MapResult extends MapActivity {
 	Drawable drawableItem;
 
 	private Boolean fbBtn;
+	List<Shop> shoplist;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -65,17 +67,26 @@ public class MapResult extends MapActivity {
 
 		setContentView(R.layout.mapresult);
 
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-		locationListener = new GPSLocationListener();
-
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		Intent intent = getIntent();
+		shoplist = new ArrayList<Shop>();
+		shoplist = Search.shoplist;
+//		shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
+		
+//		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//
+//		locationListener = new GPSLocationListener();
+//
+//		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		mapView = (MapView) findViewById(R.id.mapView);
 		logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
 		fbBtn = globalVar.getfbBtn();
-		Log.d("FbButton: ", fbBtn.toString());
+//		Log.d("FbButton: ", fbBtn.toString());
+		for(int i = 0; i<shoplist.size(); i++)
+		{
+			Log.d("shoplist", shoplist.get(i).getAddress());
+		}
 		if (!fbBtn)
 		{
 			initLogout(INIT_NORM);
@@ -178,105 +189,105 @@ public class MapResult extends MapActivity {
 		}
 	}
 
-	public String ConvertPointToLocation(GeoPoint point)
-	{
-		String address = "";
-		Geocoder geoCoder = new Geocoder(MapResult.this, Locale.getDefault());
-		try
-		{
-			List<Address> addresses = geoCoder.getFromLocation(point.getLatitudeE6() / 1E6, point.getLongitudeE6() / 1E6, 1);
+//	public String ConvertPointToLocation(GeoPoint point)
+//	{
+//		String address = "";
+//		Geocoder geoCoder = new Geocoder(MapResult.this, Locale.getDefault());
+//		try
+//		{
+//			List<Address> addresses = geoCoder.getFromLocation(point.getLatitudeE6() / 1E6, point.getLongitudeE6() / 1E6, 1);
+//
+//			if (addresses.size() > 0)
+//			{
+//				Log.d("In if: ", "Hello");
+//				for (int index = 0; index < addresses.get(0).getMaxAddressLineIndex(); index++)
+//				{
+//					address += addresses.get(0).getAddressLine(index) + " ";
+//				}
+//			}
+//			// else
+//			// {
+//			// address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\n Longtitude: " + (point.getLongitudeE6() / 1E6);
+//			// }
+//		}
+//		catch (IOException e)
+//		{
+//			e.printStackTrace();
+//			Log.d("address = 0: ", Double.toString(point.getLatitudeE6() / 1E6));
+//			address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\nLongtitude: " + (point.getLongitudeE6() / 1E6);
+//		}
+//
+//		return address;
+//	}
 
-			if (addresses.size() > 0)
-			{
-				Log.d("In if: ", "Hello");
-				for (int index = 0; index < addresses.get(0).getMaxAddressLineIndex(); index++)
-				{
-					address += addresses.get(0).getAddressLine(index) + " ";
-				}
-			}
-			// else
-			// {
-			// address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\n Longtitude: " + (point.getLongitudeE6() / 1E6);
-			// }
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			Log.d("address = 0: ", Double.toString(point.getLatitudeE6() / 1E6));
-			address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\nLongtitude: " + (point.getLongitudeE6() / 1E6);
-		}
-
-		return address;
-	}
-
-	private class GPSLocationListener implements LocationListener {
-
-		@Override
-		public void onLocationChanged(Location location)
-		{
-			
-			listOfOverlays = mapView.getOverlays();
-			for (Overlay overlay : listOfOverlays) {
-	            if (overlay instanceof BalloonItemizedOverlay<?> ) {
-	                if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
-	                    ((BalloonItemizedOverlay<?>) overlay).balloonView.setVisibility(View.GONE);
-	            }
-	        }           
-			listOfOverlays.clear();
-			drawableUser = getResources().getDrawable(R.drawable.location);
-			usermarker = new Markers(drawableUser, mapView);
-			if (location != null)
-			{
-
-				GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1E6), (int) (location.getLongitude() * 1E6));
-
-				mapController.animateTo(point);
-				mapController.setZoom(16);
-
-				// add marker
-				// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
-				// mapOverlay.setPointToDraw(point);
-				// listOfOverlays = mapView.getOverlays();
-				// listOfOverlays.clear();
-				// listOfOverlays.add(mapOverlay);
-				OverlayItem itemMyself = new OverlayItem(point, "Hello", "You are here");
-				// itemMyself.setMarker(getResources().getDrawable(R.drawable.location));
-				usermarker.addOverlay(itemMyself);
-				listOfOverlays.clear();
-				listOfOverlays.add(usermarker);
-
-				String address = ConvertPointToLocation(point);
-				Log.d("Address: ", address);
-
-				// Drawable drawable = getResources().getDrawable(R.drawable.red);
-				searchStores(point);
-
-				mapView.invalidate();
-			}
-		}
-
-		@Override
-		public void onProviderDisabled(String provider)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onProviderEnabled(String provider)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras)
-		{
-			// TODO Auto-generated method stub
-
-		}
-
-	}
+//	private class GPSLocationListener implements LocationListener {
+//
+//		@Override
+//		public void onLocationChanged(Location location)
+//		{
+//			
+//			listOfOverlays = mapView.getOverlays();
+//			for (Overlay overlay : listOfOverlays) {
+//	            if (overlay instanceof BalloonItemizedOverlay<?> ) {
+//	                if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
+//	                    ((BalloonItemizedOverlay<?>) overlay).balloonView.setVisibility(View.GONE);
+//	            }
+//	        }           
+//			listOfOverlays.clear();
+//			drawableUser = getResources().getDrawable(R.drawable.location);
+//			usermarker = new Markers(drawableUser, mapView);
+//			if (location != null)
+//			{
+//
+//				GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1E6), (int) (location.getLongitude() * 1E6));
+//
+//				mapController.animateTo(point);
+//				mapController.setZoom(16);
+//
+//				// add marker
+//				// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
+//				// mapOverlay.setPointToDraw(point);
+//				// listOfOverlays = mapView.getOverlays();
+//				// listOfOverlays.clear();
+//				// listOfOverlays.add(mapOverlay);
+//				OverlayItem itemMyself = new OverlayItem(point, "Hello", "You are here");
+//				// itemMyself.setMarker(getResources().getDrawable(R.drawable.location));
+//				usermarker.addOverlay(itemMyself);
+//				listOfOverlays.clear();
+//				listOfOverlays.add(usermarker);
+//
+//				String address = ConvertPointToLocation(point);
+//				Log.d("Address: ", address);
+//
+//				// Drawable drawable = getResources().getDrawable(R.drawable.red);
+//				searchStores(point);
+//
+//				mapView.invalidate();
+//			}
+//		}
+//
+//		@Override
+//		public void onProviderDisabled(String provider)
+//		{
+//			// TODO Auto-generated method stub
+//
+//		}
+//
+//		@Override
+//		public void onProviderEnabled(String provider)
+//		{
+//			// TODO Auto-generated method stub
+//
+//		}
+//
+//		@Override
+//		public void onStatusChanged(String provider, int status, Bundle extras)
+//		{
+//			// TODO Auto-generated method stub
+//
+//		}
+//
+//	}
 
 	// class MapOverlay extends Overlay {
 	// private GeoPoint pointToDraw;

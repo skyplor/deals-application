@@ -57,7 +57,7 @@ public class Search extends Activity implements OnClickListener
 
 	Product[] arrPro;
 	Shop[] arrShop;
-	Button btnSearch, locSearch;
+	Button btnSearch, mapview;
 	EditText txtSearch;
 	RadioGroup radSearch;
 	ListView searchResult;
@@ -67,6 +67,8 @@ public class Search extends Activity implements OnClickListener
 	private GPSLocationListener locationListener;
 	private GeoPoint point = new GeoPoint(1304256, 103832538);
 	private List<GeoPoint> pointList;
+	public static List<Shop> shoplist = new ArrayList<Shop>();
+//	ArrayList<Shop> shoplist = new ArrayList<Shop>();
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -77,15 +79,14 @@ public class Search extends Activity implements OnClickListener
 		txtSearch = (EditText) findViewById(R.id.txtSearch);
 		radSearch = (RadioGroup) findViewById(R.id.radSearch);
 		searchResult = (ListView) findViewById(R.id.listSearch);
-		locSearch = (Button) findViewById(R.id.btnMap);
+		mapview = (Button) findViewById(R.id.btnMap);
 		btnSearch.setOnClickListener(this);
-		locSearch.setOnClickListener(this);
+		mapview.setOnClickListener(this);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		locationListener = new GPSLocationListener();
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		// locSearch.setOnClickListener(new View.OnClickListener()
 		// {
@@ -95,59 +96,51 @@ public class Search extends Activity implements OnClickListener
 		// }
 		// });
 
-		searchResult
-				.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+			{
+				Intent intent = null;
+				if (isProduct)
 				{
-					@Override
-					public void onItemClick(AdapterView<?> av, View v, int pos,
-							long id)
-					{
-						Intent intent = null;
-						if (isProduct) {
-							/*
-							 * intent = new
-							 * Intent("socialtour.socialtour.PRODUCTDETAIL");
-							 * intent.putExtra("lastproductid",
-							 * arrPro[pos].getId()); startActivity(intent);
-							 */
+					/*
+					 * intent = new
+					 * Intent("socialtour.socialtour.PRODUCTDETAIL");
+					 * intent.putExtra("lastproductid", arrPro[pos].getId());
+					 * startActivity(intent);
+					 */
 
-							intent = new Intent(getParent(),
-									Productdetail.class);
-							intent.putExtra("lastproductid",
-									arrPro[pos].getId());
-							TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-							parentActivity.startChildActivity("Product Detail",
-									intent);
-						} else {
-							/*
-							 * intent = new
-							 * Intent("socialtour.socialtour.SHOPDETAIL");
-							 * intent.putExtra("shopid",arrShop[pos].getId());
-							 * intent
-							 * .putExtra("shopname",arrShop[pos].getName());
-							 * intent
-							 * .putExtra("shopaddress",arrShop[pos].getAddress
-							 * ()); int icon = arrShop[pos].getIcon();
-							 * intent.putExtra("icon",icon);
-							 * startActivity(intent);
-							 */
+					intent = new Intent(getParent(), Productdetail.class);
+					intent.putExtra("lastproductid", arrPro[pos].getId());
+					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+					parentActivity.startChildActivity("Product Detail", intent);
+				}
+				else
+				{
+					/*
+					 * intent = new Intent("socialtour.socialtour.SHOPDETAIL");
+					 * intent.putExtra("shopid",arrShop[pos].getId()); intent
+					 * .putExtra("shopname",arrShop[pos].getName()); intent
+					 * .putExtra("shopaddress",arrShop[pos].getAddress ()); int
+					 * icon = arrShop[pos].getIcon();
+					 * intent.putExtra("icon",icon); startActivity(intent);
+					 */
 
-							intent = new Intent(getParent(), Shopdetail.class);
-							intent.putExtra("shopid", arrShop[pos].getId());
-							intent.putExtra("shopname", arrShop[pos].getName());
-							intent.putExtra("shopaddress",
-									arrShop[pos].getAddress());
-							int icon = arrShop[pos].getIcon();
-							intent.putExtra("icon", icon);
-							intent.putExtra("lat", arrShop[pos].getLat());
-							intent.putExtra("long", arrShop[pos].getLng());
-							TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-							parentActivity.startChildActivity("Shop Detail",
-									intent);
-						}
+					intent = new Intent(getParent(), Shopdetail.class);
+					intent.putExtra("shopid", arrShop[pos].getId());
+					intent.putExtra("shopname", arrShop[pos].getName());
+					intent.putExtra("shopaddress", arrShop[pos].getAddress());
+					int icon = arrShop[pos].getIcon();
+					intent.putExtra("icon", icon);
+					intent.putExtra("lat", arrShop[pos].getLat());
+					intent.putExtra("long", arrShop[pos].getLng());
+					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+					parentActivity.startChildActivity("Shop Detail", intent);
+				}
 
-					}
-				});
+			}
+		});
 
 	}
 
@@ -155,10 +148,14 @@ public class Search extends Activity implements OnClickListener
 	public void onClick(View v)
 	{
 		String searchStr = txtSearch.getText().toString();
-		if (v == btnSearch) {
-			if (searchStr.equals("")) {
+		if (v == btnSearch)
+		{
+			if (searchStr.equals(""))
+			{
 				// alert
-			} else {
+			}
+			else
+			{
 				int checkedRadioButton = radSearch.getCheckedRadioButtonId();
 				switch (checkedRadioButton)
 				{
@@ -172,150 +169,189 @@ public class Search extends Activity implements OnClickListener
 					break;
 				}
 			}
-		} else if (v == locSearch) {
-			if (searchStr.equals("")) {
-				// alert
-			} else {
-				int checkedRadioButton = radSearch.getCheckedRadioButtonId();
-				switch (checkedRadioButton)
-				{
-				case R.id.radio0:
-					getProduct(searchStr, "Product", true);
-					isProduct = true;
-					break;
-				case R.id.radio1:
-					getProduct(searchStr, "Shop", true);
-					isProduct = true;
-					break;
-				}
-			}
+		}
+		else if (v == mapview)
+		{
+			//Save the results' details into a list of shops
+			//Put into bundles to be passed to the next intent
+			Intent intent = new Intent(this, MapResult.class);
+//			intent.putExtra("shoplist", shoplist);
+			//Start new intent MapResult.
+			startActivity(intent);
+			
+			
+//			if (searchStr.equals(""))
+//			{
+//				// alert
+//			}
+//			else
+//			{
+//				int checkedRadioButton = radSearch.getCheckedRadioButtonId();
+//				switch (checkedRadioButton)
+//				{
+//				case R.id.radio0:
+//					getProduct(searchStr, "Product", true);
+//					isProduct = true;
+//					break;
+//				case R.id.radio1:
+//					getProduct(searchStr, "Shop", true);
+//					isProduct = true;
+//					break;
+//				}
+//			}
 		}
 	}
 
 	public void getProduct(String searchstr, String mode, Boolean location)
 	{
 		searchResult.setAdapter(null);
-		if (!location) {
+		if (!location)
+		{
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			if (mode.equals("Product")) {
+			if (mode.equals("Product"))
+			{
 				nameValuePairs.add(new BasicNameValuePair("product", "1"));
-			} else if (mode.equals("Shop")) {
+			}
+			else if (mode.equals("Shop"))
+			{
 				nameValuePairs.add(new BasicNameValuePair("shop", "1"));
 			}
 			nameValuePairs.add(new BasicNameValuePair("search", searchstr));
-			try {
+			try
+			{
 				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING
-						+ "search.php");
+				HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "search.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				Log.e("log_tag", "Error in http connection" + e.toString());
 			}
-		} else {
-			if (point == null) {
-				Toast.makeText(
-						this,
-						"Unable to get a gps connection. Is your gps service turned on?",
-						Toast.LENGTH_SHORT);
-				return;
-			}
-			JSONObject json = new JSONObject();
-			try {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpConnectionParams.setConnectionTimeout(
-						httpclient.getParams(), 10000); // Timeout
-														// Limit
-				HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING
-						+ "storeLocations.php");
-				json.put("lat", Double.toString(point.getLatitudeE6() / 1E6));
-				json.put("lng", Double.toString(point.getLongitudeE6() / 1E6));
-				if (mode.equals("Product")) {
-					json.put("type", "product");
-				}
-				else if (mode.equals("Shop")) {
-					json.put("type", "store_locations");
-				}
-				json.put("searchTerms", searchstr);
-				json.put("radius", "1000");
-				httppost.setHeader("json", json.toString());
-				StringEntity se = new StringEntity(json.toString());
-				se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
-						"application/json"));
-				httppost.setEntity(se);
-				// Log.d("se: ", new BufferedReader(new
-				// InputStreamReader(se.getContent())).readLine());
-				HttpResponse response = httpclient.execute(httppost);
-				if (response != null) {
-					HttpEntity entity = response.getEntity();
-					is = entity.getContent();
-				}
-			}
-
-			catch (Exception ex) {
-				Log.e("log_tag", "Error in http connection " + ex.toString());
-			}
 		}
+//		else
+//		{
+//			if (point == null)
+//			{
+//				Toast.makeText(this, "Unable to get a gps connection. Is your gps service turned on?", Toast.LENGTH_SHORT);
+//				return;
+//			}
+//			JSONObject json = new JSONObject();
+//			try
+//			{
+//				HttpClient httpclient = new DefaultHttpClient();
+//				HttpConnectionParams.setConnectionTimeout(httpclient.getParams(), 10000); // Timeout
+//																							// Limit
+//				HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "storeLocations.php");
+//				json.put("lat", Double.toString(point.getLatitudeE6() / 1E6));
+//				json.put("lng", Double.toString(point.getLongitudeE6() / 1E6));
+//				if (mode.equals("Product"))
+//				{
+//					json.put("type", "product");
+//				}
+//				else if (mode.equals("Shop"))
+//				{
+//					json.put("type", "store_locations");
+//				}
+//				json.put("searchTerms", searchstr);
+//				json.put("radius", "1000");
+//				httppost.setHeader("json", json.toString());
+//				StringEntity se = new StringEntity(json.toString());
+//				se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//				httppost.setEntity(se);
+//				// Log.d("se: ", new BufferedReader(new
+//				// InputStreamReader(se.getContent())).readLine());
+//				HttpResponse response = httpclient.execute(httppost);
+//				if (response != null)
+//				{
+//					HttpEntity entity = response.getEntity();
+//					is = entity.getContent();
+//				}
+//			}
+//
+//			catch (Exception ex)
+//			{
+//				Log.e("log_tag", "Error in http connection " + ex.toString());
+//			}
+//		}
 		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			sb = new StringBuilder();
 			sb.append(reader.readLine() + "\n");
 			String line = "0";
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null)
+			{
 				sb.append(line + "\n");
 			}
 			is.close();
 			result = sb.toString();
 			Log.d("RESULT: ", result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
 		// paring data
 		int ct_id;
 		String ct_name;
-		try {
+		shoplist.clear();
+		try
+		{
+			mapview.setEnabled(true);
 			jArray = new JSONArray(result);
 			JSONObject json_data = null;
-			if (mode.equals("Product")) {
+			if (mode.equals("Product"))
+			{
 				arrPro = new Product[jArray.length()];
 				Shop[] tempShop = new Shop[jArray.length()];
-				for (int i = 0; i < jArray.length(); i++) {
+				for (int i = 0; i < jArray.length(); i++)
+				{
 					json_data = jArray.getJSONObject(i);
 					tempShop[i] = new Shop();
 					arrPro[i] = new Product();
 					arrPro[i].setId(json_data.getInt("productid"));
 					arrPro[i].setFilename(json_data.getString("filename"));
 					arrPro[i].setUrl(json_data.getString("url"));
-					arrPro[i].setPercentdiscount(json_data
-							.getInt("percentdiscount"));
+					arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 					tempShop[i].setName(json_data.getString("name"));
 				}
 				adapter = new SimpleLazyAdapter(this, arrPro, tempShop);
-			} else if (mode.equals("Shop")) {
+			}
+			else if (mode.equals("Shop"))
+			{
+				
 				arrShop = new Shop[jArray.length()];
-				for (int i = 0; i < jArray.length(); i++) {
+				for (int i = 0; i < jArray.length(); i++)
+				{
 					json_data = jArray.getJSONObject(i);
 					arrShop[i] = new Shop();
 					arrShop[i].setId(json_data.getInt("id"));
 					arrShop[i].setName(json_data.getString("name"));
 					arrShop[i].setAddress(json_data.getString("address"));
 					arrShop[i].setType(json_data.getString("shoptype"));
-					arrShop[i].setLat((String)json_data.get("lat"));
-					arrShop[i].setLng((String)json_data.get("lng"));
+					arrShop[i].setLat((String) json_data.get("lat"));
+					arrShop[i].setLng((String) json_data.get("lng"));
+
+					Shop shopResult = new Shop(json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));
+					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrShop);
 			}
 			// ListAdapter adapter = new ArrayAdapter<String>(this,
 			// android.R.layout.simple_list_item_1, employees);
 			searchResult.setAdapter(adapter);
-		} catch (JSONException e1) {
-			Toast.makeText(getBaseContext(), "No products Found",
-					Toast.LENGTH_LONG).show();
-		} catch (ParseException e1) {
+		}
+		catch (JSONException e1)
+		{
+			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_LONG).show();
+			mapview.setEnabled(false);
+		}
+		catch (ParseException e1)
+		{
 			e1.printStackTrace();
 		}
 
@@ -326,32 +362,28 @@ public class Search extends Activity implements OnClickListener
 		// TODO Auto-generated method stub
 		// if (globalVar.getSearchType() == 1)
 		// {
-		if (point == null) {
-			Toast.makeText(
-					this,
-					"Unable to get a gps connection. Is your gps service turned on?",
-					Toast.LENGTH_SHORT);
+		if (point == null)
+		{
+			Toast.makeText(this, "Unable to get a gps connection. Is your gps service turned on?", Toast.LENGTH_SHORT);
 			return;
 		}
-		ConnectDB connect = new ConnectDB(point.getLatitudeE6() / 1E6,
-				point.getLongitudeE6() / 1E6, type, txtSearch.getText()
-						.toString(), 1000);
+		ConnectDB connect = new ConnectDB(point.getLatitudeE6() / 1E6, point.getLongitudeE6() / 1E6, type, txtSearch.getText().toString(), 1000);
 
 		pointList = new ArrayList<GeoPoint>();
 		// Log.d("Store Location Results in activity: ",
 		// connect.storeLocResult());
 
-		if (type.equals("store_locations")) {
-			for (Shop sp : connect.getShop()) {
+		if (type.equals("store_locations"))
+		{
+			for (Shop sp : connect.getShop())
+			{
 				// Log.d("Shop address: ", sp.address);
 				// Log.d("Shop name: ", sp.name);
 				// Log.d("Shop lat: ", sp.lat);
 				// Log.d("Shop lng: ", sp.lng);
 				// Log.d("Shop distance: ", sp.distance);
 
-				GeoPoint p = new GeoPoint(
-						(int) (Double.parseDouble(sp.lat) * 1E6),
-						(int) (Double.parseDouble(sp.lng) * 1E6));
+				GeoPoint p = new GeoPoint((int) (Double.parseDouble(sp.lat) * 1E6), (int) (Double.parseDouble(sp.lng) * 1E6));
 				pointList.add(p);
 				// Log.d("VO lat after geopoint: ",Integer.toString(((int)
 				// (Double.parseDouble(vo.lat) * 1E6))));
@@ -367,11 +399,11 @@ public class Search extends Activity implements OnClickListener
 
 				// }
 			}
-			Log.d("PointList: ",
-					Integer.toString(pointList.get(0).getLatitudeE6()));
-		} else {
-			adapter = new SimpleLazyAdapter(this, connect.getArrPro(),
-					connect.getShopArray());
+			Log.d("PointList: ", Integer.toString(pointList.get(0).getLatitudeE6()));
+		}
+		else
+		{
+			adapter = new SimpleLazyAdapter(this, connect.getArrPro(), connect.getShopArray());
 		}
 	}
 
@@ -381,10 +413,10 @@ public class Search extends Activity implements OnClickListener
 		@Override
 		public void onLocationChanged(Location location)
 		{
-			if (location != null) {
+			if (location != null)
+			{
 
-				point = new GeoPoint((int) (location.getLatitude() * 1E6),
-						(int) (location.getLongitude() * 1E6));
+				point = new GeoPoint((int) (location.getLatitude() * 1E6), (int) (location.getLongitude() * 1E6));
 
 				// add marker
 				// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
