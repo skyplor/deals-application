@@ -38,12 +38,13 @@ import android.widget.Button;
 
 //import android.widget.Toast;
 
-public class MapResult extends MapActivity {
+public class MapResult extends MapActivity
+{
 
 	private static final Integer INIT_NORM = 0, INIT_FB = 1;
 	// private static final Integer MY_POINT = 0, STORES_LOC = 1;
-	private LocationManager locationManager;
-	private LocationListener locationListener;
+	// private LocationManager locationManager;
+	// private LocationListener locationListener;
 	private MapView mapView;
 	private MapController mapController;
 	private Button logout;
@@ -59,7 +60,6 @@ public class MapResult extends MapActivity {
 	private Boolean fbBtn;
 	List<Shop> shoplist;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -67,23 +67,25 @@ public class MapResult extends MapActivity {
 
 		setContentView(R.layout.mapresult);
 
-		Intent intent = getIntent();
+		// Intent intent = getIntent();
 		shoplist = new ArrayList<Shop>();
 		shoplist = Search.shoplist;
-//		shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
-		
-//		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//
-//		locationListener = new GPSLocationListener();
-//
-//		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		// shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
+
+		// locationManager = (LocationManager)
+		// getSystemService(Context.LOCATION_SERVICE);
+		//
+		// locationListener = new GPSLocationListener();
+		//
+		// locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+		// 0, 0, locationListener);
 
 		mapView = (MapView) findViewById(R.id.mapView);
 		logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
 		fbBtn = globalVar.getfbBtn();
-//		Log.d("FbButton: ", fbBtn.toString());
-		for(int i = 0; i<shoplist.size(); i++)
+		// Log.d("FbButton: ", fbBtn.toString());
+		for (int i = 0; i < shoplist.size(); i++)
 		{
 			Log.d("shoplist", shoplist.get(i).getAddress());
 		}
@@ -98,7 +100,53 @@ public class MapResult extends MapActivity {
 
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
-		mapController.setZoom(16);
+		mapController.setZoom(13);
+
+		initStores();
+	}
+
+	private void initStores()
+	{
+		// TODO Auto-generated method stub
+		listOfOverlays = mapView.getOverlays();
+		for (Overlay overlay : listOfOverlays)
+		{
+			if (overlay instanceof BalloonItemizedOverlay<?>)
+			{
+				if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
+					((BalloonItemizedOverlay<?>) overlay).balloonView.setVisibility(View.GONE);
+			}
+		}
+		listOfOverlays.clear();
+		// drawableUser = getResources().getDrawable(R.drawable.location);
+		// usermarker = new Markers(drawableUser, mapView);
+
+		// if (location != null)
+		// {
+
+		GeoPoint point = new GeoPoint((int) (Double.parseDouble(shoplist.get(0).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(0).getLng()) * 1E6));
+
+		mapController.animateTo(point);
+		mapController.setZoom(13);
+
+		// add marker
+		// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
+		// mapOverlay.setPointToDraw(point);
+		// listOfOverlays = mapView.getOverlays();
+		// listOfOverlays.clear();
+		// listOfOverlays.add(mapOverlay);
+		// OverlayItem itemMyself = new OverlayItem(point, "Hello",
+		// "You are here");
+		// itemMyself.setMarker(getResources().getDrawable(R.drawable.location));
+		// usermarker.addOverlay(itemMyself);
+		listOfOverlays.clear();
+		// listOfOverlays.add(usermarker);
+
+		// Drawable drawable = getResources().getDrawable(R.drawable.red);
+		searchStores();
+
+		mapView.invalidate();
+		// }
 	}
 
 	private void initLogout(final int type)
@@ -154,140 +202,144 @@ public class MapResult extends MapActivity {
 		startActivity(intent);
 	}
 
-	private void searchStores(GeoPoint point)
+	private void searchStores()
 	{
 		drawableItem = getResources().getDrawable(R.drawable.pushpin);
 		itemmarker = new Markers(drawableItem, mapView);
 		// TODO Auto-generated method stub
-		if (globalVar.getSearchType() == 1)
+		// if (globalVar.getSearchType() == 1)
+		// {
+		// ConnectDB connect = new ConnectDB(point.getLatitudeE6() / 1E6,
+		// point.getLongitudeE6() / 1E6, "store_locations", "", 1000);
+
+		// Log.d("Store Location Results in activity: ",
+		// connect.storeLocResult());
+		for (int sp = 0; sp < shoplist.size(); sp++)
 		{
-			ConnectDB connect = new ConnectDB(point.getLatitudeE6() / 1E6, point.getLongitudeE6() / 1E6, "store_locations", "", 1000);
+			GeoPoint p = new GeoPoint((int) (Double.parseDouble(shoplist.get(sp).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(sp).getLng()) * 1E6));
+			// Log.d("VO lat after geopoint: ",Integer.toString(((int)
+			// (Double.parseDouble(vo.lat) * 1E6))));
+			// OverlayItem item = new OverlayItem(p,"Testing Title",
+			// "Testing Description");
+			// item.setMarker(drawable);
+			// usersMarker.addOverlay(item);
+			// MapOverlay mapOverlay2 = new MapOverlay(STORES_LOC);
+			// mapOverlay2.setPointToDraw(p);
+			// listOfOverlays.add(mapOverlay2);
+			OverlayItem item = new OverlayItem(p, shoplist.get(sp).getName(), shoplist.get(sp).getAddress());
+			// item.setMarker(getResources().getDrawable(R.drawable.pushpin));
+			itemmarker.addOverlay(item);
 
-			Log.d("Store Location Results in activity: ", connect.storeLocResult());
-			for (Shop sp : connect.getShop())
-			{
-				Log.d("Shop address: ", sp.address);
-				Log.d("Shop name: ", sp.name);
-				Log.d("Shop lat: ", sp.lat);
-				Log.d("Shop lng: ", sp.lng);
-				Log.d("Shop distance: ", sp.distance);
-
-				GeoPoint p = new GeoPoint((int) (Double.parseDouble(sp.lat) * 1E6), (int) (Double.parseDouble(sp.lng) * 1E6));
-				// Log.d("VO lat after geopoint: ",Integer.toString(((int) (Double.parseDouble(vo.lat) * 1E6))));
-				// OverlayItem item = new OverlayItem(p,"Testing Title", "Testing Description");
-				// item.setMarker(drawable);
-				// usersMarker.addOverlay(item);
-				// MapOverlay mapOverlay2 = new MapOverlay(STORES_LOC);
-				// mapOverlay2.setPointToDraw(p);
-				// listOfOverlays.add(mapOverlay2);
-				OverlayItem item = new OverlayItem(p, sp.name, sp.address);
-				// item.setMarker(getResources().getDrawable(R.drawable.pushpin));
-				itemmarker.addOverlay(item);
-
-			}
-			listOfOverlays.add(itemmarker);
 		}
+		listOfOverlays.add(itemmarker);
+		// }
 	}
 
-//	public String ConvertPointToLocation(GeoPoint point)
-//	{
-//		String address = "";
-//		Geocoder geoCoder = new Geocoder(MapResult.this, Locale.getDefault());
-//		try
-//		{
-//			List<Address> addresses = geoCoder.getFromLocation(point.getLatitudeE6() / 1E6, point.getLongitudeE6() / 1E6, 1);
-//
-//			if (addresses.size() > 0)
-//			{
-//				Log.d("In if: ", "Hello");
-//				for (int index = 0; index < addresses.get(0).getMaxAddressLineIndex(); index++)
-//				{
-//					address += addresses.get(0).getAddressLine(index) + " ";
-//				}
-//			}
-//			// else
-//			// {
-//			// address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\n Longtitude: " + (point.getLongitudeE6() / 1E6);
-//			// }
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//			Log.d("address = 0: ", Double.toString(point.getLatitudeE6() / 1E6));
-//			address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\nLongtitude: " + (point.getLongitudeE6() / 1E6);
-//		}
-//
-//		return address;
-//	}
+	// public String ConvertPointToLocation(GeoPoint point)
+	// {
+	// String address = "";
+	// Geocoder geoCoder = new Geocoder(MapResult.this, Locale.getDefault());
+	// try
+	// {
+	// List<Address> addresses = geoCoder.getFromLocation(point.getLatitudeE6()
+	// / 1E6, point.getLongitudeE6() / 1E6, 1);
+	//
+	// if (addresses.size() > 0)
+	// {
+	// Log.d("In if: ", "Hello");
+	// for (int index = 0; index < addresses.get(0).getMaxAddressLineIndex();
+	// index++)
+	// {
+	// address += addresses.get(0).getAddressLine(index) + " ";
+	// }
+	// }
+	// // else
+	// // {
+	// // address = "Latitude: " + (point.getLatitudeE6() / 1E6) +
+	// "\n Longtitude: " + (point.getLongitudeE6() / 1E6);
+	// // }
+	// }
+	// catch (IOException e)
+	// {
+	// e.printStackTrace();
+	// Log.d("address = 0: ", Double.toString(point.getLatitudeE6() / 1E6));
+	// address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\nLongtitude: "
+	// + (point.getLongitudeE6() / 1E6);
+	// }
+	//
+	// return address;
+	// }
 
-//	private class GPSLocationListener implements LocationListener {
-//
-//		@Override
-//		public void onLocationChanged(Location location)
-//		{
-//			
-//			listOfOverlays = mapView.getOverlays();
-//			for (Overlay overlay : listOfOverlays) {
-//	            if (overlay instanceof BalloonItemizedOverlay<?> ) {
-//	                if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
-//	                    ((BalloonItemizedOverlay<?>) overlay).balloonView.setVisibility(View.GONE);
-//	            }
-//	        }           
-//			listOfOverlays.clear();
-//			drawableUser = getResources().getDrawable(R.drawable.location);
-//			usermarker = new Markers(drawableUser, mapView);
-//			if (location != null)
-//			{
-//
-//				GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1E6), (int) (location.getLongitude() * 1E6));
-//
-//				mapController.animateTo(point);
-//				mapController.setZoom(16);
-//
-//				// add marker
-//				// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
-//				// mapOverlay.setPointToDraw(point);
-//				// listOfOverlays = mapView.getOverlays();
-//				// listOfOverlays.clear();
-//				// listOfOverlays.add(mapOverlay);
-//				OverlayItem itemMyself = new OverlayItem(point, "Hello", "You are here");
-//				// itemMyself.setMarker(getResources().getDrawable(R.drawable.location));
-//				usermarker.addOverlay(itemMyself);
-//				listOfOverlays.clear();
-//				listOfOverlays.add(usermarker);
-//
-//				String address = ConvertPointToLocation(point);
-//				Log.d("Address: ", address);
-//
-//				// Drawable drawable = getResources().getDrawable(R.drawable.red);
-//				searchStores(point);
-//
-//				mapView.invalidate();
-//			}
-//		}
-//
-//		@Override
-//		public void onProviderDisabled(String provider)
-//		{
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//		@Override
-//		public void onProviderEnabled(String provider)
-//		{
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//		@Override
-//		public void onStatusChanged(String provider, int status, Bundle extras)
-//		{
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//	}
+	// private class GPSLocationListener implements LocationListener {
+	//
+	// @Override
+	// public void onLocationChanged(Location location)
+	// {
+	//
+	// listOfOverlays = mapView.getOverlays();
+	// for (Overlay overlay : listOfOverlays) {
+	// if (overlay instanceof BalloonItemizedOverlay<?> ) {
+	// if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
+	// ((BalloonItemizedOverlay<?>)
+	// overlay).balloonView.setVisibility(View.GONE);
+	// }
+	// }
+	// listOfOverlays.clear();
+	// drawableUser = getResources().getDrawable(R.drawable.location);
+	// usermarker = new Markers(drawableUser, mapView);
+	// if (location != null)
+	// {
+	//
+	// GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1E6), (int)
+	// (location.getLongitude() * 1E6));
+	//
+	// mapController.animateTo(point);
+	// mapController.setZoom(16);
+	//
+	// // add marker
+	// // MapOverlay mapOverlay = new MapOverlay(MY_POINT);
+	// // mapOverlay.setPointToDraw(point);
+	// // listOfOverlays = mapView.getOverlays();
+	// // listOfOverlays.clear();
+	// // listOfOverlays.add(mapOverlay);
+	// OverlayItem itemMyself = new OverlayItem(point, "Hello", "You are here");
+	// // itemMyself.setMarker(getResources().getDrawable(R.drawable.location));
+	// usermarker.addOverlay(itemMyself);
+	// listOfOverlays.clear();
+	// listOfOverlays.add(usermarker);
+	//
+	// String address = ConvertPointToLocation(point);
+	// Log.d("Address: ", address);
+	//
+	// // Drawable drawable = getResources().getDrawable(R.drawable.red);
+	// searchStores(point);
+	//
+	// mapView.invalidate();
+	// }
+	// }
+	//
+	// @Override
+	// public void onProviderDisabled(String provider)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void onProviderEnabled(String provider)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void onStatusChanged(String provider, int status, Bundle extras)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// }
 
 	// class MapOverlay extends Overlay {
 	// private GeoPoint pointToDraw;
@@ -356,7 +408,8 @@ public class MapResult extends MapActivity {
 	// }
 	// }
 
-	public class LogoutRequestListener extends BaseRequestListener {
+	public class LogoutRequestListener extends BaseRequestListener
+	{
 		public void onComplete(String response, final Object state)
 		{
 
@@ -372,8 +425,8 @@ public class MapResult extends MapActivity {
 		}
 	}
 
-	public class Markers extends BalloonItemizedOverlay<OverlayItem> {
-
+	public class Markers extends BalloonItemizedOverlay<OverlayItem>
+	{
 
 		private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
@@ -397,7 +450,7 @@ public class MapResult extends MapActivity {
 			// TODO Auto-generated method stub
 			return super.onTap(p, mapView);
 		}
-		
+
 		@Override
 		public int size()
 		{
@@ -424,7 +477,14 @@ public class MapResult extends MapActivity {
 		public boolean onBalloonTap(int index, OverlayItem item)
 		{
 			Intent myintent = new Intent(MapResult.this, Shopdetail.class);
-            startActivity(myintent);
+			myintent.putExtra("shopid", shoplist.get(index).getId());
+			myintent.putExtra("shopname", shoplist.get(index).getName());
+			myintent.putExtra("shopaddress", shoplist.get(index).getAddress());
+			int icon = shoplist.get(index).getIcon();
+			myintent.putExtra("icon", icon);
+			myintent.putExtra("lat", shoplist.get(index).getLat());
+			myintent.putExtra("long", shoplist.get(index).getLng());
+			startActivity(myintent);
 			return (super.onBalloonTap(index, item));
 		}
 	}

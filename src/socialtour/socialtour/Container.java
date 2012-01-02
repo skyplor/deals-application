@@ -27,6 +27,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,8 +51,7 @@ public class Container extends TabActivity
 	private static String _path = "";
 	Uri outputFileUri;
 
-	static final int DIALOG_ERR_LOGIN = 0, INIT_NORM = 0, INIT_FB = 1,
-			INIT_TWIT = 2;
+	static final int DIALOG_ERR_LOGIN = 0, INIT_NORM = 0, INIT_FB = 1, INIT_TWIT = 2;
 	static int TYPE = 0;
 	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
@@ -86,126 +87,171 @@ public class Container extends TabActivity
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
 
-		if (APP_ID == null) {
-			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be "
-					+ "specified before running this example: see Example.java");
-		}
-
-		logout = (Button) findViewById(R.id.logoutBtn1);
-
-		/*
-		 * tabHost.setOnTabChangedListener(new OnTabChangeListener(){
-		 * 
-		 * @Override public void onTabChanged(String arg0) {
-		 * 
-		 * } });
-		 */
-
-		globalVar = ((GlobalVariable) getApplicationContext());
-		fbBtn = globalVar.getfbBtn();
-		twitBtn = globalVar.getTwitBtn();
-
-		facebook = globalVar.getFBState();
-		mTwitter = new TwitterApp(this, twitter_consumer_key,
-				twitter_secret_key);
-		mTwitter.setListener(mTwLoginDialogListener);
-		globalVar.setTwitState(mTwitter);
-
-		mProgress = new ProgressDialog(this);
-
-		Log.d("FbButton: ", fbBtn.toString());
-
-		if (fbBtn || facebook.isSessionValid()) {
-			fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
-			TYPE = INIT_FB;
-			init(TYPE);
-		}
-
-		else if (twitBtn || mTwitter.hasAccessToken()) {
-			TYPE = INIT_TWIT;
-			init(TYPE);
-			if (mTwitter.hasAccessToken()) {
-				// name.setText("Hello " + sharedPref.getString("user_name", "")
-				// + ",");
-			} else {
-				globalVar.setTwitBtn(false);
-				mTwitter.authorize();
-			}
-		} else {
-			SharedPreferences userDetails = getSharedPreferences(
-					"com.ntu.fypshop", MODE_PRIVATE);
-			String Uname = userDetails.getString("emailLogin", "");
-			String pass = userDetails.getString("pwLogin", "");
-			Log.d("Uname: ", Uname);
-			Log.d("Password: ", pass);
-			if (Uname == "" && pass.equals("")) {
-				Intent launchLogin = new Intent(this, LoginPage.class);
-				startActivity(launchLogin);
-			} else {
-				ConnectDB connectCheck = new ConnectDB(Uname, pass, 1);
-				if (connectCheck.inputResult()) {
-					// name.setText("Hello " + connectCheck.getName() + ",");
-					TYPE = INIT_NORM;
-					init(TYPE);
-				} else {
-					// do something else
-					Log.d("Authenticate User: ", "False");
-					showDialog(DIALOG_ERR_LOGIN);
-				}
-			}
-		}
-
-		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(this, TabGroup1Activity.class);
-
-		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost
-				.newTabSpec("home")
-				.setIndicator("Browse",
-						res.getDrawable(R.drawable.ic_tab_artists))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		// Do the same for the other tabs
-		intent = new Intent().setClass(this, TabGroup2Activity.class);
-		spec = tabHost
-				.newTabSpec("attraction")
-				.setIndicator("Share",
-						res.getDrawable(R.drawable.ic_tab_artists))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		intent = new Intent().setClass(this, TabGroup3Activity.class);
-		spec = tabHost
-				.newTabSpec("checkin")
-				.setIndicator("Search",
-						res.getDrawable(R.drawable.ic_tab_artists))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		tabHost.setCurrentTab(0);
-
-		tabHost.setOnTabChangedListener(new OnTabChangeListener()
+		if (APP_ID == null)
 		{
-			@Override
-			public void onTabChanged(String arg0)
+			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
+		}
+
+		if (!haveInternet(this))
+		{
+			AlertDialog alertDialog = new AlertDialog.Builder(Container.this).create();
+			alertDialog.setMessage("Unable to connect to the Internet.");
+			alertDialog.setButton("OK", new DialogInterface.OnClickListener()
 			{
-				int index = tabHost.getCurrentTab();
-				if (index == 1) {
-					openAddPhoto();
-					// Activity current =
-					// getLocalActivityManager().getCurrentActivity();
-					// current.finish();
-					// Intent i = new
-					// Intent("socialtour.socialtour.STARTCAMERA");
-					// startActivity(i);
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+					KillProcess();
 				}
 
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				// parentActivity.
+			});
+
+			alertDialog.show();
+		}
+		else
+		{
+			logout = (Button) findViewById(R.id.logoutBtn1);
+
+			/*
+			 * tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+			 * 
+			 * @Override public void onTabChanged(String arg0) {
+			 * 
+			 * } });
+			 */
+
+			globalVar = ((GlobalVariable) getApplicationContext());
+			fbBtn = globalVar.getfbBtn();
+			twitBtn = globalVar.getTwitBtn();
+
+			facebook = globalVar.getFBState();
+			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+			mTwitter.setListener(mTwLoginDialogListener);
+			globalVar.setTwitState(mTwitter);
+
+			mProgress = new ProgressDialog(this);
+
+			Log.d("FbButton: ", fbBtn.toString());
+
+			if (fbBtn || facebook.isSessionValid())
+			{
+				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
+				TYPE = INIT_FB;
+				init(TYPE);
 			}
-		});
+
+			else if (twitBtn || mTwitter.hasAccessToken())
+			{
+				TYPE = INIT_TWIT;
+				init(TYPE);
+				if (mTwitter.hasAccessToken())
+				{
+					// name.setText("Hello " + sharedPref.getString("user_name",
+					// "")
+					// + ",");
+				}
+				else
+				{
+					globalVar.setTwitBtn(false);
+					mTwitter.authorize();
+				}
+			}
+			else
+			{
+				SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+				String Uname = userDetails.getString("emailLogin", "");
+				String pass = userDetails.getString("pwLogin", "");
+				Log.d("Uname: ", Uname);
+				Log.d("Password: ", pass);
+				if (Uname == "" && pass.equals(""))
+				{
+					Intent launchLogin = new Intent(this, LoginPage.class);
+					startActivity(launchLogin);
+				}
+				else
+				{
+					ConnectDB connectCheck = new ConnectDB(Uname, pass, 1);
+					if (connectCheck.inputResult())
+					{
+						// name.setText("Hello " + connectCheck.getName() +
+						// ",");
+						TYPE = INIT_NORM;
+						init(TYPE);
+					}
+					else
+					{
+						// do something else
+						Log.d("Authenticate User: ", "False");
+						showDialog(DIALOG_ERR_LOGIN);
+					}
+				}
+			}
+
+			// Create an Intent to launch an Activity for the tab (to be reused)
+			intent = new Intent().setClass(this, TabGroup1Activity.class);
+
+			// Initialize a TabSpec for each tab and add it to the TabHost
+			spec = tabHost.newTabSpec("home").setIndicator("Browse", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			tabHost.addTab(spec);
+
+			// Do the same for the other tabs
+			intent = new Intent().setClass(this, TabGroup2Activity.class);
+			spec = tabHost.newTabSpec("attraction").setIndicator("Share", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			tabHost.addTab(spec);
+
+			intent = new Intent().setClass(this, TabGroup3Activity.class);
+			spec = tabHost.newTabSpec("checkin").setIndicator("Search", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			tabHost.addTab(spec);
+
+			tabHost.setCurrentTab(0);
+
+			tabHost.setOnTabChangedListener(new OnTabChangeListener()
+			{
+				@Override
+				public void onTabChanged(String arg0)
+				{
+					int index = tabHost.getCurrentTab();
+					if (index == 1)
+					{
+						openAddPhoto();
+						// Activity current =
+						// getLocalActivityManager().getCurrentActivity();
+						// current.finish();
+						// Intent i = new
+						// Intent("socialtour.socialtour.STARTCAMERA");
+						// startActivity(i);
+					}
+
+					// TabGroupActivity parentActivity =
+					// (TabGroupActivity)getParent();
+					// parentActivity.
+				}
+			});
+		}
+	}
+	
+
+	private void KillProcess()
+	{
+		// TODO Auto-generated method stub
+		this.finish();
+	}
+	
+	public static boolean haveInternet(Context ctx)
+	{
+		NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+		if (info == null || !info.isConnected())
+		{
+			return false;
+		}
+		if (info.isRoaming())
+		{
+			// here is the roaming option you can change it if you want to
+			// disable Internet while roaming, just return false
+			return false;
+		}
+		return true;
 	}
 
 	private void init(final int type)
@@ -222,25 +268,26 @@ public class Container extends TabActivity
 
 	private void doLogout(int type)
 	{
-		if (type == INIT_NORM) {
+		if (type == INIT_NORM)
+		{
 			// Logout logic here...
 			globalVar = ((GlobalVariable) getApplicationContext());
 			globalVar.setName("");
 			globalVar.setHashPw("");
 			globalVar.setEm("");
 
-			SharedPreferences login = getSharedPreferences("com.ntu.fypshop",
-					MODE_PRIVATE);
+			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			SharedPreferences.Editor editor = login.edit();
 			editor.putString("userName", null);
 			editor.putString("userID", null);
 			editor.putString("emailLogin", null);
 			editor.putString("pwLogin", null);
 			editor.commit();
-		} else if (type == INIT_FB) {
+		}
+		else if (type == INIT_FB)
+		{
 			// Go to LoginPage
-			SharedPreferences login = getSharedPreferences("com.ntu.fypshop",
-					MODE_PRIVATE);
+			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			SharedPreferences.Editor editor = login.edit();
 			editor.putString("userName", null);
 			editor.putString("userID", null);
@@ -251,9 +298,10 @@ public class Container extends TabActivity
 			globalVar.setfbBtn(false);
 			SessionEvents.onLogoutBegin();
 			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
-			asyncRunner.logout(getApplicationContext(),
-					new LogoutRequestListener());
-		} else {
+			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
+		}
+		else
+		{
 			mTwitter.resetAccessToken();
 			globalVar.setTwitBtn(false);
 		}
@@ -288,8 +336,7 @@ public class Container extends TabActivity
 	{
 
 		private final String[] FACEBOOK_PERMISSION =
-		{ "user_birthday", "email", "publish_stream", "read_stream",
-				"offline_access" };
+		{ "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
 
 		private Context context;
 		private Activity activity;
@@ -309,8 +356,7 @@ public class Container extends TabActivity
 			// this.mHandler = new Handler();
 			this.activity = activity;
 
-			sharedPref = context.getSharedPreferences("com.ntu.fypshop",
-					MODE_PRIVATE);
+			sharedPref = context.getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 
 			editor = sharedPref.edit();
 			globalVar = ((GlobalVariable) getApplicationContext());
@@ -361,12 +407,13 @@ public class Container extends TabActivity
 			// Boolean fbButton = fbBtn.getfbBtn();
 			// if (fbButton == true)
 			// {
-			if (!facebook.isSessionValid()) {
-				facebook.authorize(activity, FACEBOOK_PERMISSION,
-						new LoginDialogListener());
+			if (!facebook.isSessionValid())
+			{
+				facebook.authorize(activity, FACEBOOK_PERMISSION, new LoginDialogListener());
 			}
 			// }
-			else {
+			else
+			{
 				// globalVar = ((GlobalVariable) getApplicationContext());
 				// name.setText("Hello " + sharedPref.getString("facebookName",
 				// "") + ",");
@@ -382,8 +429,7 @@ public class Container extends TabActivity
 
 				mProgress.setMessage("Finalizing ...");
 				mProgress.show();
-				AsyncFacebookRunner syncRunner = new AsyncFacebookRunner(
-						facebook);
+				AsyncFacebookRunner syncRunner = new AsyncFacebookRunner(facebook);
 				syncRunner.request("me", new LoginRequestListener());
 			}
 
@@ -410,10 +456,10 @@ public class Container extends TabActivity
 		{
 			public void onComplete(String response, final Object state)
 			{
-				try {
+				try
+				{
 					// process the response here: executed in background thread
-					Log.d("Facebook-Example",
-							"Response: " + response.toString());
+					Log.d("Facebook-Example", "Response: " + response.toString());
 					JSONObject json = Util.parseJson(response);
 					fnameS = json.getString("first_name");
 					lnameS = json.getString("last_name");
@@ -432,25 +478,26 @@ public class Container extends TabActivity
 						public void run()
 						{
 							ConnectDB connectCheck;
-							try {
-								connectCheck = new ConnectDB(userName,
-										userEmail, "", "user_fb");
+							try
+							{
+								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
 
-								editor.putString("userName",
-										connectCheck.getUserName());
-								editor.putString("emailLogin",
-										connectCheck.getUserEmail());
-								editor.putString("userID",
-										connectCheck.getUserID());
+								editor.putString("userName", connectCheck.getUserName());
+								editor.putString("emailLogin", connectCheck.getUserEmail());
+								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
 								editor.commit();
 								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
-							} catch (NoSuchAlgorithmException e) {
+							}
+							catch (NoSuchAlgorithmException e)
+							{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							} catch (UnsupportedEncodingException e) {
+							}
+							catch (UnsupportedEncodingException e)
+							{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
@@ -493,11 +540,14 @@ public class Container extends TabActivity
 							// +"/" + bdayInt[1] + "/" + bdayInt[2]);
 						}
 					});
-				} catch (JSONException e) {
+				}
+				catch (JSONException e)
+				{
 					Log.w("Facebook-Example", "JSON Error in response");
-				} catch (FacebookError e) {
-					Log.w("Facebook-Example",
-							"Facebook Error: " + e.getMessage());
+				}
+				catch (FacebookError e)
+				{
+					Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
 				}
 			}
 		}
@@ -519,8 +569,7 @@ public class Container extends TabActivity
 		switch (id)
 		{
 		case DIALOG_ERR_LOGIN:
-			alertDialog
-					.setMessage("Could not authenticate you. Perhaps your details were not saved. Please login again.");
+			alertDialog.setMessage("Could not authenticate you. Perhaps your details were not saved. Please login again.");
 			break;
 
 		default:
@@ -600,8 +649,7 @@ public class Container extends TabActivity
 
 	protected void startCameraActivity()
 	{
-		_path = Environment.getExternalStorageDirectory().getPath()
-				+ "/DCIM/Camera/";
+		_path = Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
 		// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		// File file = new File(_path, "test.jpg");
 		// Uri outputFileUri = Uri.fromFile(file);
@@ -611,18 +659,20 @@ public class Container extends TabActivity
 		// Log.i("MakeMachine", "startCameraActivity()" );
 		File file = new File(_path, "testing.jpg");
 
-		try {
-			if (file.exists() == false) {
+		try
+		{
+			if (file.exists() == false)
+			{
 				file.createNewFile();
 			}
 
-		} catch (IOException e) {
 		}
+		catch (IOException e)
+		{}
 
 		outputFileUri = Uri.fromFile(file);
 
-		Intent intent = new Intent(
-				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, outputFileUri);
 
 		// Uri outputFileUri = Uri.fromFile( file );
@@ -639,7 +689,8 @@ public class Container extends TabActivity
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == CAMERA_PIC_REQUEST) {
+		if (requestCode == CAMERA_PIC_REQUEST)
+		{
 			// BitmapFactory.Options options = new BitmapFactory.Options();
 			// options.inSampleSize = 2;
 
@@ -650,12 +701,12 @@ public class Container extends TabActivity
 			// Bundle bundle=data.getExtras();
 			// Bitmap pic = (Bitmap) bundle.get("pic");
 			// Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-			_path = Environment.getExternalStorageDirectory().getPath()
-					+ "/DCIM/Camera/";
+			_path = Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
 			File file = new File(_path, "testing.jpg");
 			outputFileUri = Uri.fromFile(file);
 			Bundle bundle = getIntent().getExtras();
-			if (bundle == null) {
+			if (bundle == null)
+			{
 				/*
 				 * Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 				 * i.putExtra("pic", outputFileUri); startActivity(i);
@@ -666,7 +717,9 @@ public class Container extends TabActivity
 				// TabGroupActivity parentActivity =
 				// (TabGroupActivity)getParent();
 				startActivity(i);
-			} else {
+			}
+			else
+			{
 				/*
 				 * Intent i = new Intent("socialtour.socialtour.ATTRACTION");
 				 * i.putExtra("pic", outputFileUri); i.putExtra("EMPLOYEE_ID",
@@ -678,10 +731,8 @@ public class Container extends TabActivity
 
 				Intent i = new Intent(this, Attraction.class);
 				i.putExtra("pic", outputFileUri);
-				i.putExtra("EMPLOYEE_ID",
-						getIntent().getIntExtra("EMPLOYEE_NAME", 0));
-				i.putExtra("EMPLOYEE_NAME",
-						getIntent().getStringExtra("EMPLOYEE_NAME"));
+				i.putExtra("EMPLOYEE_ID", getIntent().getIntExtra("EMPLOYEE_NAME", 0));
+				i.putExtra("EMPLOYEE_NAME", getIntent().getStringExtra("EMPLOYEE_NAME"));
 				// TabGroupActivity parentActivity =
 				// (TabGroupActivity)getParent();
 				startActivity(i);
@@ -689,23 +740,29 @@ public class Container extends TabActivity
 
 			// _image = (ImageView) findViewById(R.id.imageView2);
 			// _image.setImageBitmap(thumbnail);
-		} else if (requestCode == GALLERY_REQUEST) {
+		}
+		else if (requestCode == GALLERY_REQUEST)
+		{
 			Bundle bundle = getIntent().getExtras();
-			if (bundle == null) {
+			if (bundle == null)
+			{
 				/*
 				 * Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 				 * outputFileUri = data.getData(); i.putExtra("pic",
 				 * outputFileUri); startActivity(i);
 				 */
 				Intent i = new Intent(this, TabGroup2Activity.class);
-				if (data != null) {
+				if (data != null)
+				{
 					outputFileUri = data.getData();
 					i.putExtra("pic", outputFileUri);
 				}
 				// TabGroupActivity parentActivity =
 				// (TabGroupActivity)getParent();
 				startActivity(i);
-			} else {
+			}
+			else
+			{
 				/*
 				 * Intent i = new Intent("socialtour.socialtour.ATTRACTION");
 				 * outputFileUri = data.getData(); i.putExtra("pic",
@@ -719,21 +776,20 @@ public class Container extends TabActivity
 				Intent i = new Intent(this, Attraction.class);
 				outputFileUri = data.getData();
 				i.putExtra("pic", outputFileUri);
-				i.putExtra("EMPLOYEE_ID",
-						getIntent().getIntExtra("EMPLOYEE_NAME", 0));
-				i.putExtra("EMPLOYEE_NAME",
-						getIntent().getStringExtra("EMPLOYEE_NAME"));
+				i.putExtra("EMPLOYEE_ID", getIntent().getIntExtra("EMPLOYEE_NAME", 0));
+				i.putExtra("EMPLOYEE_NAME", getIntent().getStringExtra("EMPLOYEE_NAME"));
 				// TabGroupActivity parentActivity =
 				// (TabGroupActivity)getParent();
 				startActivity(i);
 			}
 
-		} else {
+		}
+		else
+		{
 			super.onActivityResult(requestCode, resultCode, data);
 			// if (requestCode != 0)
 			// {
-			fbConnect.getFacebook().authorizeCallback(requestCode, resultCode,
-					data);
+			fbConnect.getFacebook().authorizeCallback(requestCode, resultCode, data);
 			// }
 		}
 		/*
@@ -758,36 +814,36 @@ public class Container extends TabActivity
 			@Override
 			public void onClick(DialogInterface dialog, int id)
 			{
-				if (id == 0) {
+				if (id == 0)
+				{
 					startCameraActivity();
 				}
-				if (id == 1) {
+				if (id == 1)
+				{
 					startGallery();
 				}
 			}
 		});
 
-		dialog.setNeutralButton("Cancel",
-				new android.content.DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						dialog.dismiss();
-						// TabGroupActivity parentActivity =
-						// (TabGroupActivity)getParent();
-						// Intent i = new Intent(this, Container.class);
-						// startActivity(i);
-						tabHost.setCurrentTab(0);
-					}
-				});
+		dialog.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				dialog.dismiss();
+				// TabGroupActivity parentActivity =
+				// (TabGroupActivity)getParent();
+				// Intent i = new Intent(this, Container.class);
+				// startActivity(i);
+				tabHost.setCurrentTab(0);
+			}
+		});
 		dialog.show();
 	}
 
 	protected void startGallery()
 	{
-		Intent intent = new Intent(Intent.ACTION_PICK,
-				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		startActivityForResult(intent, GALLERY_REQUEST);
 	}
 

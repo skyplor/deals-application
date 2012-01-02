@@ -44,6 +44,8 @@ import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,7 +64,8 @@ import android.widget.ListView;
 //import android.widget.TextView;
 import android.widget.Toast;
 
-public class Main extends Activity implements OnClickListener {
+public class Main extends Activity implements OnClickListener
+{
 
 	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
@@ -103,8 +106,8 @@ public class Main extends Activity implements OnClickListener {
 	Product[] arrPro;
 	Shop[] shop;
 	Button latest, nearby, hot;// , logout;
-	ListView searchResult;	  
-    LazyAdapter adapter;
+	ListView searchResult;
+	LazyAdapter adapter;
 
 	// static final int DATE_DIALOG_ID = 0;
 	// private TextView bday;
@@ -160,7 +163,8 @@ public class Main extends Activity implements OnClickListener {
 
 		if (fbBtn || facebook.isSessionValid())
 		{
-			// fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
+			// fbConnect = new FbConnect(APP_ID, this,
+			// getApplicationContext());
 			init(INIT_FB);
 		}
 
@@ -169,7 +173,8 @@ public class Main extends Activity implements OnClickListener {
 			init(INIT_TWIT);
 			// if(mTwitter.hasAccessToken())
 			// {
-			// // name.setText("Hello " + sharedPref.getString("user_name", "")
+			// // name.setText("Hello " + sharedPref.getString("user_name",
+			// "")
 			// + ",");
 			// }
 			// else
@@ -178,11 +183,12 @@ public class Main extends Activity implements OnClickListener {
 			// mTwitter.authorize();
 			// }
 		}
-		
+
 		else
 		{
 			init(INIT_NORM);
 		}
+
 		// else
 		// {
 		// SharedPreferences userDetails =
@@ -250,14 +256,14 @@ public class Main extends Activity implements OnClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int pos, long id)
 			{
-				//Intent intent = new Intent(Main.this, Productdetail.class);
-				//intent.putExtra("lastproductid", employeesid[pos]);
-				//startActivity(intent);
+				// Intent intent = new Intent(Main.this, Productdetail.class);
+				// intent.putExtra("lastproductid", employeesid[pos]);
+				// startActivity(intent);
 
-				 Intent intent = new Intent(getParent(), Productdetail.class);
-	    	     intent.putExtra("lastproductid", arrPro[pos].getId());
-     		     TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-     		     parentActivity.startChildActivity("Product Detail", intent);
+				Intent intent = new Intent(getParent(), Productdetail.class);
+				intent.putExtra("lastproductid", arrPro[pos].getId());
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("Product Detail", intent);
 			}
 		});
 	}
@@ -405,18 +411,19 @@ public class Main extends Activity implements OnClickListener {
 			{
 				json_data = jArray.getJSONObject(i);
 				arrPro[i] = new Product();
-     	             shop[i] = new Shop();
-     	             arrPro[i].setId(json_data.getInt("id"));
-     	             arrPro[i].setFilename(json_data.getString("filename"));
-     	             arrPro[i].setUrl(json_data.getString("url"));
-     	             arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
-     	             shop[i].setName(json_data.getString("name"));
-     	             shop[i].setType(json_data.getString("shoptype"));
-     	             //employees[i] = ct_name;
-     	             //employeesid[i] = ct_id;
+				shop[i] = new Shop();
+				arrPro[i].setId(json_data.getInt("id"));
+				arrPro[i].setFilename(json_data.getString("filename"));
+				arrPro[i].setUrl(json_data.getString("url"));
+				arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
+				shop[i].setName(json_data.getString("name"));
+				shop[i].setType(json_data.getString("shoptype"));
+				// employees[i] = ct_name;
+				// employeesid[i] = ct_id;
 			}
-			adapter=new LazyAdapter(this, arrPro, shop);
-			//ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
+			adapter = new LazyAdapter(this, arrPro, shop);
+			// ListAdapter adapter = new ArrayAdapter<String>(this,
+			// android.R.layout.simple_list_item_1, employees);
 			searchResult.setAdapter(adapter);
 		}
 		catch (JSONException e1)
@@ -484,7 +491,8 @@ public class Main extends Activity implements OnClickListener {
 	// }
 	// }
 
-	public class LogoutRequestListener extends BaseRequestListener {
+	public class LogoutRequestListener extends BaseRequestListener
+	{
 		public void onComplete(String response, final Object state)
 		{
 
@@ -500,7 +508,8 @@ public class Main extends Activity implements OnClickListener {
 		}
 	}
 
-	private class GPSLocationListener implements LocationListener {
+	private class GPSLocationListener implements LocationListener
+	{
 
 		@Override
 		public void onLocationChanged(Location location)

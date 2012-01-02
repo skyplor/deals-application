@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -150,6 +151,8 @@ public class Search extends Activity implements OnClickListener
 		String searchStr = txtSearch.getText().toString();
 		if (v == btnSearch)
 		{
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(txtSearch.getWindowToken(), 0);
 			if (searchStr.equals(""))
 			{
 				// alert
@@ -318,6 +321,9 @@ public class Search extends Activity implements OnClickListener
 					arrPro[i].setUrl(json_data.getString("url"));
 					arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 					tempShop[i].setName(json_data.getString("name"));
+					
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), json_data.getString("shoptype"));
+					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrPro, tempShop);
 			}
@@ -336,7 +342,7 @@ public class Search extends Activity implements OnClickListener
 					arrShop[i].setLat((String) json_data.get("lat"));
 					arrShop[i].setLng((String) json_data.get("lng"));
 
-					Shop shopResult = new Shop(json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), json_data.getString("shoptype"));
 					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrShop);
