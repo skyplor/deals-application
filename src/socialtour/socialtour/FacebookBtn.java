@@ -7,9 +7,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageButton;
 
+import com.facebook.SessionEvents;
+import com.facebook.SessionStore;
 import com.facebook.android.Facebook;
-import socialtour.socialtour.SessionEvents.AuthListener;
-import socialtour.socialtour.SessionEvents.LogoutListener;
+import com.facebook.SessionEvents.AuthListener;
+import com.facebook.SessionEvents.LogoutListener;
 
 public class FacebookBtn extends ImageButton {
 

@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import socialtour.socialtour.models.Shop;
 
+import com.facebook.BaseRequestListener;
+import com.facebook.SessionEvents;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.Facebook;
 import com.google.android.maps.GeoPoint;

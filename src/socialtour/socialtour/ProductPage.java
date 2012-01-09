@@ -4,20 +4,37 @@ package socialtour.socialtour;
 //import java.io.IOException;
 //import java.net.MalformedURLException;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.BaseDialogListener;
+import com.facebook.BaseRequestListener;
+import com.facebook.SessionEvents;
+import com.facebook.SessionStore;
 import com.google.android.maps.GeoPoint;
+
+import socialtour.socialtour.Container.FbConnect.LoginRequestListener;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -34,19 +51,31 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProductPage extends Activity {
+public class ProductPage extends Activity
+{
 
-	private static final String APP_DOWNLOAD_LINK = "https://www.facebook.com/apps/application.php?id=222592464462347";
+	private static final String APP_DOWNLOAD_LINK = "https://market.android.com/";
 	private static GlobalVariable globalVar;
 	private ImageButton fbshareBtn, twitshareBtn;
 	private TextView shopinfo;
 	private Facebook mFacebook;
+	private ProgressDialog mProgress;
 	private TwitterApp mTwitter;
 	AsyncFacebookRunner asyncRunner;
 	private String status;
+	
+	private final String[] FACEBOOK_PERMISSION = { "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
 
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
+
+	private String productName = "", shopName = "", imageUrl = "";
+	private int pDiscount = 0;
+	
+	private String fnameS;
+	private String lnameS;
+	private String userName;
+	private String userEmail;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,8 +94,16 @@ public class ProductPage extends Activity {
 		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
+		
+		mProgress = new ProgressDialog(this);
 
-		status = "Check out this promotion!\nPromotion: MyTestingApp";
+		Bundle bundle = getIntent().getExtras();
+		imageUrl = bundle.getString("imageURL");
+		productName = bundle.getString("productname");
+		shopName = bundle.getString("shopname");
+		pDiscount = bundle.getInt("discount");
+
+		status = "Check out this promotion!\n" + productName + " (" + Integer.toString(pDiscount) + "% off) @ " + shopName;
 		fbshareBtn.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
@@ -75,7 +112,67 @@ public class ProductPage extends Activity {
 				// post on user's wall.
 				// mFacebook.dialog(ProductPage.this, "feed", new
 				// PostDialogListener());
-				postWithDialog(ProductPage.this, "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png");
+				// postWithDialog(ProductPage.this,
+				// "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png");
+				if (!mFacebook.isSessionValid())
+				{
+					loginAndPostToWall();
+				}
+				else
+				{
+					final Dialog fbDialog = new Dialog(ProductPage.this);
+
+					fbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+					fbDialog.setContentView(R.layout.twitter_post);
+					// twitDialog.setTitle("Post to Twitter");
+
+					Drawable icon = getResources().getDrawable(R.drawable.facebook_icon);
+
+					TextView mTitle = (TextView) fbDialog.findViewById(R.id.titleDialog);
+
+					mTitle.setText("Facebook");
+					mTitle.setTextColor(Color.WHITE);
+					mTitle.setTypeface(Typeface.DEFAULT_BOLD);
+					mTitle.setBackgroundColor(0xFFbbd7e9);
+					mTitle.setPadding(4 + 2, 4, 4, 4);
+					mTitle.setCompoundDrawablePadding(4 + 2);
+					mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+					fbDialog.setCancelable(true);
+					final EditText statusPost = (EditText) fbDialog.findViewById(R.id.statusText);
+					Log.d("Status: ", status);
+					statusPost.setText(status);
+
+					// set up button
+					Button postbutton = (Button) fbDialog.findViewById(R.id.postBtn);
+					postbutton.setOnClickListener(new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							String review = statusPost.getText().toString();
+
+							if (review.equals(""))
+								return;
+
+							postReview(review);
+
+							postWithoutDialog(review, APP_DOWNLOAD_LINK, "SocialTourApp", "Hello", imageUrl);
+							fbDialog.dismiss();
+						}
+					});
+
+					Button cancelbutton = (Button) fbDialog.findViewById(R.id.cancelBtn);
+					cancelbutton.setOnClickListener(new OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							fbDialog.cancel();
+						}
+					});
+
+					fbDialog.show();
+				}
 			}
 		});
 
@@ -162,12 +259,18 @@ public class ProductPage extends Activity {
 				GeoPoint point = new GeoPoint(1301282, 103839630);
 				globalVar.setGeoPoint(point);
 				Intent intent = new Intent(v.getContext(), Shopdetail.class);
-				TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 				parentActivity.startChildActivity("Shop Details", intent);
-				
-				
+
 			}
 		});
+	}
+
+	protected void loginAndPostToWall()
+	{
+		// TODO Auto-generated method stub
+		mFacebook.authorize(this, FACEBOOK_PERMISSION, new LoginDialogListener());
+		mProgress.dismiss();
 	}
 
 	private void postReview(String review)
@@ -250,32 +353,38 @@ public class ProductPage extends Activity {
 	 */
 	public void postWithoutDialog(String message, String link, String name, String caption, String imageUrl)
 	{
-		Bundle params = new Bundle();
-		params.putString("message", message);
-		params.putString("link", link);
-		params.putString("name", name);
-		params.putString("caption", caption);
-		params.putString("picture", imageUrl);
-
-		asyncRunner = new AsyncFacebookRunner(mFacebook);
+		// Bundle params = new Bundle();
+		// params.putString("message", message);
+		// params.putString("link", link);
+		// params.putString("name", name);
+		// params.putString("caption", caption);
+		// params.putString("picture", imageUrl);
+		//
+		// asyncRunner = new AsyncFacebookRunner(mFacebook);
 		// asyncRunner.request("me/feed", params, "POST", new
-		// WallPostRequestListener() {
-		// public void onMalformedURLException(MalformedURLException e) {
-		// e.printStackTrace();
-		// }
-		// public void onIOException(IOException e) {
-		// e.printStackTrace();
-		// }
-		// public void onFileNotFoundException(FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
-		// public void onFacebookError(FacebookError e) {
-		// e.printStackTrace();
-		// }
-		// public void onComplete(String response) {
-		// Log.i("WALL", "wallpost ended successfully");
-		// }
-		// });
+		// WallPostRequestListener(), null);
+		Bundle parameters = new Bundle();
+		parameters.putString("message", message);
+		parameters.putString("description", "integrating stuff");
+		try
+		{
+			mFacebook.request("me");
+			String response = mFacebook.request("me/feed", parameters, "POST");
+			Log.d("Tests", "got response: " + response);
+			if (response == null || response.equals("") || response.equals("false"))
+			{}
+			else
+			{
+				Log.d("Success", "Message posted to your facebook wall!");
+			}
+			finish();
+		}
+		catch (Exception e)
+		{
+			Log.d("Error", "Failed to post to wall!");
+			e.printStackTrace();
+			finish();
+		}
 	}
 
 	/**
@@ -302,12 +411,14 @@ public class ProductPage extends Activity {
 		 */
 
 		// set image, description and a link for downloading the application.
-		parameters.putString("attachment", "{\"name\":\"MyTestingApp\"," + "\"href\":\"" + APP_DOWNLOAD_LINK + "\"," + "\"description\":\"Uploaded via android emulator using MyTestingApp =) \"," + "\"media\":[{\"type\":\"image\",\"src\":\"" + imageUrl + "\",\"href\":\"" + APP_DOWNLOAD_LINK + "\"}]" + "}");
+		parameters.putString("attachment", "{\"name\":\"MyTestingApp\"," + "\"href\":\"" + APP_DOWNLOAD_LINK + "\"," + "\"description\":\"Uploaded via android emulator using MyTestingApp =) \"," + "\"media\":[{\"type\":\"image\",\"src\":\"" + imageUrl + "\",\"href\":\"" + APP_DOWNLOAD_LINK + "\"}]"
+				+ "}");
 		// display the user dialog
 		mFacebook.dialog(context, "stream.publish", parameters, new WallPostDialogListener());
 	}
 
-	public class WallPostRequestListener extends BaseRequestListener {
+	public class WallPostRequestListener extends BaseRequestListener
+	{
 
 		public void onComplete(final String response, final Object state)
 		{
@@ -338,7 +449,8 @@ public class ProductPage extends Activity {
 		}
 	}
 
-	public class WallPostDeleteListener extends BaseRequestListener {
+	public class WallPostDeleteListener extends BaseRequestListener
+	{
 
 		public void onComplete(final String response, final Object state)
 		{
@@ -361,7 +473,8 @@ public class ProductPage extends Activity {
 		}
 	}
 
-	public class WallPostDialogListener extends BaseDialogListener {
+	public class WallPostDialogListener extends BaseDialogListener
+	{
 
 		public void onComplete(Bundle values)
 		{
@@ -384,6 +497,139 @@ public class ProductPage extends Activity {
 			else
 			{
 				Log.d("Facebook-Example", "No wall post made");
+			}
+		}
+	}
+	
+	private final class LoginDialogListener implements DialogListener
+	{
+		public void onComplete(Bundle values)
+		{
+			SessionEvents.onLoginSuccess();
+
+			mProgress.setMessage("Finalizing ...");
+			mProgress.show();
+			AsyncFacebookRunner syncRunner = new AsyncFacebookRunner(mFacebook);
+			syncRunner.request("me", new LoginRequestListener());
+		}
+
+		public void onFacebookError(FacebookError error)
+		{
+			SessionEvents.onLoginError(error.getMessage());
+		}
+
+		public void onError(DialogError error)
+		{
+			SessionEvents.onLoginError(error.getMessage());
+		}
+
+		public void onCancel()
+		{
+			SessionEvents.onLoginError("Action Canceled");
+			finish();
+		}
+	}
+	
+	public class LoginRequestListener extends BaseRequestListener
+	{
+		private SharedPreferences sharedPref;
+		private Editor editor;
+		
+		public void onComplete(String response, final Object state)
+		{
+			try
+			{
+				// process the response here: executed in background thread
+				Log.d("Facebook-Example", "Response: " + response.toString());
+				JSONObject json = Util.parseJson(response);
+				fnameS = json.getString("first_name");
+				lnameS = json.getString("last_name");
+				userName = fnameS + " " + lnameS;
+				userEmail = json.getString("email");
+				// genderS = json.getString("gender");
+				// bdayS = json.getString("birthday");
+				Log.d("Facebook", fnameS);
+				// userS = new UserParticulars(fnameS, lnameS, emailS,
+				// genderS, bdayS);
+
+				// callback should be run in the original thread,
+				// not the background thread
+				mHandler.post(new Runnable()
+				{
+					public void run()
+					{
+						ConnectDB connectCheck;
+						try
+						{
+							connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
+							sharedPref = getApplicationContext().getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+							editor = sharedPref.edit();
+							editor.putString("userName", connectCheck.getUserName());
+							editor.putString("emailLogin", connectCheck.getUserEmail());
+							editor.putString("userID", connectCheck.getUserID());
+							editor.commit();
+
+//							editor.commit();
+							// name.setText("Hello " + nameS + ",");
+							mProgress.dismiss();
+						}
+						catch (NoSuchAlgorithmException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						catch (UnsupportedEncodingException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// globalVar = ((GlobalVariable)
+						// getApplicationContext());
+						// globalVar.setName(nameS);
+
+						// String token = facebook.getAccessToken();
+						// long token_expires = facebook.getAccessExpires();
+
+						// SharedPreferences prefs=
+						// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
+						//
+						// prefs.edit().putLong("access_expires",
+						// token_expires).commit();
+						//
+						// prefs.edit().putString("access_token",
+						// token).commit();
+						//
+						// prefs.edit().putString("name", nameS).commit();
+						// fname.setText(fnameS);
+						// lname.setText(lnameS);
+						// email.setText(emailS);
+						// if (genderS.equals("male"))
+						// {
+						// male.setChecked(true);
+						// female.setChecked(false);
+						// }
+						// else if (genderS.equals("female"))
+						// {
+						// female.setChecked(true);
+						// male.setChecked(false);
+						// }
+						//
+						// for (int i = 0; i < 3; i++)
+						// {
+						// bdayInt[i] = getBday(bdayS)[i];
+						// }
+						// bday.setText("Your Birthdate is: " + bdayInt[0]
+						// +"/" + bdayInt[1] + "/" + bdayInt[2]);
+					}
+				});
+			}
+			catch (JSONException e)
+			{
+				Log.w("Facebook-Example", "JSON Error in response");
+			}
+			catch (FacebookError e)
+			{
+				Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
 			}
 		}
 	}

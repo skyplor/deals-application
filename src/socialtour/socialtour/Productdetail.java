@@ -60,14 +60,20 @@ public class Productdetail extends Activity implements OnClickListener{
 	ImageView imagedisplay;
 	Button btnLike, btnDislike, btnShare, btnBack;
 	int productid = 0;
+	String filename;
 	TextView lbllikes,lbldislikes,lblbrand,lblcategory,lblproduct,lblshop,lbladdress,lblpercent,lblprice;
 	GlobalVariable globalVar;
+	
+	int likes = 0,dislikes = 0,percent = 0;
+	double dprice=0;
+	String category = "", productname = "", shopname = "", brand = "",address = "";
+	
 	public void onCreate(Bundle savedInstanceState){
     	super.onCreate(savedInstanceState);
 		setContentView(R.layout.productdetail);
 		Bundle bundle=getIntent().getExtras();
         productid = (Integer) bundle.get("lastproductid");
-		String filename = importData(productid);
+		filename = importData(productid);
 		downloadFile(filename);
 		btnLike = (Button)findViewById(R.id.btnlike);
 		btnDislike = (Button)findViewById(R.id.btnDislike);
@@ -131,9 +137,7 @@ public class Productdetail extends Activity implements OnClickListener{
     	        }
     	//paring data
     	//int ct_id;
-    	String category = "", productname = "", shopname = "", brand = "",address = "";
-    	int likes = 0,dislikes = 0,percent = 0;
-    	double dprice=0;
+    	
     	try{
     	      jArray = new JSONArray(result);
     	      JSONObject json_data=null;
@@ -239,6 +243,10 @@ public class Productdetail extends Activity implements OnClickListener{
 		{
 			Intent shareIntent = new Intent(getParent(), ProductPage.class);
 			TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+			shareIntent.putExtra("imageURL", Constants.CONNECTIONSTRING + "FYP/uploads/" + filename);
+			shareIntent.putExtra("productname", productname);
+			shareIntent.putExtra("shopname", shopname);
+			shareIntent.putExtra("discount", percent);
 			parentActivity.startChildActivity("Product Page", shareIntent);
 			startActivity(shareIntent);
 		}

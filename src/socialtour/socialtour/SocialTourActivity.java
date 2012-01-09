@@ -1,9 +1,9 @@
 package socialtour.socialtour;
 
 import socialtour.socialtour.Constants;
-import facebook.SessionEvents;
+import com.facebook.SessionEvents;
 
-import facebook.FacebookConnector;
+import com.facebook.FacebookConnector;
 
 import android.app.Activity;
 import android.content.Intent;

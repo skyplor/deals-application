@@ -9,12 +9,13 @@ import android.graphics.BitmapFactory;
 public class Constants {
 	public static final String FACEBOOK_APPID = "197606583640677";
 	public static final String FACEBOOK_PERMISSION = "publish_stream";
-	public static final String UPLOAD_PATH = "C:/wamp/www/FYP/FYP/uploads/";
+//	public static final String UPLOAD_PATH = "C:/wamp/www/FYP/FYP/uploads/";
+	public static final String UPLOAD_PATH = "http://msm.cais.ntu.edu.sg/PhpSIRE/FYP/FYP/uploads/";
 //	public static final String CONNECTIONSTRING = "http://192.168.1.80/FYP/";
 //	public static final String CONNECTIONSTRING = "http://10.0.2.2/FYP/";
 	//public static final String CONNECTIONSTRING = "http://172.22.177.204/FYP/";
-	public static final String CONNECTIONSTRING = "http://192.168.0.196/FYP/";
-//	public static final String CONNECTIONSTRING = "http://172.22.64.141/FYP/";
+//	public static final String CONNECTIONSTRING = "http://192.168.0.196/FYP/";
+	public static final String CONNECTIONSTRING = "http://msm.cais.ntu.edu.sg/PhpSIRE/FYP/";
 	private static final int THUMBNAIL_SIZE = 4;
 	
 	public Bitmap getPreview(URI uri) {

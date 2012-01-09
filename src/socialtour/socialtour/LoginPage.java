@@ -1,5 +1,8 @@
 package socialtour.socialtour;
 
+import com.facebook.BaseRequestListener;
+import com.facebook.SessionEvents;
+import com.facebook.SessionStore;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.Facebook;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
