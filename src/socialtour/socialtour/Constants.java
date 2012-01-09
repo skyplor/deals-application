@@ -14,6 +14,7 @@ public class Constants {
 //	public static final String CONNECTIONSTRING = "http://10.0.2.2/FYP/";
 	//public static final String CONNECTIONSTRING = "http://172.22.177.204/FYP/";
 	public static final String CONNECTIONSTRING = "http://192.168.0.196/FYP/";
+//	public static final String CONNECTIONSTRING = "http://172.22.64.141/FYP/";
 	private static final int THUMBNAIL_SIZE = 4;
 	
 	public Bitmap getPreview(URI uri) {

@@ -49,6 +49,7 @@ import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 //import android.os.Message;
 //import android.preference.PreferenceManager;
 import android.util.Log;
@@ -324,10 +325,37 @@ public class Main extends Activity implements OnClickListener
 		}
 		else if (v == nearby)
 		{
-			getProduct("Nearby");
-			nearby.setEnabled(false);
-			latest.setEnabled(true);
-			hot.setEnabled(true);
+			if (CheckEnableGPS())
+			{
+				getProduct("Nearby");
+				nearby.setEnabled(false);
+				latest.setEnabled(true);
+				hot.setEnabled(true);
+			}
+			else
+			{
+				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
+				alertDialog.setMessage("Please turn on GPS");
+				alertDialog.setCancelable(true);
+				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+						startActivity(intent);
+					}
+				});
+				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						latest.performClick();
+					}
+				});
+				alertDialog.show();
+			}
 		}
 		else if (v == hot)
 		{
@@ -335,6 +363,23 @@ public class Main extends Activity implements OnClickListener
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
+		}
+	}
+
+	private Boolean CheckEnableGPS()
+	{
+		// TODO Auto-generated method stub
+		String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		if (!provider.equals(""))
+		{
+			// GPS Enabled
+			// Toast.makeText(AndroidEnableGPS.this, "GPS Enabled: " + provider,
+			// Toast.LENGTH_LONG).show();
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
