@@ -28,7 +28,7 @@ public class SocialTourActivity extends Activity {
         signUp = (Button)findViewById(R.id.register);
         login = (Button) findViewById(R.id.signin);
         
-        this.facebookConnector = new FacebookConnector(Constants.FACEBOOK_APPID, this, getApplicationContext(), new String[] {Constants.FACEBOOK_PERMISSION});
+        this.facebookConnector = new FacebookConnector(Constants.FACEBOOK_APPID, this, getApplicationContext(), Constants.FACEBOOK_PERMISSION);
         
         fbButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -1,7 +1,10 @@
 package socialtour.socialtour;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -10,6 +13,7 @@ import org.json.JSONObject;
 
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
+import com.facebook.SessionStore;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -127,6 +131,7 @@ public class Container extends TabActivity
 			twitBtn = globalVar.getTwitBtn();
 
 			facebook = globalVar.getFBState();
+			
 			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 			mTwitter.setListener(mTwLoginDialogListener);
 			globalVar.setTwitState(mTwitter);
@@ -134,8 +139,19 @@ public class Container extends TabActivity
 			mProgress = new ProgressDialog(this);
 
 			Log.d("FbButton: ", fbBtn.toString());
+			Log.d("FB session: ", Boolean.toString(facebook.isSessionValid()));
 
-			if (fbBtn || facebook.isSessionValid())
+			try
+			{
+				backupDatabase();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (fbBtn || SessionStore.restore(facebook, this))//facebook.isSessionValid())
 			{
 				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
 				TYPE = INIT_FB;
@@ -386,6 +402,7 @@ public class Container extends TabActivity
 			// name.setText("Hello " + sharedName + ",");
 			// }
 			facebook = FbState.getFBState();
+			
 			// if (!facebook.isSessionValid())
 			// {
 			// facebook = new Facebook(APP_ID);
@@ -492,6 +509,8 @@ public class Container extends TabActivity
 								editor.commit();
 								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
+								backupDatabase();
+								Log.d("Facebook session 2: ", Boolean.toString(facebook.isSessionValid()));
 							}
 							catch (NoSuchAlgorithmException e)
 							{
@@ -506,6 +525,11 @@ public class Container extends TabActivity
 							// globalVar = ((GlobalVariable)
 							// getApplicationContext());
 							// globalVar.setName(nameS);
+							catch (IOException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 
 							// String token = facebook.getAccessToken();
 							// long token_expires = facebook.getAccessExpires();
@@ -552,7 +576,7 @@ public class Container extends TabActivity
 					Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
 				}
 			}
-		}
+		}	
 
 		public Facebook getFacebook()
 		{
@@ -803,6 +827,39 @@ public class Container extends TabActivity
 		 */
 	}
 
+	
+	public static void backupDatabase() throws IOException {
+		/*
+	    //Open your shared_prefs as the input stream
+	    String inFileName = "/dbdata/databases/socialtour.socialtour/shared_prefs/com.ntu.fypshop.xml";
+	    File sharedPFile = new File(inFileName);
+	    FileInputStream fis = new FileInputStream(sharedPFile);
+
+	    String inFileName2 = "/dbdata/databases/socialtour.socialtour/shared_prefs/facebook-session.xml";
+	    File sharedPFile2 = new File(inFileName2);
+	    FileInputStream fis2 = new FileInputStream(sharedPFile2);
+	    
+	    String outFileName = Environment.getExternalStorageDirectory()+"/com.ntu.fypshop.xml";
+	    String outFileName2 = Environment.getExternalStorageDirectory()+"/facebook-session.xml";
+	    //Open the empty db as the output stream
+	    OutputStream output = new FileOutputStream(outFileName);
+	    OutputStream output2 = new FileOutputStream(outFileName2);
+	    //transfer bytes from the inputfile to the outputfile
+	    byte[] buffer = new byte[1024];
+	    int length;
+	    while ((length = fis.read(buffer))>0){
+	        output.write(buffer, 0, length);
+	    }
+	    //Close the streams
+	    output.flush();
+	    output.close();
+	    fis.close();
+	    output2.flush();
+	    output2.close();
+	    fis2.close();
+	    */
+	}
+	
 	private void openAddPhoto()
 	{
 

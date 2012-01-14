@@ -4,6 +4,7 @@ import java.util.List;
 
 import socialtour.socialtour.models.Shop;
 
+import com.facebook.SessionStore;
 import com.facebook.android.Facebook;
 import com.google.android.maps.GeoPoint;
 

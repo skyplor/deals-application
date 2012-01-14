@@ -22,7 +22,7 @@ public class FacebookConnector {
 	private String[] permissions;
 	private Handler mHandler;
 	private Activity activity;
-	private SessionListener mSessionListener = new SessionListener();;
+	private SessionListener mSessionListener = new SessionListener();
 	
 	public FacebookConnector(String appId,Activity activity,Context context,String[] permissions) {
 		this.facebook = new Facebook(appId);
