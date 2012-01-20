@@ -63,15 +63,16 @@ public class ProductPage extends Activity
 	private TwitterApp mTwitter;
 	AsyncFacebookRunner asyncRunner;
 	private String status;
-	
-	private final String[] FACEBOOK_PERMISSION = { "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
+
+	private final String[] FACEBOOK_PERMISSION =
+	{ "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
 
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
 
 	private String productName = "", shopName = "", imageUrl = "";
 	private int pDiscount = 0;
-	
+
 	private String fnameS;
 	private String lnameS;
 	private String userName;
@@ -94,7 +95,7 @@ public class ProductPage extends Activity
 		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
-		
+
 		mProgress = new ProgressDialog(this);
 
 		Bundle bundle = getIntent().getExtras();
@@ -112,67 +113,15 @@ public class ProductPage extends Activity
 				// post on user's wall.
 				// mFacebook.dialog(ProductPage.this, "feed", new
 				// PostDialogListener());
-				// postWithDialog(ProductPage.this,
-				// "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png");
-				if (!mFacebook.isSessionValid())
-				{
-					loginAndPostToWall();
-				}
-				else
-				{
-					final Dialog fbDialog = new Dialog(ProductPage.this);
-
-					fbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-					fbDialog.setContentView(R.layout.twitter_post);
-					// twitDialog.setTitle("Post to Twitter");
-
-					Drawable icon = getResources().getDrawable(R.drawable.facebook_icon);
-
-					TextView mTitle = (TextView) fbDialog.findViewById(R.id.titleDialog);
-
-					mTitle.setText("Facebook");
-					mTitle.setTextColor(Color.WHITE);
-					mTitle.setTypeface(Typeface.DEFAULT_BOLD);
-					mTitle.setBackgroundColor(0xFFbbd7e9);
-					mTitle.setPadding(4 + 2, 4, 4, 4);
-					mTitle.setCompoundDrawablePadding(4 + 2);
-					mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-					fbDialog.setCancelable(true);
-					final EditText statusPost = (EditText) fbDialog.findViewById(R.id.statusText);
-					Log.d("Status: ", status);
-					statusPost.setText(status);
-
-					// set up button
-					Button postbutton = (Button) fbDialog.findViewById(R.id.postBtn);
-					postbutton.setOnClickListener(new OnClickListener()
-					{
-						@Override
-						public void onClick(View v)
-						{
-							String review = statusPost.getText().toString();
-
-							if (review.equals(""))
-								return;
-
-							postReview(review);
-
-							postWithoutDialog(review, APP_DOWNLOAD_LINK, "SocialTourApp", "Hello", imageUrl);
-							fbDialog.dismiss();
-						}
-					});
-
-					Button cancelbutton = (Button) fbDialog.findViewById(R.id.cancelBtn);
-					cancelbutton.setOnClickListener(new OnClickListener()
-					{
-						@Override
-						public void onClick(View v)
-						{
-							fbDialog.cancel();
-						}
-					});
-
-					fbDialog.show();
-				}
+				 postWithDialog(ProductPage.this, "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
+//				if (!mFacebook.isSessionValid())
+//				{
+//					loginAndPostToWall();
+//				}
+//				else
+//				{
+//					postToWall();
+//				}
 			}
 		});
 
@@ -270,7 +219,70 @@ public class ProductPage extends Activity
 	{
 		// TODO Auto-generated method stub
 		mFacebook.authorize(this, FACEBOOK_PERMISSION, new LoginDialogListener());
-		mProgress.dismiss();
+		if (mFacebook.isSessionValid())
+		{
+			postToWall();
+		}
+		else
+		{
+//			mProgress.dismiss();
+		}
+	}
+
+	private void postToWall()
+	{
+		final Dialog fbDialog = new Dialog(ProductPage.this);
+
+		fbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		fbDialog.setContentView(R.layout.twitter_post);
+		// twitDialog.setTitle("Post to Twitter");
+
+		Drawable icon = getResources().getDrawable(R.drawable.facebook_icon);
+
+		TextView mTitle = (TextView) fbDialog.findViewById(R.id.titleDialog);
+
+		mTitle.setText("Facebook");
+		mTitle.setTextColor(Color.WHITE);
+		mTitle.setTypeface(Typeface.DEFAULT_BOLD);
+		mTitle.setBackgroundColor(0xFFbbd7e9);
+		mTitle.setPadding(4 + 2, 4, 4, 4);
+		mTitle.setCompoundDrawablePadding(4 + 2);
+		mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+		fbDialog.setCancelable(true);
+		final EditText statusPost = (EditText) fbDialog.findViewById(R.id.statusText);
+		Log.d("Status: ", status);
+		statusPost.setText(status);
+
+		// set up button
+		Button postbutton = (Button) fbDialog.findViewById(R.id.postBtn);
+		postbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String review = statusPost.getText().toString();
+
+				if (review.equals(""))
+					return;
+
+				postReview(review);
+
+				postWithoutDialog(review, APP_DOWNLOAD_LINK, "SocialTourApp", "Hello", imageUrl);
+				fbDialog.dismiss();
+			}
+		});
+
+		Button cancelbutton = (Button) fbDialog.findViewById(R.id.cancelBtn);
+		cancelbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				fbDialog.cancel();
+			}
+		});
+
+		fbDialog.show();
 	}
 
 	private void postReview(String review)
@@ -395,7 +407,7 @@ public class ProductPage extends Activity
 	 * @param imageUrl
 	 *            - a link to an image to post on the wall
 	 */
-	public void postWithDialog(Context context, String imageUrl)
+	public void postWithDialog(Context context, String imageUrl, String message)
 	{
 		Bundle parameters = new Bundle();
 
@@ -411,8 +423,8 @@ public class ProductPage extends Activity
 		 */
 
 		// set image, description and a link for downloading the application.
-		parameters.putString("attachment", "{\"name\":\"MyTestingApp\"," + "\"href\":\"" + APP_DOWNLOAD_LINK + "\"," + "\"description\":\"Uploaded via android emulator using MyTestingApp =) \"," + "\"media\":[{\"type\":\"image\",\"src\":\"" + imageUrl + "\",\"href\":\"" + APP_DOWNLOAD_LINK + "\"}]"
-				+ "}");
+//		parameters.putString("attachment", "{\"name\":\"MyTestingApp\"," + "\"href\":\"" + APP_DOWNLOAD_LINK + "\"," + "\"description\":\"Uploaded via android emulator using MyTestingApp =) \"," + "\"media\":[{\"type\":\"image\",\"src\":\"" + imageUrl + "\",\"href\":\"" + APP_DOWNLOAD_LINK + "\"}]"+ "}");
+		parameters.putString("message", message);
 		// display the user dialog
 		mFacebook.dialog(context, "stream.publish", parameters, new WallPostDialogListener());
 	}
@@ -500,7 +512,7 @@ public class ProductPage extends Activity
 			}
 		}
 	}
-	
+
 	private final class LoginDialogListener implements DialogListener
 	{
 		public void onComplete(Bundle values)
@@ -526,15 +538,15 @@ public class ProductPage extends Activity
 		public void onCancel()
 		{
 			SessionEvents.onLoginError("Action Canceled");
-			finish();
+			Log.d("Facebook LoginDialog", "Cancelled");
 		}
 	}
-	
+
 	public class LoginRequestListener extends BaseRequestListener
 	{
 		private SharedPreferences sharedPref;
 		private Editor editor;
-		
+
 		public void onComplete(String response, final Object state)
 		{
 			try
@@ -569,7 +581,7 @@ public class ProductPage extends Activity
 							editor.putString("userID", connectCheck.getUserID());
 							editor.commit();
 
-//							editor.commit();
+							// editor.commit();
 							// name.setText("Hello " + nameS + ",");
 							mProgress.dismiss();
 						}
