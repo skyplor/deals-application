@@ -55,6 +55,9 @@ import android.provider.Settings;
 //import android.os.Message;
 //import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 //import android.view.View.OnClickListener;
@@ -240,6 +243,32 @@ public class Main extends Activity implements OnClickListener
 		// }, intentFilter);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+		case R.id.dashboard:
+			Toast.makeText(getParent(), "You pressed the Dashboard!", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(getParent(),Dashboard.class);
+			startActivity(intent);
+			break;
+		case R.id.settings:
+			Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
+			break;
+		}
+		return true;
+	}
+	
 	private void init(final int type)
 	{
 		globalVar = ((GlobalVariable) getApplicationContext());

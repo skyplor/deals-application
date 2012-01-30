@@ -22,6 +22,7 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 
 import socialtour.socialtour.TwitterApp.TwDialogListener;
+import socialtour.socialtour.models.UserParticulars;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -76,6 +77,10 @@ public class Container extends TabActivity
 	private String lnameS;
 	private String userName;
 	private String userEmail;
+	private String genderS;
+	private String bdayS;
+	private String uid;
+//	private UserParticulars userS;
 
 	Button logout;
 
@@ -131,7 +136,7 @@ public class Container extends TabActivity
 			twitBtn = globalVar.getTwitBtn();
 
 			facebook = globalVar.getFBState();
-			
+
 			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 			mTwitter.setListener(mTwLoginDialogListener);
 			globalVar.setTwitState(mTwitter);
@@ -151,7 +156,7 @@ public class Container extends TabActivity
 				e.printStackTrace();
 			}
 
-			if (fbBtn || SessionStore.restore(facebook, this))//facebook.isSessionValid())
+			if (fbBtn || SessionStore.restore(facebook, this))// facebook.isSessionValid())
 			{
 				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
 				TYPE = INIT_FB;
@@ -247,14 +252,13 @@ public class Container extends TabActivity
 			});
 		}
 	}
-	
 
 	private void KillProcess()
 	{
 		// TODO Auto-generated method stub
 		this.finish();
 	}
-	
+
 	public static boolean haveInternet(Context ctx)
 	{
 		NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -402,7 +406,7 @@ public class Container extends TabActivity
 			// name.setText("Hello " + sharedName + ",");
 			// }
 			facebook = FbState.getFBState();
-			
+
 			// if (!facebook.isSessionValid())
 			// {
 			// facebook = new Facebook(APP_ID);
@@ -478,17 +482,21 @@ public class Container extends TabActivity
 				try
 				{
 					// process the response here: executed in background thread
-					Log.d("Facebook-Example", "Response: " + response.toString());
+					Log.d("Facebook-Container", "Response: " + response.toString());
 					JSONObject json = Util.parseJson(response);
 					fnameS = json.getString("first_name");
 					lnameS = json.getString("last_name");
 					userName = fnameS + " " + lnameS;
 					userEmail = json.getString("email");
-					// genderS = json.getString("gender");
-					// bdayS = json.getString("birthday");
+					genderS = json.getString("gender");
+					bdayS = json.getString("birthday");
+					uid = json.getString("id");
+					
+					editor.putString("userFBname", userName);
+					editor.putString("userFBID", uid);
+					editor.commit();
 					Log.d("Facebook", fnameS);
-					// userS = new UserParticulars(fnameS, lnameS, emailS,
-					// genderS, bdayS);
+//					userS = new UserParticulars(fnameS, lnameS, userEmail, genderS, bdayS);
 
 					// callback should be run in the original thread,
 					// not the background thread
@@ -506,7 +514,7 @@ public class Container extends TabActivity
 								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
-								editor.commit();
+//								editor.commit();
 								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
 								backupDatabase();
@@ -576,7 +584,7 @@ public class Container extends TabActivity
 					Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
 				}
 			}
-		}	
+		}
 
 		public Facebook getFacebook()
 		{
@@ -827,39 +835,33 @@ public class Container extends TabActivity
 		 */
 	}
 
-	
-	public static void backupDatabase() throws IOException {
+	public static void backupDatabase() throws IOException
+	{
 		/*
-	    //Open your shared_prefs as the input stream
-	    String inFileName = "/dbdata/databases/socialtour.socialtour/shared_prefs/com.ntu.fypshop.xml";
-	    File sharedPFile = new File(inFileName);
-	    FileInputStream fis = new FileInputStream(sharedPFile);
-
-	    String inFileName2 = "/dbdata/databases/socialtour.socialtour/shared_prefs/facebook-session.xml";
-	    File sharedPFile2 = new File(inFileName2);
-	    FileInputStream fis2 = new FileInputStream(sharedPFile2);
-	    
-	    String outFileName = Environment.getExternalStorageDirectory()+"/com.ntu.fypshop.xml";
-	    String outFileName2 = Environment.getExternalStorageDirectory()+"/facebook-session.xml";
-	    //Open the empty db as the output stream
-	    OutputStream output = new FileOutputStream(outFileName);
-	    OutputStream output2 = new FileOutputStream(outFileName2);
-	    //transfer bytes from the inputfile to the outputfile
-	    byte[] buffer = new byte[1024];
-	    int length;
-	    while ((length = fis.read(buffer))>0){
-	        output.write(buffer, 0, length);
-	    }
-	    //Close the streams
-	    output.flush();
-	    output.close();
-	    fis.close();
-	    output2.flush();
-	    output2.close();
-	    fis2.close();
-	    */
+		 * //Open your shared_prefs as the input stream String inFileName =
+		 * "/dbdata/databases/socialtour.socialtour/shared_prefs/com.ntu.fypshop.xml"
+		 * ; File sharedPFile = new File(inFileName); FileInputStream fis = new
+		 * FileInputStream(sharedPFile);
+		 * 
+		 * String inFileName2 =
+		 * "/dbdata/databases/socialtour.socialtour/shared_prefs/facebook-session.xml"
+		 * ; File sharedPFile2 = new File(inFileName2); FileInputStream fis2 =
+		 * new FileInputStream(sharedPFile2);
+		 * 
+		 * String outFileName =
+		 * Environment.getExternalStorageDirectory()+"/com.ntu.fypshop.xml";
+		 * String outFileName2 =
+		 * Environment.getExternalStorageDirectory()+"/facebook-session.xml";
+		 * //Open the empty db as the output stream OutputStream output = new
+		 * FileOutputStream(outFileName); OutputStream output2 = new
+		 * FileOutputStream(outFileName2); //transfer bytes from the inputfile
+		 * to the outputfile byte[] buffer = new byte[1024]; int length; while
+		 * ((length = fis.read(buffer))>0){ output.write(buffer, 0, length); }
+		 * //Close the streams output.flush(); output.close(); fis.close();
+		 * output2.flush(); output2.close(); fis2.close();
+		 */
 	}
-	
+
 	private void openAddPhoto()
 	{
 

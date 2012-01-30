@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +26,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
@@ -35,6 +39,7 @@ import socialtour.socialtour.MapResult.Markers;
 import socialtour.socialtour.models.Shop;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,6 +49,8 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -54,6 +61,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,7 +76,8 @@ public class Addplace extends MapActivity implements OnClickListener
 	private MapView mapView;
 	private MapController mapController;
 	private GeoPoint startingPoint;
-	private EditText mapSearchBox, searchAddress;
+	private AutoCompleteTextView mapSearchBox;
+	private EditText searchAddress;
 	private GlobalVariable globalVar;
 	private Button search, btnAdd;
 	List<Overlay> listOfOverlays;
@@ -90,11 +99,73 @@ public class Addplace extends MapActivity implements OnClickListener
 		setContentView(R.layout.addplace);
 
 		mapView = (MapView) findViewById(R.id.addShopMap);
-		mapSearchBox = (EditText) findViewById(R.id.txtShopname);
+		mapSearchBox = (AutoCompleteTextView) findViewById(R.id.txtShopname);
 		searchAddress = (EditText) findViewById(R.id.txtShopaddress);
 		search = (Button) findViewById(R.id.searchShopsBtn);
 		scroll = (LockableScrollView) findViewById(R.id.ScrollView01);
 		scrollChildLinearLayout = (LinearLayout) findViewById(R.id.LinearLayout02);
+		
+		final ArrayAdapter<String> Arradapter = new ArrayAdapter<String>(this, R.layout.item_list);
+		Arradapter.setNotifyOnChange(true);
+		mapSearchBox.setAdapter(Arradapter);
+		mapSearchBox.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence s, int start, int before, int count)
+			{
+				if (count%3 == 1)
+				{
+					//we don't want to make an insanely large array, so we clear it each time
+					Arradapter.clear();
+					try
+					{
+						URL googlePlaces = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Singapore+"+URLEncoder.encode(s.toString(),"UTF-8")+"&location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyAxAq7cT-RTcHdT7ccVc1LQCK85J133hsg");
+						URLConnection tc = googlePlaces.openConnection();
+						Log.d("Gotta go:", URLEncoder.encode(s.toString()));
+						BufferedReader in = new BufferedReader(new InputStreamReader(tc.getInputStream()));
+						
+						String line;
+						StringBuffer sb = new StringBuffer();
+						while((line = in.readLine())!= null)
+						{
+							sb.append(line);
+						}
+						JSONObject predictions = new JSONObject(sb.toString());
+						JSONArray ja = new JSONArray(predictions.getString("predictions"));
+						
+						for (int i=0; i<ja.length(); i++)
+						{
+							JSONObject jo = (JSONObject) ja.get(i);
+							Arradapter.add(jo.getString("description"));
+						}
+					}
+					catch (MalformedURLException e)
+					{
+						e.printStackTrace();
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+					catch (JSONException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		btnAdd = (Button) findViewById(R.id.uploadProduct);
 
@@ -121,6 +192,7 @@ public class Addplace extends MapActivity implements OnClickListener
 	{
 		// TODO Auto-generated method stub
 		globalVar = ((GlobalVariable) getApplicationContext());
+
 		search.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
@@ -144,6 +216,17 @@ public class Addplace extends MapActivity implements OnClickListener
 				}
 				// new
 				// SearchClicked(mapSearchBox.getText().toString());//.execute();
+			}
+		});
+		mapSearchBox.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				Log.d("in OnClickListener", Boolean.toString(onSearchRequested()));
+
 			}
 		});
 		scrollChildLinearLayout.setOnTouchListener(new OnTouchListener()
@@ -302,7 +385,7 @@ public class Addplace extends MapActivity implements OnClickListener
 
 			String formatSearch = shopSearch.replace(' ', '+') + "+" + addrSearch.replace(' ', '+');
 
-			String stringUrl = "https://maps.googleapis.com/maps/api/place/search/json?location=1.303999,103.832731&radius=50000&sensor=true&key=AIzaSyAxAq7cT-RTcHdT7ccVc1LQCK85J133hsg&keyword='" + formatSearch + "'";
+			String stringUrl = "https://maps.googleapis.com/maps/api/place/search/json?location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyAxAq7cT-RTcHdT7ccVc1LQCK85J133hsg&keyword='" + formatSearch + "'";
 
 			// InputStream is = new URL(stringUrl).openStream();
 			// try {

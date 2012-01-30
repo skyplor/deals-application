@@ -12,4 +12,7 @@
     <string name="gender">Gender:</string>
     <string name="birthdate">Birthdate:</string>
     <string name="setBirthdate">Set/Change Birthdate</string>
+    <string name="search_label">Search shop</string>
+    <string name="search_hint">E.g. Watsons</string>
+    
 </resources>

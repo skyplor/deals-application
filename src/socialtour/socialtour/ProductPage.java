@@ -57,7 +57,6 @@ public class ProductPage extends Activity
 	private static final String APP_DOWNLOAD_LINK = "https://market.android.com/";
 	private static GlobalVariable globalVar;
 	private ImageButton fbshareBtn, twitshareBtn;
-	private TextView shopinfo;
 	private Facebook mFacebook;
 	private ProgressDialog mProgress;
 	private TwitterApp mTwitter;
@@ -83,14 +82,13 @@ public class ProductPage extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.product);
+		setContentView(R.layout.productsharing);
 
 		globalVar = ((GlobalVariable) getApplicationContext());
 		mFacebook = globalVar.getFBState();
 
 		fbshareBtn = (ImageButton) findViewById(R.id.fbShareBtn);
 		twitshareBtn = (ImageButton) findViewById(R.id.twitShareBtn);
-		shopinfo = (TextView) findViewById(R.id.shopInfo);
 
 		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 		mTwitter.setListener(mTwLoginDialogListener);
@@ -198,19 +196,6 @@ public class ProductPage extends Activity
 					// if (postToTwitter)
 					// postToTwitter(review);
 				}
-			}
-		});
-
-		shopinfo.setOnClickListener(new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				GeoPoint point = new GeoPoint(1301282, 103839630);
-				globalVar.setGeoPoint(point);
-				Intent intent = new Intent(v.getContext(), Shopdetail.class);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Shop Details", intent);
-
 			}
 		});
 	}
