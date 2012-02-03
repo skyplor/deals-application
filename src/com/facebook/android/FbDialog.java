@@ -20,6 +20,7 @@ import socialtour.socialtour.R;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -98,6 +99,15 @@ public class FbDialog extends Dialog
 		 */
 		mContent.addView(mCrossImage, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		addContentView(mContent, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		
+		this.setOnCancelListener(new OnCancelListener()
+		{
+			@Override
+			public void onCancel(DialogInterface dialog)
+			{
+				mListener.onCancel();
+			}
+		});
 	}
 
 	private void createCrossImage()

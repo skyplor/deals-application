@@ -208,6 +208,7 @@
             </intent-filter>
         </activity>
         <activity android:name="Dashboard"></activity>
+        <activity android:name="Settings"></activity>
     </application>
 
 </manifest>

@@ -69,7 +69,7 @@ public class Container extends TabActivity
 	private ProgressDialog mProgress;
 	Handler mHandler = new Handler();
 
-	private Boolean fbBtn, twitBtn;
+	private Boolean fblogout, twitBtn;
 	private Facebook facebook;
 	private TwitterApp mTwitter;
 
@@ -131,20 +131,20 @@ public class Container extends TabActivity
 			 * } });
 			 */
 
-			globalVar = ((GlobalVariable) getApplicationContext());
-			fbBtn = globalVar.getfbBtn();
+			globalVar = ((GlobalVariable) getApplicationContext());			
 			twitBtn = globalVar.getTwitBtn();
-
 			facebook = globalVar.getFBState();
+			
+			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+			fblogout = login.getBoolean("FacebookLoggedOut", true);
 
 			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
 			mTwitter.setListener(mTwLoginDialogListener);
 			globalVar.setTwitState(mTwitter);
 
 			mProgress = new ProgressDialog(this);
-
-			Log.d("FbButton: ", fbBtn.toString());
-			Log.d("FB session: ", Boolean.toString(facebook.isSessionValid()));
+			
+			Log.d("FB session in container: ", Boolean.toString(facebook.isSessionValid()));
 
 			try
 			{
@@ -156,8 +156,9 @@ public class Container extends TabActivity
 				e.printStackTrace();
 			}
 
-			if (fbBtn || SessionStore.restore(facebook, this))// facebook.isSessionValid())
+			if (!fblogout)// || SessionStore.restore(facebook, this))// facebook.isSessionValid())
 			{
+				Log.d("in Container, fb:", Boolean.toString(SessionStore.restore(facebook,this)));
 				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
 				TYPE = INIT_FB;
 				init(TYPE);
@@ -283,7 +284,7 @@ public class Container extends TabActivity
 		{
 			public void onClick(View v)
 			{
-				doLogout(type);
+//				doLogout(type);
 			}
 		});
 	}
@@ -311,13 +312,16 @@ public class Container extends TabActivity
 			// Go to LoginPage
 			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			SharedPreferences.Editor editor = login.edit();
+			editor.putString("userFBname", null);
 			editor.putString("userName", null);
 			editor.putString("userID", null);
+			editor.putString("userFBID", null);
 			editor.putString("emailLogin", null);
 			editor.commit();
+			
 			globalVar = ((GlobalVariable) getApplicationContext());
 			Facebook mFacebook = globalVar.getFBState();
-			globalVar.setfbBtn(false);
+//			globalVar.setfbBtn(false);
 			SessionEvents.onLogoutBegin();
 			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
 			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
@@ -411,7 +415,17 @@ public class Container extends TabActivity
 			// {
 			// facebook = new Facebook(APP_ID);
 			// FbState.setFbState(facebook);
-			login();
+			Log.d("In FBConnect, fb session: ", Boolean.toString(facebook.isSessionValid()));
+//			Log.d("In FBConnect, fb button: ", Boolean.toString(fbBtn));
+			if(!facebook.isSessionValid() && fblogout)
+			{
+				Intent launchLogin = new Intent(Container.this, LoginPage.class);
+				startActivity(launchLogin);
+			}
+			else
+			{
+				login();
+			}
 			// }
 			// else
 			// {
@@ -469,6 +483,10 @@ public class Container extends TabActivity
 			public void onCancel()
 			{
 				SessionEvents.onLoginError("Action Canceled");
+				SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+				SharedPreferences.Editor editor = login.edit();
+				editor.putBoolean("FacebookLoggedOut", true);
+				editor.commit();
 				Intent intent = new Intent(context, LoginPage.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -494,6 +512,7 @@ public class Container extends TabActivity
 					
 					editor.putString("userFBname", userName);
 					editor.putString("userFBID", uid);
+					editor.putBoolean("FacebookLoggedOut", false);
 					editor.commit();
 					Log.d("Facebook", fnameS);
 //					userS = new UserParticulars(fnameS, lnameS, userEmail, genderS, bdayS);
@@ -510,8 +529,8 @@ public class Container extends TabActivity
 								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
 
 								editor.putString("userName", connectCheck.getUserName());
-								editor.putString("emailLogin", connectCheck.getUserEmail());
-								editor.putString("userID", connectCheck.getUserID());
+								editor.putString("emailFB_Login", connectCheck.getUserEmail());
+								editor.putString("userDB_FBID", connectCheck.getUserID());
 								editor.commit();
 
 //								editor.commit();

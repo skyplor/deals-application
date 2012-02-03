@@ -85,7 +85,7 @@ public class Main extends Activity implements OnClickListener
 	private String lnameS;
 	private String nameS;
 	// private String emailS;
-	private Boolean fbBtn, twitBtn;
+	private Boolean fbBtn = false, twitBtn;
 	private Facebook facebook;
 
 	private TwitterApp mTwitter;
@@ -135,6 +135,7 @@ public class Main extends Activity implements OnClickListener
 			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
 		}
 
+		Log.d("in Main", "true");
 		latest = (Button) findViewById(R.id.btnLatest);
 		nearby = (Button) findViewById(R.id.btnNearby);
 		hot = (Button) findViewById(R.id.btnHot);
@@ -147,7 +148,7 @@ public class Main extends Activity implements OnClickListener
 		latest.setEnabled(false);
 
 		globalVar = ((GlobalVariable) getApplicationContext());
-		fbBtn = globalVar.getfbBtn();
+//		fbBtn = globalVar.getfbBtn();
 		twitBtn = globalVar.getTwitBtn();
 
 		facebook = globalVar.getFBState();
@@ -163,7 +164,7 @@ public class Main extends Activity implements OnClickListener
 
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-		Log.d("FbButton: ", fbBtn.toString());
+//		Log.d("FbButton: ", fbBtn.toString());
 		// SharedPreferences sharedPref =
 		// getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 
@@ -264,6 +265,8 @@ public class Main extends Activity implements OnClickListener
 			break;
 		case R.id.settings:
 			Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
+			Intent intent2 = new Intent(getParent(),socialtour.socialtour.Settings.class);
+			startActivity(intent2);
 			break;
 		}
 		return true;

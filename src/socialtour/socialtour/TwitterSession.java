@@ -14,7 +14,7 @@ public class TwitterSession {
 	private static final String TWEET_AUTH_SECRET_KEY = "auth_secret_key";
 	private static final String TWEET_USER_NAME = "userName";
 	private static final String TWEET_USER_ID = "twitID";
-	private static final String USER_ID = "userID";
+	private static final String USER_ID = "userDB_TWITID";
 	private static final String SHARED = "com.ntu.fypshop";
 
 	public TwitterSession(Context context)

@@ -85,7 +85,7 @@ public class MapResult extends MapActivity
 		mapView = (MapView) findViewById(R.id.mapView);
 		logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
-		fbBtn = globalVar.getfbBtn();
+//		fbBtn = globalVar.getfbBtn();
 		// Log.d("FbButton: ", fbBtn.toString());
 		for (int i = 0; i < shoplist.size(); i++)
 		{
@@ -178,7 +178,7 @@ public class MapResult extends MapActivity
 			// Logout logic here...
 			globalVar = ((GlobalVariable) getApplicationContext());
 			globalVar.setName("");
-			globalVar.setfbBtn(false);
+//			globalVar.setfbBtn(false);
 			globalVar.setHashPw("");
 			globalVar.setEm("");
 

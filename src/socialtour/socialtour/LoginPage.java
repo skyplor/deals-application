@@ -206,7 +206,7 @@ public class LoginPage extends Activity {
 					Log.d("Authenticate User: ", "True");
 					globalVar = ((GlobalVariable) getApplicationContext());
 					globalVar.setName(connectCheck.getUserName());
-					globalVar.setfbBtn(false);
+//					globalVar.setfbBtn(false);
 					globalVar.setHashPw(connectCheck.getPassword());
 					globalVar.setEm(email.getText().toString());
 
@@ -268,8 +268,10 @@ public class LoginPage extends Activity {
 				{
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(v.getContext(), Container.class);
-					globalVar = ((GlobalVariable) getApplicationContext());
-					globalVar.setfbBtn(true);
+					SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+					SharedPreferences.Editor editor = login.edit();
+					editor.putBoolean("FacebookLoggedOut", false);
+					editor.commit();
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivityForResult(intent, 1);
 				}
@@ -291,8 +293,8 @@ public class LoginPage extends Activity {
 			{
 				Intent intent = new Intent(v.getContext(), Registration.class);
 
-				globalVar = ((GlobalVariable) getApplicationContext());
-				globalVar.setfbBtn(false);
+//				globalVar = ((GlobalVariable) getApplicationContext());
+//				globalVar.setfbBtn(false);
 				// startActivityForResult means that Activity1 can expect info
 				// back from Activity2.
 				startActivityForResult(intent, 0);

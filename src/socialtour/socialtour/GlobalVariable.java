@@ -16,7 +16,7 @@ public class GlobalVariable extends Application {
 	
 	private TwitterApp mTwitter;
 	
-	private Boolean fbBtn = false, twitBtn = false;
+	private Boolean twitBtn = false;
 	private String name = "";
 	private String password = "";
 	private String email = "";
@@ -42,16 +42,6 @@ public class GlobalVariable extends Application {
 	public void setTwitState(TwitterApp ta)
 	{
 		mTwitter = ta;
-	}
-	
-	public Boolean getfbBtn()
-	{
-		return fbBtn;
-	}
-
-	public void setfbBtn(Boolean b)
-	{
-		fbBtn = b;
 	}
 
 	public String getName()

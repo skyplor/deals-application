@@ -117,7 +117,7 @@ public class Registration extends Activity {
 					{
 						GlobalVariable globalVar = ((GlobalVariable) getApplicationContext());
 						globalVar.setName(name.getText().toString());
-						globalVar.setfbBtn(false);
+//						globalVar.setfbBtn(false);
 						globalVar.setHashPw(connect.getPassword());
 						globalVar.setEm(email.getText().toString());
 

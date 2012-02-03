@@ -92,7 +92,8 @@ public class ConnectDB
 
 	public ConnectDB(String email, String password, Integer type)
 	{
-		if (type == 0) {
+		if (type == 0)
+		{
 			// the data to send
 			ArrayList<NameValuePair> checkSalt = new ArrayList<NameValuePair>();
 			checkSalt.add(new BasicNameValuePair("email", email));
@@ -100,15 +101,14 @@ public class ConnectDB
 			// String response = "";
 			BufferedReader inSalt = null;
 
-			try {
+			try
+			{
 				client = new DefaultHttpClient();
-				HttpPost emailRequest = new HttpPost(Constants.CONNECTIONSTRING
-						+ "getSalt.php");
+				HttpPost emailRequest = new HttpPost(Constants.CONNECTIONSTRING + "getSalt.php");
 				emailRequest.setEntity(new UrlEncodedFormEntity(checkSalt));
 				HttpResponse emailResponse = client.execute(emailRequest);
 				HttpEntity saltEntity = emailResponse.getEntity();
-				inSalt = new BufferedReader(new InputStreamReader(
-						saltEntity.getContent(), "iso-8859-1"), 8);
+				inSalt = new BufferedReader(new InputStreamReader(saltEntity.getContent(), "iso-8859-1"), 8);
 				String bsalt = inSalt.readLine();
 				// JSONTokener tokener = new JSONTokener(bsalt);
 				// JSONArray finalResult = new JSONArray(tokener);
@@ -119,16 +119,19 @@ public class ConnectDB
 				// Log.d("Name: ", name);
 				inSalt.close();
 
-				String hashedPass = new String(getHash(1000, password,
-						salt.getBytes()), "UTF8");
+				String hashedPass = new String(getHash(1000, password, salt.getBytes()), "UTF8");
 				Log.d("Hashed Password: ", hashedPass);
 
 				authenticateUser(email, hashedPass);
 
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
 			}
-		} else {
+		}
+		else
+		{
 			authenticateUser(email, password);
 		}
 	}
@@ -138,7 +141,8 @@ public class ConnectDB
 
 		BufferedReader in = null;
 		// TODO Auto-generated method stub
-		try {
+		try
+		{
 
 			client = new DefaultHttpClient();
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -147,13 +151,11 @@ public class ConnectDB
 
 			Log.d("email: ", email);
 			Log.d("pass: ", hashedPass);
-			HttpPost request = new HttpPost(Constants.CONNECTIONSTRING
-					+ "authenticateUser.php");
+			HttpPost request = new HttpPost(Constants.CONNECTIONSTRING + "authenticateUser.php");
 			request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = client.execute(request);
 			HttpEntity entity = response.getEntity();
-			in = new BufferedReader(new InputStreamReader(entity.getContent()),
-					8);
+			in = new BufferedReader(new InputStreamReader(entity.getContent()), 8);
 			// StringBuffer sb = new StringBuffer("");
 			// String line = "";
 			// String NL = System.getProperty("line.separator");
@@ -162,12 +164,15 @@ public class ConnectDB
 			// sb.append(line + NL);
 			// }
 			result = in.readLine();
-			if (!result.equals("null")) {
+			if (!result.equals("null"))
+			{
 				Log.d("HashedPass: ", hashedPass);
-				try {
+				try
+				{
 					JSONArray jArray = new JSONArray(result);
 					JSONObject json_data = null;
-					for (int i = 0; i < jArray.length(); i++) {
+					for (int i = 0; i < jArray.length(); i++)
+					{
 						json_data = jArray.getJSONObject(i);
 						userID = json_data.getString("id");
 						userName = json_data.getString("name");
@@ -175,12 +180,18 @@ public class ConnectDB
 						hpw = json_data.getString("password");
 					}
 
-				} catch (JSONException e1) {
+				}
+				catch (JSONException e1)
+				{
 					Log.e("JSONException: ", e1.getMessage());
-				} catch (ParseException e1) {
+				}
+				catch (ParseException e1)
+				{
 					e1.printStackTrace();
 				}
-			} else {
+			}
+			else
+			{
 				result = "0";
 			}
 
@@ -188,7 +199,8 @@ public class ConnectDB
 			client.getConnectionManager().shutdown();
 		}
 
-		catch (Exception exc) {
+		catch (Exception exc)
+		{
 			Log.e("log_tag", "Error converting result " + exc.toString());
 		}
 
@@ -232,9 +244,7 @@ public class ConnectDB
 	// }
 	// }
 
-	public ConnectDB(String name, String emailortwitID, String password,
-			String userType) throws NoSuchAlgorithmException,
-			UnsupportedEncodingException
+	public ConnectDB(String name, String emailortwitID, String password, String userType) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -244,38 +254,39 @@ public class ConnectDB
 		nameValuePairs.add(new BasicNameValuePair("name", name));
 		nameValuePairs.add(new BasicNameValuePair("userType", userType));
 
-		if (userType.equals("user_norm")) {
+		if (userType.equals("user_norm"))
+		{
 			// Uses a secure Random not a simple Random
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] salt = new byte[8];
 			random.nextBytes(salt);
 
 			nameValuePairs.add(new BasicNameValuePair("email", emailortwitID));
-			hashedPass = new String(getHash(1000, password,
-					Base64.encodeBase64(salt)), "UTF8");
+			hashedPass = new String(getHash(1000, password, Base64.encodeBase64(salt)), "UTF8");
 			nameValuePairs.add(new BasicNameValuePair("password", hashedPass));
-			nameValuePairs.add(new BasicNameValuePair("salt", new String(Base64
-					.encodeBase64(salt), "UTF8")));
+			nameValuePairs.add(new BasicNameValuePair("salt", new String(Base64.encodeBase64(salt), "UTF8")));
 
-			for (int i = 0; i < 4; i++) {
-				Log.d(Integer.toString(i), nameValuePairs.get(i).getName()
-						+ ": " + nameValuePairs.get(i).getValue());
+			for (int i = 0; i < 4; i++)
+			{
+				Log.d(Integer.toString(i), nameValuePairs.get(i).getName() + ": " + nameValuePairs.get(i).getValue());
 			}
 
 		}
 
-		else if (userType.equals("user_fb")) {
+		else if (userType.equals("user_fb"))
+		{
 			nameValuePairs.add(new BasicNameValuePair("email", emailortwitID));
 		}
 
-		else if (userType.equals("user_twit")) {
+		else if (userType.equals("user_twit"))
+		{
 			nameValuePairs.add(new BasicNameValuePair("twitID", emailortwitID));
 		}
 		// http post
-		try {
+		try
+		{
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING
-					+ "insertUser.php");
+			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpclient.execute(httppost);
@@ -283,13 +294,14 @@ public class ConnectDB
 			is = entity.getContent();
 		}
 
-		catch (Exception ex) {
+		catch (Exception ex)
+		{
 			Log.e("log_tag", "Error in http connection " + ex.toString());
 		}
 		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			// StringBuilder sb = new StringBuilder();
 			String line = null;
 			line = reader.readLine();
@@ -301,35 +313,50 @@ public class ConnectDB
 
 			result = line;// sb.toString();
 			Log.d("Result in ConnectDB: ", result);
-			if (!result.equals("null")) {
-				try {
+			if (!result.equals("null"))
+			{
+				try
+				{
 					JSONArray jArray = new JSONArray(result);
 					JSONObject json_data = null;
-					for (int i = 0; i < jArray.length(); i++) {
+					for (int i = 0; i < jArray.length(); i++)
+					{
 						json_data = jArray.getJSONObject(i);
 						userID = json_data.getString("id");
 						userName = json_data.getString("name");
-						if (userType.equals("user_twit")) {
+						if (userType.equals("user_twit"))
+						{
 							userTwitID = json_data.getString("twitID");
-						} else if (userType.equals("user_norm")) {
+						}
+						else if (userType.equals("user_norm"))
+						{
 							Log.d("HashedPass: ", hashedPass);
 							hpw = json_data.getString("password");
 							userEmail = json_data.getString("email");
-						} else {
+						}
+						else
+						{
 							userEmail = json_data.getString("email");
 						}
 					}
-				} catch (JSONException e1) {
+				}
+				catch (JSONException e1)
+				{
 					Log.e("JSONException: ", e1.getMessage());
-				} catch (ParseException e1) {
+				}
+				catch (ParseException e1)
+				{
 					e1.printStackTrace();
 				}
-			} else {
+			}
+			else
+			{
 				result = "0";
 			}
 		}
 
-		catch (Exception exc) {
+		catch (Exception exc)
+		{
 			Log.e("log_tag", "Error converting result " + exc.toString());
 		}
 
@@ -360,16 +387,15 @@ public class ConnectDB
 		// nameValuePairs.add(new BasicNameValuePair("name", name));
 		JSONObject json = new JSONObject();
 		// http post
-		try {
+		try
+		{
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING
-					+ "storeLocations.php");
+			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "storeLocations.php");
 			json.put("address", address);
 			json.put("name", name);
 			httppost.setHeader("json", json.toString());
 			StringEntity se = new StringEntity(json.toString());
-			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
-					"application/json"));
+			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 			// httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			httppost.setEntity(se);
 			HttpResponse response = httpclient.execute(httppost);
@@ -377,16 +403,18 @@ public class ConnectDB
 			is = entity.getContent();
 		}
 
-		catch (Exception ex) {
+		catch (Exception ex)
+		{
 			Log.e("log_tag", "Error in http connection " + ex.toString());
 		}
 		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			StringBuilder sb = new StringBuilder();
 			String line = reader.readLine();
-			while (line != null) {
+			while (line != null)
+			{
 				sb.append(line).append("\n");
 				line = reader.readLine();
 			}
@@ -395,11 +423,10 @@ public class ConnectDB
 			JSONObject jsonObj = null;// new JSONObject(line);
 			shop = new ArrayList<Shop>();
 			JSONArray jArray = new JSONArray(result1);
-			for (int i = 0; i < jArray.length(); i++) {
+			for (int i = 0; i < jArray.length(); i++)
+			{
 				jsonObj = jArray.getJSONObject(i);
-				shop.add(new Shop(jsonObj.getInt("id"),jsonObj.getString("address"), jsonObj
-						.getString("name"), jsonObj.getString("lat"), jsonObj
-						.getString("lng"),jsonObj.getString("shoptype")));
+				shop.add(new Shop(jsonObj.getInt("id"), jsonObj.getString("address"), jsonObj.getString("name"), jsonObj.getString("lat"), jsonObj.getString("lng"), jsonObj.getString("shoptype")));
 			}
 			// JSONArray values = jsonObj.getJSONArray("row");
 			// for (int i = 0; i < values.length(); i++)
@@ -429,13 +456,13 @@ public class ConnectDB
 			// }
 		}
 
-		catch (Exception exc) {
+		catch (Exception exc)
+		{
 			Log.e("log_tag", "Error converting result " + exc.toString());
 		}
 	}
 
-	public ConnectDB(final Double lat, final Double lng,
-			final String searchType, String searchTerms, final Integer radius)
+	public ConnectDB(final Double lat, final Double lng, final String searchType, String searchTerms, final Integer radius)
 	{
 		// Thread t = new Thread()
 		// {
@@ -457,13 +484,12 @@ public class ConnectDB
 		// nameValuePairs.add(new BasicNameValuePair("radius",
 		// Integer.toString(radius)));
 		// http post
-		try {
+		try
+		{
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpConnectionParams.setConnectionTimeout(httpclient.getParams(),
-					10000); // Timeout
-							// Limit
-			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING
-					+ "storeLocations.php");
+			HttpConnectionParams.setConnectionTimeout(httpclient.getParams(), 10000); // Timeout
+																						// Limit
+			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "storeLocations.php");
 			json.put("lat", Double.toString(lat));
 			json.put("lng", Double.toString(lng));
 			json.put("type", searchType);
@@ -471,28 +497,30 @@ public class ConnectDB
 			json.put("radius", Integer.toString(radius));
 			httppost.setHeader("json", json.toString());
 			StringEntity se = new StringEntity(json.toString());
-			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
-					"application/json"));
+			se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 			httppost.setEntity(se);
 			// Log.d("se: ", new BufferedReader(new
 			// InputStreamReader(se.getContent())).readLine());
 			HttpResponse response = httpclient.execute(httppost);
-			if (response != null) {
+			if (response != null)
+			{
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
 			}
 		}
 
-		catch (Exception ex) {
+		catch (Exception ex)
+		{
 			Log.e("log_tag", "Error in http connection " + ex.toString());
 		}
 		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			StringBuilder sb = new StringBuilder();
 			String line = reader.readLine();
-			while (line != null) {
+			while (line != null)
+			{
 				sb.append(line).append("\n");
 				line = reader.readLine();
 			}
@@ -503,23 +531,22 @@ public class ConnectDB
 			JSONArray jArray = new JSONArray(result1);
 			arrPro = new Product[jArray.length()];
 			shopArray = new Shop[jArray.length()];
-			for (int i = 0; i < jArray.length(); i++) {
+			for (int i = 0; i < jArray.length(); i++)
+			{
 				jsonObj = jArray.getJSONObject(i);
-				if (searchType == "store_locations") {
-					shop.add(new Shop(jsonObj.getString("address"), jsonObj
-							.getString("name"), jsonObj.getString("lat"),
-							jsonObj.getString("lng"), jsonObj
-									.getString("distance")));
-					Log.d("Name" + Integer.toString(i) + ": ",
-							jsonObj.getString("name"));
-				} else {
+				if (searchType == "store_locations")
+				{
+					shop.add(new Shop(jsonObj.getString("address"), jsonObj.getString("name"), jsonObj.getString("lat"), jsonObj.getString("lng"), jsonObj.getString("distance")));
+					Log.d("Name" + Integer.toString(i) + ": ", jsonObj.getString("name"));
+				}
+				else
+				{
 					arrPro[i] = new Product();
 					shopArray[i] = new Shop();
 					arrPro[i].setId(jsonObj.getInt("id"));
 					arrPro[i].setFilename(jsonObj.getString("filename"));
 					arrPro[i].setUrl(jsonObj.getString("url"));
-					arrPro[i].setPercentdiscount(jsonObj
-							.getInt("percentdiscount"));
+					arrPro[i].setPercentdiscount(jsonObj.getInt("percentdiscount"));
 					shopArray[i].setName(jsonObj.getString("name"));
 				}
 			}
@@ -553,7 +580,8 @@ public class ConnectDB
 			// }
 		}
 
-		catch (Exception exc) {
+		catch (Exception exc)
+		{
 			Log.e("log_tag", "Error converting result " + exc.toString());
 		}
 		// Loop in the message queue
@@ -575,10 +603,13 @@ public class ConnectDB
 
 	public Boolean inputResult()
 	{
-		if (result == "0") {
+		if (result == "0")
+		{
 			name = "";
 			return false;
-		} else {
+		}
+		else
+		{
 			name = result;
 			return true;
 		}
@@ -586,21 +617,24 @@ public class ConnectDB
 
 	public String storeLocResult()
 	{
-		if (result != null) {
+		if (result != null)
+		{
 			return result;
-		} else {
+		}
+		else
+		{
 			return "null";
 		}
 	}
 
-	public byte[] getHash(int iterationNb, String password, byte[] salt)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException
+	public byte[] getHash(int iterationNb, String password, byte[] salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		MessageDigest digest = MessageDigest.getInstance("SHA-1");
 		digest.reset();
 		digest.update(salt);
 		byte[] input = digest.digest(password.getBytes("UTF-8"));
-		for (int i = 0; i < iterationNb; i++) {
+		for (int i = 0; i < iterationNb; i++)
+		{
 			digest.reset();
 			input = digest.digest(input);
 		}

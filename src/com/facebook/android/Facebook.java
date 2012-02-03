@@ -215,8 +215,10 @@ public class Facebook {
         boolean didSucceed = true;
         Intent intent = new Intent();
 
-        intent.setClassName("com.facebook.katana",
-                "com.facebook.katana.ProxyAuth");
+//        intent.setClassName("com.facebook.katana",
+//                "com.facebook.katana.ProxyAuth");
+        intent.setClassName("socialtour.socialtour",
+                "socialtour.socialtour.ProxyAuth");
         intent.putExtra("client_id", applicationId);
         if (permissions.length > 0) {
             intent.putExtra("scope", TextUtils.join(",", permissions));
