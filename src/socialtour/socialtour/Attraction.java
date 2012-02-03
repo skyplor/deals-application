@@ -152,7 +152,7 @@ public class Attraction extends Activity implements RadioGroup.OnCheckedChangeLi
     	             cat_name=json_data.getString("categoryname");
     	             categories[i] = cat_name;
     	         }
-    	      SpinnerAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+    	      SpinnerAdapter adapter = new ArrayAdapter<String>(this.getParent(), android.R.layout.simple_spinner_item, categories);
     	    		//adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
     	    		Spinner category = (Spinner) findViewById(R.id.categorylist);
     	    		category.setAdapter(adapter);

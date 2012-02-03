@@ -61,7 +61,7 @@ public class Startcamera extends TabGroupActivity{
     	//Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
     	//intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
     	
-    	startActivityForResult( intent, CAMERA_PIC_REQUEST);
+    	this.getParent().startActivityForResult( intent, CAMERA_PIC_REQUEST);
     }
     
     @Override
@@ -158,16 +158,18 @@ public class Startcamera extends TabGroupActivity{
     private void openAddPhoto() {
 
         String[] addPhoto=new String[]{ "Camera" , "Gallery" };
-        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
         dialog.setTitle("Get your picture from");
 
         dialog.setItems(addPhoto,new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 if(id==0){
+                	dialog.dismiss();
                     startCameraActivity();
                 }
                 if(id==1){
+                	dialog.dismiss();
                     startGallery();
                 }
             }
@@ -186,7 +188,7 @@ public class Startcamera extends TabGroupActivity{
     
     protected void startGallery(){
     	Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, GALLERY_REQUEST);
+        this.getParent().startActivityForResult(intent, GALLERY_REQUEST);
     }
     
 }

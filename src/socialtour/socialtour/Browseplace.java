@@ -24,7 +24,9 @@ import com.fedorvlasov.lazylist.SimpleLazyAdapter;
 import socialtour.socialtour.models.Shop;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -69,6 +71,10 @@ public class Browseplace extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.placeselection);
+        
+        Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
         //getShop();
         //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
         //ListView employeeList = (ListView) findViewById(R.id.list);
@@ -101,7 +107,15 @@ public class Browseplace extends Activity {
             public void onClick(View v) {
             	EditText shopname = (EditText) findViewById(R.id.searchText);
             	//doFileUpload();
-            	getShop(shopname.getText().toString(), false);
+            	boolean passed = validate(shopname.getText().toString().trim());
+            	if (passed)
+				{
+					getShop(shopname.getText().toString(), false);
+            	}
+				else
+				{
+            		promptError();
+            	}
             }
         });
 		
@@ -136,7 +150,7 @@ public class Browseplace extends Activity {
 		        intent.putExtra("pic", pic);
 		        startActivity(intent);*/
 		        
-		        Intent intent = new Intent(getParent(), Attraction.class);
+		        Intent intent = new Intent(getParent(), ChooseCategory.class);
 		        intent.putExtra("EMPLOYEE_ID", shop[pos].getId());
 		        intent.putExtra("EMPLOYEE_NAME", shop[pos].getName());
 		        Bundle bundle=getIntent().getExtras();
@@ -147,7 +161,14 @@ public class Browseplace extends Activity {
 		    }
 		}); 
     }
-        
+    
+	@Override
+	public void onResume(){
+		super.onResume();
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
+	}
     public void getShop(String shopname, boolean start){
     	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
     	String path = "";
@@ -215,6 +236,24 @@ public class Browseplace extends Activity {
     		}
     	}
     
+    public boolean validate(String shop){
+    	if (shop.length() < 2){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    private void promptError(){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	        dialog.setTitle("Please search using at least 2 characters.");
+
+	        dialog.setNeutralButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();
+	            }});
+	        dialog.show();
+   }
     /*protected void onListItemClick(ListView parent, View view, int position, long id) {
         Intent intent = new Intent(this, Attraction.class);
         intent.putExtra("EMPLOYEE_ID", employeesid[position]);

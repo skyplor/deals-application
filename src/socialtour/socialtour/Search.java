@@ -29,7 +29,9 @@ import com.google.android.maps.GeoPoint;
 import socialtour.socialtour.models.Product;
 import socialtour.socialtour.models.Shop;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -75,6 +77,9 @@ public class Search extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
 
 		btnSearch = (Button) findViewById(R.id.btnSearch);
 		txtSearch = (EditText) findViewById(R.id.txtSearch);
@@ -144,11 +149,25 @@ public class Search extends Activity implements OnClickListener
 		});
 
 	}
+	@Override
+	public void onResume(){
+		super.onResume();
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
+	}
 
+    public boolean validate(String shop){
+    	if (shop.length() < 2){
+    		return false;
+    	}
+    	return true;
+    }
 	@Override
 	public void onClick(View v)
 	{
-		String searchStr = txtSearch.getText().toString();
+		String searchStr = txtSearch.getText().toString().trim();
+		boolean passed = validate(searchStr);
 		if (v == btnSearch)
 		{
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -163,12 +182,20 @@ public class Search extends Activity implements OnClickListener
 				switch (checkedRadioButton)
 				{
 				case R.id.radio0:
-					getProduct(searchStr, "Product", false);
-					isProduct = true;
+					if (passed){
+						getProduct(searchStr, "Product", false);
+						isProduct = true;
+					}else{
+						promptError();
+					}
 					break;
 				case R.id.radio1:
-					getProduct(searchStr, "Shop", false);
-					isProduct = false;
+					if (passed){
+						getProduct(searchStr, "Shop", false);
+						isProduct = false;
+					}else{
+						promptError();
+					}
 					break;
 				}
 			}
@@ -204,7 +231,18 @@ public class Search extends Activity implements OnClickListener
 //			}
 		}
 	}
+	
+    private void promptError(){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	        dialog.setTitle("Please search using at least 2 characters.");
 
+	        dialog.setNeutralButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();
+	            }});
+	        dialog.show();
+    }
 	public void getProduct(String searchstr, String mode, Boolean location)
 	{
 		searchResult.setAdapter(null);

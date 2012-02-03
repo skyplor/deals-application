@@ -134,11 +134,14 @@ public class Main extends Activity implements OnClickListener
 		{
 			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
 		}
-
-		Log.d("in Main", "true");
-		latest = (Button) findViewById(R.id.btnLatest);
-		nearby = (Button) findViewById(R.id.btnNearby);
-		hot = (Button) findViewById(R.id.btnHot);
+		
+		Container.btn1.setText("Latest");
+		Container.btn2.setText("Hot");
+		Container.btn3.setText("Nearby");
+		
+		latest = Container.btn1;
+		nearby = Container.btn2;
+		hot = Container.btn3;
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
 
@@ -244,6 +247,19 @@ public class Main extends Activity implements OnClickListener
 		// }, intentFilter);
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		Container.btn1.setText("Latest");
+		Container.btn2.setText("Hot");
+		Container.btn3.setText("Nearby");
+		
+		Container.btn1.setVisibility(View.VISIBLE);
+		Container.btn2.setVisibility(View.VISIBLE);
+		Container.btn3.setVisibility(View.VISIBLE);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

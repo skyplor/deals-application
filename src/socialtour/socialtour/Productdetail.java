@@ -92,15 +92,25 @@ public class Productdetail extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.productdetail);
+		
+		Container.btn1.setText("Like");
+		Container.btn2.setText("Dislike");
+		Container.btn3.setText("Share");
+		Container.btn1.setEnabled(true);
+		Container.btn2.setEnabled(true);
+		Container.btn3.setEnabled(true);
+		Container.btn1.setVisibility(View.VISIBLE);
+		Container.btn2.setVisibility(View.VISIBLE);
+		Container.btn3.setVisibility(View.VISIBLE);
+		
 		globalVar = ((GlobalVariable) getApplicationContext());
 		Bundle bundle = getIntent().getExtras();
 		productid = (Integer) bundle.get("lastproductid");
 		filename = importData(productid);
 		downloadFile(filename);
-		btnLike = (Button) findViewById(R.id.btnlike);
-		btnDislike = (Button) findViewById(R.id.btnDislike);
-		btnShare = (Button) findViewById(R.id.btnShare);
-		btnBack = (Button) findViewById(R.id.btnback);
+		btnLike = Container.btn1;
+		btnDislike = Container.btn2;
+		btnShare = Container.btn3;
 
 		btnLike.setOnClickListener(this);
 		btnDislike.setOnClickListener(this);
@@ -119,7 +129,15 @@ public class Productdetail extends Activity implements OnClickListener
 	 * { unbindDrawables(((ViewGroup) view).getChildAt(i)); } ((ViewGroup)
 	 * view).removeAllViews(); } }
 	 */
-
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		Container.btn1.setVisibility(View.VISIBLE);
+		Container.btn2.setVisibility(View.VISIBLE);
+		Container.btn3.setVisibility(View.VISIBLE);
+	}
+	
 	private String importData(int lastinsertedid)
 	{
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -216,6 +234,10 @@ public class Productdetail extends Activity implements OnClickListener
 	{
 
 		URL myFileUrl = null;
+		if (filename.contains(" "))
+		{
+			filename = filename.replace(" ", "%20");
+		}
 		try
 		{
 			// myFileUrl= new URL("http://172.22.177.204/FYP/FYP/uploads/" +

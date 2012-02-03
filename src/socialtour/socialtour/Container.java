@@ -41,6 +41,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
@@ -57,7 +58,7 @@ public class Container extends TabActivity
 	private static final int GALLERY_REQUEST = 1500;
 	private static String _path = "";
 	Uri outputFileUri;
-
+	int currentTab = 0;
 	static final int DIALOG_ERR_LOGIN = 0, INIT_NORM = 0, INIT_FB = 1, INIT_TWIT = 2;
 	static int TYPE = 0;
 	private static final String APP_ID = "222592464462347";
@@ -82,8 +83,8 @@ public class Container extends TabActivity
 	private String uid;
 //	private UserParticulars userS;
 
-	Button logout;
-
+	//Button logout;
+	public static Button btn1,btn2,btn3;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
 	TabHost tabHost; // The activity TabHost
@@ -93,6 +94,10 @@ public class Container extends TabActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.container);
+		
+		btn1= (Button) findViewById(R.id.headerLatest);
+		btn2= (Button) findViewById(R.id.headerHot);
+		btn3= (Button) findViewById(R.id.headerNearby);
 
 		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
@@ -121,7 +126,7 @@ public class Container extends TabActivity
 		}
 		else
 		{
-			logout = (Button) findViewById(R.id.logoutBtn1);
+			//logout = (Button) findViewById(R.id.logoutBtn1);
 
 			/*
 			 * tabHost.setOnTabChangedListener(new OnTabChangeListener(){
@@ -130,6 +135,8 @@ public class Container extends TabActivity
 			 * 
 			 * } });
 			 */
+
+
 
 			globalVar = ((GlobalVariable) getApplicationContext());			
 			twitBtn = globalVar.getTwitBtn();
@@ -161,13 +168,13 @@ public class Container extends TabActivity
 				Log.d("in Container, fb:", Boolean.toString(SessionStore.restore(facebook,this)));
 				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
 				TYPE = INIT_FB;
-				init(TYPE);
+				//init(TYPE);
 			}
 
 			else if (twitBtn || mTwitter.hasAccessToken())
 			{
 				TYPE = INIT_TWIT;
-				init(TYPE);
+				//init(TYPE);
 				if (mTwitter.hasAccessToken())
 				{
 					// name.setText("Hello " + sharedPref.getString("user_name",
@@ -200,7 +207,7 @@ public class Container extends TabActivity
 						// name.setText("Hello " + connectCheck.getName() +
 						// ",");
 						TYPE = INIT_NORM;
-						init(TYPE);
+						//init(TYPE);
 					}
 					else
 					{
@@ -229,21 +236,39 @@ public class Container extends TabActivity
 
 			tabHost.setCurrentTab(0);
 
+			//click on selected tab 
+		    int numberOfTabs = tabHost.getTabWidget().getChildCount();
+		    for(int t=0; t<numberOfTabs; t++){ 
+		        tabHost.getTabWidget().getChildAt(t).setOnTouchListener(new View.OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if(event.getAction()==MotionEvent.ACTION_UP){
+							if (getTabHost().getCurrentTab() == currentTab){
+								if (currentTab == 0){
+								}else if (currentTab == 1){
+									
+								}else if (currentTab == 2){
+									
+								}
+							}
+						}
+						return false;
+					} 
+		        });
+		    }
 			tabHost.setOnTabChangedListener(new OnTabChangeListener()
 			{
 				@Override
 				public void onTabChanged(String arg0)
 				{
 					int index = tabHost.getCurrentTab();
-					if (index == 1)
+					if (index == 0)
 					{
-						openAddPhoto();
-						// Activity current =
-						// getLocalActivityManager().getCurrentActivity();
-						// current.finish();
-						// Intent i = new
-						// Intent("socialtour.socialtour.STARTCAMERA");
-						// startActivity(i);
+						currentTab = 0;
+					}else if (index == 1){
+						currentTab = 1;
+					}else if (index == 2){
+						currentTab = 2;
 					}
 
 					// TabGroupActivity parentActivity =
@@ -276,6 +301,7 @@ public class Container extends TabActivity
 		}
 		return true;
 	}
+	/*
 
 	private void init(final int type)
 	{
@@ -284,10 +310,10 @@ public class Container extends TabActivity
 		{
 			public void onClick(View v)
 			{
-//				doLogout(type);
+				doLogout(type);
 			}
 		});
-	}
+	}*/
 
 	private void doLogout(int type)
 	{

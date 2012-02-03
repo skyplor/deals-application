@@ -5,36 +5,55 @@
 	android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:padding="5dip">
-    <TextView
+        <ImageView
+    	android:layout_width="300dip"
+    	android:layout_height="350dip"
+    	android:id="@+id/imageborder"
+    	android:src="@drawable/polaroid"
+    	android:layout_centerHorizontal="true"
+    	android:layout_centerVertical="true"
+    	android:scaleType="fitXY">
+    </ImageView>
+        <ImageView
+    	android:layout_width="75dip"
+    	android:layout_height="75dip"
+    	android:id="@+id/typeLogo"
+    	android:src="@drawable/stub"
+    	android:layout_alignParentLeft="true"
+    	android:layout_below="@+id/image2"
+    	android:layout_marginLeft="35dip">
+    </ImageView>
+        <TextView
     	android:textAppearance="?android:attr/textAppearanceLarge"
     	android:layout_height="wrap_content"
     	android:text="30%"
     	android:layout_width="wrap_content"
     	android:layout_below="@+id/image2"
-    	android:layout_marginRight="5dip"
+    	android:layout_marginRight="15dip"
     	android:layout_alignParentRight="true"
     	android:textSize="40dip"
     	android:id="@+id/percentTesting"
-    	android:layout_marginBottom="10dip">
+    	android:textColor="#302217">
+
     </TextView>
-    <ImageView
-    	android:layout_width="50dip"
-    	android:layout_height="50dip"
-    	android:id="@+id/typeLogo"
-    	android:src="@drawable/stub"
-    	android:layout_alignParentLeft="true"
-    	android:layout_below="@+id/image2"
-    	android:layout_marginLeft="15dip">
-    </ImageView>
-<ImageView
-    	android:layout_width="260dip"
-    	android:layout_height="260dip"
-    	android:id="@+id/image2"
-    	android:src="@drawable/stub"
-    	android:layout_centerHorizontal="true"
-    	android:scaleType="fitXY"
-    	android:background="@drawable/border">
-    </ImageView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <TextView
     	android:textAppearance="?android:attr/textAppearanceLarge"
     	android:layout_height="wrap_content"
@@ -43,7 +62,9 @@
     	android:id="@+id/text"
     	android:layout_below="@+id/image2"
     	android:layout_toRightOf="@+id/typeLogo"
-    	android:layout_marginLeft="5dip">
+    	android:layout_marginLeft="5dip"
+    	android:layout_marginTop="10dip"
+    	android:textColor="#302217">
     </TextView>
     <TextView
     	android:layout_height="wrap_content"
@@ -52,6 +73,18 @@
     	android:id="@+id/txtDescription"
     	android:layout_below="@+id/text"
     	android:layout_toRightOf="@+id/typeLogo"
-    	android:layout_marginLeft="5dip">
+    	android:layout_marginLeft="5dip"
+    	android:textColor="#302217">
     </TextView>
+
+    <ImageView
+        android:id="@+id/image2"
+        android:layout_width="230dip"
+        android:layout_height="230dip"
+        android:layout_alignTop="@+id/imageborder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/stub" />
+
 </RelativeLayout>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="socialtour.socialtour"
+<manifest package="socialtour.socialtour"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -191,6 +190,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:label="ChooseCategory"
+            android:name=".ChooseCategory" >
+            <intent-filter >
+                <action android:name="socialtour.socialtour.CHOOSECATEGORY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="InputPrice"
+            android:name=".InputPrice" >
+            <intent-filter >
+                <action android:name="socialtour.socialtour.INPUTPRICE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="TabGroup1Activity" >
         </activity>
         <activity android:name="TabGroup2Activity" >
@@ -209,6 +226,8 @@
         </activity>
         <activity android:name="Dashboard"></activity>
         <activity android:name="Settings"></activity>
+        <activity android:name="CustomWindow"></activity>
+
     </application>
 
 </manifest>

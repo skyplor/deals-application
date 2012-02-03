@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-<TableLayout android:layout_width="match_parent" android:id="@+id/tableLayout1" android:layout_height="wrap_content">
-	<TableRow android:id="@+id/tableRow2" android:paddingLeft="70dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center">
-		<Button
-				android:id="@+id/btnLatest"
-				android:text="Latest"
-				android:layout_width="80dip"
-				android:layout_height="wrap_content" />
-			<Button
-				android:id="@+id/btnHot"
-				android:text="Hot"
-				android:layout_width="80dip"
-				android:layout_height="wrap_content" />
-			<Button
-				android:id="@+id/btnNearby"
-				android:text="Nearby"
-				android:layout_width="80dip"
-				android:layout_height="wrap_content" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
-			</TableRow>
-			</TableLayout>
-	<ListView android:id="@+id/listBrowse" android:layout_width="fill_parent"
-		android:layout_height="fill_parent"></ListView>
+    <ListView
+        android:id="@+id/listBrowse"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </ListView>
 </LinearLayout>
