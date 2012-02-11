@@ -8,7 +8,7 @@ public class Shop {
 	public String name;
 	public String lat;
 	public String lng;
-	public String type;
+	public String type = "men";
 	public String distance;
 	
 	public Shop(){

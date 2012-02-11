@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 //import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -114,6 +115,9 @@ public class Main extends Activity implements OnClickListener
 	Button latest, nearby, hot;// , logout;
 	ListView searchResult;
 	LazyAdapter adapter;
+	
+	Shop shopresult;
+	public static List<Shop> shoplist = new ArrayList<Shop>();
 
 	// static final int DATE_DIALOG_ID = 0;
 	// private TextView bday;
@@ -283,6 +287,13 @@ public class Main extends Activity implements OnClickListener
 			Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
 			Intent intent2 = new Intent(getParent(),socialtour.socialtour.Settings.class);
 			startActivity(intent2);
+			break;
+			
+		case R.id.mapviews:
+			Toast.makeText(getParent(), "You pressed the Map!", Toast.LENGTH_SHORT).show();
+			Intent intent3 = new Intent(getParent(),socialtour.socialtour.MapResult.class);
+			intent3.putExtra("main", true);
+			startActivity(intent3);
 			break;
 		}
 		return true;
@@ -494,6 +505,7 @@ public class Main extends Activity implements OnClickListener
 		// paring data
 		int ct_id;
 		String ct_name;
+		shoplist.clear();
 		try
 		{
 			jArray = new JSONArray(result);
@@ -512,7 +524,10 @@ public class Main extends Activity implements OnClickListener
 				arrPro[i].setUrl(json_data.getString("url"));
 				arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 				shop[i].setName(json_data.getString("name"));
-				shop[i].setType(json_data.getString("shoptype"));
+				
+				shopresult = new Shop(json_data.getInt("place_id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
+				shoplist.add(shopresult);
+				//shop[i].setType(json_data.getString("shoptype"));
 				// employees[i] = ct_name;
 				// employeesid[i] = ct_id;
 			}
@@ -523,6 +538,7 @@ public class Main extends Activity implements OnClickListener
 		}
 		catch (JSONException e1)
 		{
+			Log.d("JSON exception: ", e1.toString());
 			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_SHORT).show();
 		}
 		catch (ParseException e1)

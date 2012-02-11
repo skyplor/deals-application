@@ -4,4 +4,6 @@
 		android:icon="@drawable/dashboard" />
 	<item android:id="@+id/settings" android:title="Settings"
 		android:icon="@drawable/settings" />
+	<item android:id="@+id/mapviews" android:title="Map"
+		android:icon="@drawable/maps" />
 </menu>

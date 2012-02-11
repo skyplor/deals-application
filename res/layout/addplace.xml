@@ -114,7 +114,8 @@
                         android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ"
                         android:clickable="true"
                         android:enabled="true" >
-                    </com.google.android.maps.MapView>
+                    </com.google.android.maps.MapView>                   
+                    
                 </TableRow>
 
                 <TableRow

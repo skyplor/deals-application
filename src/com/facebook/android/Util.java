@@ -60,7 +60,7 @@ public final class Util {
         StringBuilder sb = new StringBuilder();
 
         for (String key : parameters.keySet()) {
-            if (parameters.getByteArray(key) != null) {
+            if (parameters.get(key) instanceof byte[]) {
                 continue;
             }
 
@@ -152,7 +152,7 @@ public final class Util {
         if (!method.equals("GET")) {
             Bundle dataparams = new Bundle();
             for (String key : params.keySet()) {
-                if (params.getByteArray(key) != null) {
+                if (params.get(key) instanceof byte[]) {
                         dataparams.putByteArray(key, params.getByteArray(key));
                 }
             }

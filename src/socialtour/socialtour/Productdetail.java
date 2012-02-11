@@ -7,10 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.BaseDialogListener;
+import com.facebook.BaseRequestListener;
+import com.facebook.SessionEvents;
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
+import com.facebook.android.Facebook.DialogListener;
+
+import socialtour.socialtour.ProductPage.WallPostDialogListener;
+import socialtour.socialtour.ProductPage.WallPostRequestListener;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Shop;
 
@@ -36,6 +50,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -75,18 +91,36 @@ public class Productdetail extends Activity implements OnClickListener
 	int productid = 0;
 	String filename;
 	TextView lbllikes, lbldislikes, lblbrand, lblcategory, lblproduct, lblshop, lbladdress, lblpercent, lblprice;
-	GlobalVariable globalVar;	
+	GlobalVariable globalVar;
+	
+	FbConnect fbConnect;
+	private Facebook facebook;
+	private ProgressDialog mProgress;
 
 	private TwitterApp mTwitter;
 	
+	AsyncFacebookRunner asyncRunner;
+
+	private static final String APP_DOWNLOAD_LINK = "https://market.android.com/";
+	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
 
 	int likes = 0, dislikes = 0, percent = 0;
 	double dprice = 0;
-	String category = "", productname = "", shopname = "", brand = "", address = "";
+	String category = "", productname = "", shopname = "", brand = "", address = "", imageUrl = "";
+	
+	private String fnameS;
+	private String lnameS;
+	private String userName;
+	private String userEmail;
+	// private String genderS;
+	// private String bdayS;
+	private String uid;
 
 	private String status;
+	
+	private Dialog dialog;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -104,6 +138,7 @@ public class Productdetail extends Activity implements OnClickListener
 		Container.btn3.setVisibility(View.VISIBLE);
 		
 		globalVar = ((GlobalVariable) getApplicationContext());
+		facebook = globalVar.getFBState();
 		Bundle bundle = getIntent().getExtras();
 		productid = (Integer) bundle.get("lastproductid");
 		filename = importData(productid);
@@ -111,10 +146,11 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike = Container.btn1;
 		btnDislike = Container.btn2;
 		btnShare = Container.btn3;
+		mProgress = new ProgressDialog(getParent());
 
 		btnLike.setOnClickListener(this);
 		btnDislike.setOnClickListener(this);
-		btnBack.setOnClickListener(this);
+//		btnBack.setOnClickListener(this);
 		btnShare.setOnClickListener(this);
 	}
 
@@ -314,7 +350,7 @@ public class Productdetail extends Activity implements OnClickListener
 			// parentActivity.startChildActivity("Product Page", shareIntent);
 			// startActivity(shareIntent);
 //			showDialog(1);
-			Dialog dialog = new Dialog(getParent(),R.style.shareDialogStyle);
+			dialog = new Dialog(getParent(),R.style.shareDialogStyle);
 			dialog.setContentView(R.layout.productsharing);
 			dialog.setTitle("Sharing via?");
 			dialog.setCancelable(true);
@@ -328,8 +364,19 @@ public class Productdetail extends Activity implements OnClickListener
 
 			mProgress = new ProgressDialog(getParent());			
 
-			status = "Check out this promotion!\n" + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname;
-			
+//			status = "Check out this promotion!\n" + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname;
+			status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname;
+			fbshare.setOnClickListener(new OnClickListener()
+			{
+
+				@Override
+				public void onClick(View v)
+				{
+					// TODO Auto-generated method stub
+					gotoFacebookConnect();
+				}
+				
+			});
 			twitshare.setOnClickListener(new OnClickListener()
 			{
 				public void onClick(View v)
@@ -425,6 +472,69 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 	}
 	
+	protected void gotoFacebookConnect()
+	{
+		// TODO Auto-generated method stub
+		fbConnect = new FbConnect(APP_ID, getParent(), getApplicationContext());
+	}
+	
+	private void postToWall()
+	{
+		final Dialog fbDialog = new Dialog(getParent());
+
+		fbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		fbDialog.setContentView(R.layout.twitter_post);
+		// twitDialog.setTitle("Post to Twitter");
+
+		Drawable icon = getResources().getDrawable(R.drawable.facebook_icon);
+
+		TextView mTitle = (TextView) fbDialog.findViewById(R.id.titleDialog);
+
+		mTitle.setText("Facebook");
+		mTitle.setTextColor(Color.WHITE);
+		mTitle.setTypeface(Typeface.DEFAULT_BOLD);
+		mTitle.setBackgroundColor(0xFFbbd7e9);
+		mTitle.setPadding(4 + 2, 4, 4, 4);
+		mTitle.setCompoundDrawablePadding(4 + 2);
+		mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+		fbDialog.setCancelable(true);
+		final EditText statusPost = (EditText) fbDialog.findViewById(R.id.statusText);
+		Log.d("Status: ", status);
+		statusPost.setText(status);
+
+		// set up button
+		Button postbutton = (Button) fbDialog.findViewById(R.id.postBtn);
+		postbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String review = statusPost.getText().toString();
+
+				if (review.equals(""))
+					return;
+
+				postReview(review);
+
+//				postWithoutDialog(review, APP_DOWNLOAD_LINK, "SocialTourApp", "Hello", imageUrl);
+				postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", review);
+				fbDialog.dismiss();
+			}
+		});
+
+		Button cancelbutton = (Button) fbDialog.findViewById(R.id.cancelBtn);
+		cancelbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				fbDialog.cancel();
+			}
+		});
+
+		fbDialog.show();
+	}
+
 	private void postReview(String review)
 	{
 		// post to server
@@ -488,30 +598,160 @@ public class Productdetail extends Activity implements OnClickListener
 
 		}
 	};
+	
+	public void postWithoutDialog(String message, String link, String name, String caption, String imageUrl)
+	{
+		// Bundle params = new Bundle();
+		// params.putString("message", message);
+		// params.putString("link", link);
+		// params.putString("name", name);
+		// params.putString("caption", caption);
+		// params.putString("picture", imageUrl);
+		//
+		// asyncRunner = new AsyncFacebookRunner(mFacebook);
+		// asyncRunner.request("me/feed", params, "POST", new
+		// WallPostRequestListener(), null);
+		Bundle parameters = new Bundle();
+		parameters.putString("message", message);
+		parameters.putString("description", "integrating stuff");
+		parameters.putString("attachment", "{\"name\":\"My Test Image\","+"\"href\":\""+"http://www.google.com"+"\","+"\"media\":[{\"type\":\"image\",\"src\":\""+"http://www.google.com/logos/mucha10-hp.jpg"+"}");
+		try
+		{
+			facebook.request("me");
+			String response = facebook.request("me/feed", parameters, "POST");
+			Log.d("Tests", "got response: " + response);
+			if (response == null || response.equals("") || response.equals("false"))
+			{}
+			else
+			{
+				Log.d("Success", "Message posted to your facebook wall!");
+			}
+			finish();
+		}
+		catch (Exception e)
+		{
+			Log.d("Error", "Failed to post to wall!");
+			e.printStackTrace();
+			finish();
+		}
+	}
+	
+	/**
+	 * This method displays a dialog that allows the user to post on his wall.
+	 * 
+	 * @param context
+	 *            - the current context
+	 * @param imageUrl
+	 *            - a link to an image to post on the wall
+	 */
+	public void postWithDialog(Context context, String imageUrl, String message)
+	{
+		Bundle parameters = new Bundle();
 
-//	protected Dialog onCreateDialog(int id)
-//	{
-//		// TODO Auto-generated method stub
-//		Log.d("Entered onCreateDialog", "hi");
-////		Context mContext = getApplicationContext();
-//		Dialog shareMenu = new Dialog(Productdetail.this, R.style.shareDialogStyle);
-//
-//		switch (id)
-//		{
-//		case 1:
-//			Log.d("in shareMenu", "in Case 1");
-//			shareMenu.setContentView(R.layout.productsharing);
-//			shareMenu.setTitle("Sharing via");
-//			ImageButton fbshare = (ImageButton) shareMenu.findViewById(R.id.fbShareBtn);
-//			ImageButton twitshare = (ImageButton) shareMenu.findViewById(R.id.twitShareBtn);
-//			Log.d("in shareMenu", "Share Dialog created");
-//			break;
-//		default:
-//			shareMenu = null;
-//		}
-//
-//		return shareMenu;
-//	}
+		// set default message
+		/*
+		 * This field will be ignored on July 12, 2011 The message to prefill
+		 * the text field that the user will type in. To be compliant with
+		 * Facebook Platform Policies, your application may only set this field
+		 * if the user manually generated the content earlier in the workflow.
+		 * Most applications should not set this.
+		 * parameters.putString("message",
+		 * "I like this look, what do you think?");
+		 */
+
+		// set image, description and a link for downloading the application.
+		parameters.putString("attachment", "{\"name\":\""+message+"\"," + "\"href\":\"" + APP_DOWNLOAD_LINK + "\"," + "\"description\":\"Uploaded via android emulator using MyTestingApp =) \"," + "\"media\":[{\"type\":\"image\",\"src\":\"" + imageUrl + "\",\"href\":\"" + APP_DOWNLOAD_LINK + "\"}]"+ "}");
+		//Message field ignored from 12th July 2011
+		parameters.putString("message", message);
+//		parameters.putString("attachment", "{\"name\":\"Facebook Connect for Android\",\"href\":\"http://code.google.com/p/fbconnect-android/\",\"caption\":\"Caption\",\"description\":\"Description\",\"media\" {\"type\":\"image\",\"src\":\"http://img40.yfrog.com/img40/5914/iphoneconnectbtn.jpg\",\"href\":\"http://developers.facebook.com/connect.php?tab=iphone/\"}],\"properties\":{\"another link\":{\"text\":\"Facebook home page\",\"href\":\"http://www.facebook.com\"}}}");
+//		parameters.putString("attachment", "{\"name\":\"My Test Image\","+"\"href\":\""+"http://www.google.com"+"\","+"\"media\":[{\"type\":\"image\",\"src\":\""+"http://www.google.com/logos/mucha10-hp.jpg"+"}");
+		// display the user dialog
+		facebook.dialog(context, "stream.publish", parameters, new WallPostDialogListener());
+	}
+
+	public class WallPostRequestListener extends BaseRequestListener
+	{
+
+		public void onComplete(final String response, final Object state)
+		{
+			Log.d("Facebook-Example", "Got response: " + response);
+			String message = "<empty>";
+			try
+			{
+				JSONObject json = Util.parseJson(response);
+				message = json.getString("message");
+				Log.d("Message: ", message);
+			}
+			catch (JSONException e)
+			{
+				Log.w("Facebook-Example", "JSON Error in response");
+			}
+			catch (FacebookError e)
+			{
+				Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
+			}
+			// final String text = "Your Wall Post: " + message;
+			getParent().runOnUiThread(new Runnable()
+			{
+				public void run()
+				{
+					// mText.setText(text);
+				}
+			});
+		}
+	}
+
+	public class WallPostDeleteListener extends BaseRequestListener
+	{
+
+		public void onComplete(final String response, final Object state)
+		{
+			if (response.equals("true"))
+			{
+				Log.d("Facebook-Example", "Successfully deleted wall post");
+				getParent().runOnUiThread(new Runnable()
+				{
+					public void run()
+					{
+						// mDeleteButton.setVisibility(View.INVISIBLE);
+						// mText.setText("Deleted Wall Post");
+					}
+				});
+			}
+			else
+			{
+				Log.d("Facebook-Example", "Could not delete wall post");
+			}
+		}
+	}
+
+	public class WallPostDialogListener extends BaseDialogListener
+	{
+
+		public void onComplete(Bundle values)
+		{
+			final String postId = values.getString("post_id");
+			if (postId != null)
+			{
+				Log.d("Facebook-Example", "Dialog Success! post_id=" + postId);
+
+				asyncRunner = new AsyncFacebookRunner(facebook);
+				asyncRunner.request(postId, new WallPostRequestListener());
+				// mDeleteButton.setOnClickListener(new OnClickListener()
+				// {
+				// public void onClick(View v)
+				// {
+				// asyncRunner.request(postId, new Bundle(), "DELETE", new
+				// WallPostDeleteListener(), null);
+				// }
+				// });
+			}
+			else
+			{
+				Log.d("Facebook-Example", "No wall post made");
+			}
+		}
+	}
 
 	private void updateComments(String type, int id, int numberComments)
 	{
@@ -546,6 +786,258 @@ public class Productdetail extends Activity implements OnClickListener
 		{
 			Log.e("log_tag", "Error in http connection" + e.toString());
 		}
+	}
+	public class FbConnect
+	{
+
+		private final String[] FACEBOOK_PERMISSION =
+		{ "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
+
+		private Context context;
+		private Activity activity;
+		// private Handler mHandler;
+		private Facebook facebook;
+		GlobalVariable FbState = ((GlobalVariable) getApplicationContext());
+
+		private SharedPreferences sharedPref;
+		private Editor editor;
+
+		// private SessionListener mSessionListener = new SessionListener();
+
+		public FbConnect(String appId, Activity activity, Context context)
+		{
+
+			this.context = context;
+			// this.mHandler = new Handler();
+			this.activity = activity;
+
+			sharedPref = context.getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+
+			editor = sharedPref.edit();
+			globalVar = ((GlobalVariable) getApplicationContext());
+
+			// SharedPreferences prefs=
+			// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
+			// String access_token = prefs.getString("access_token", null);
+			// Long expires = prefs.getLong("access_expires", -1);
+			// String sharedName = prefs.getString("name", "");
+			//
+			//
+			// if (access_token != null && expires != -1)
+			// {
+			// facebook.setAccessToken(access_token);
+			// facebook.setAccessExpires(expires);
+			// }
+
+			// if (!facebook.isSessionValid() || sharedName.equals(""))
+			// {
+			// facebook.authorize(activity, FACEBOOK_PERMISSION, new
+			// LoginDialogListener());
+			// }
+			// else
+			// {
+			// name.setText("Hello " + sharedName + ",");
+			// }
+			facebook = FbState.getFBState();
+
+			// if (!facebook.isSessionValid())
+			// {
+			// facebook = new Facebook(APP_ID);
+			// FbState.setFbState(facebook);
+			Log.d("in Settings, FBConnect:", "before login()");
+			login();
+			// }
+			// else
+			// {
+			// SessionStore.restore(facebook, context);
+			// }
+
+			// SessionEvents.addAuthListener(mSessionListener);
+			// SessionEvents.addLogoutListener(mSessionListener);
+
+		}
+
+		public void login()
+		{
+			// GlobalVariable fbBtn = ((GlobalVariable)
+			// getApplicationContext());
+			// Boolean fbButton = fbBtn.getfbBtn();
+			// if (fbButton == true)
+			// {
+			if (!facebook.isSessionValid())
+			{
+				Log.d("in Settings, FBConnect:", "before authorizing");
+				facebook.authorize(activity, FACEBOOK_PERMISSION, new LoginDialogListener());
+			}
+			// }
+			else
+			{
+				// globalVar = ((GlobalVariable) getApplicationContext());
+				// name.setText("Hello " + sharedPref.getString("facebookName",
+				// "") + ",");
+				mProgress.dismiss();
+				dialog.dismiss();
+//				postToWall();
+				postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
+			}
+		}
+
+		private final class LoginDialogListener implements DialogListener
+		{
+			public void onComplete(Bundle values)
+			{
+				Log.d("in Settings, FBConnect:", "in onComplete");
+				SessionEvents.onLoginSuccess();
+
+				mProgress.setMessage("Finalizing ...");
+				mProgress.show();
+				AsyncFacebookRunner syncRunner = new AsyncFacebookRunner(facebook);
+				syncRunner.request("me", new LoginRequestListener());
+			}
+
+			public void onFacebookError(FacebookError error)
+			{
+				Log.d("in Settings, FBConnect:", "in onFacebookError");
+				SessionEvents.onLoginError(error.getMessage());
+			}
+
+			public void onError(DialogError error)
+			{
+				Log.d("in Settings, FBConnect:", "in onError");
+				SessionEvents.onLoginError(error.getMessage());
+			}
+
+			public void onCancel()
+			{
+				Log.d("in Settings, FBConnect:", "in onCancel");
+				SessionEvents.onLoginError("Action Canceled");
+				// Intent intent = new Intent(context, LoginPage.class);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// startActivity(intent);
+			}
+		}
+
+		public class LoginRequestListener extends BaseRequestListener
+		{
+			public void onComplete(String response, final Object state)
+			{
+				try
+				{
+					// process the response here: executed in background thread
+					Log.d("Facebook-Container", "Response: " + response.toString());
+					JSONObject json = Util.parseJson(response);
+					fnameS = json.getString("first_name");
+					lnameS = json.getString("last_name");
+					userName = fnameS + " " + lnameS;
+					userEmail = json.getString("email");
+					// genderS = json.getString("gender");
+					// bdayS = json.getString("birthday");
+					uid = json.getString("id");
+
+					editor.putString("userFBname", userName);
+					editor.putString("userFBID", uid);
+					editor.putBoolean("FacebookLoggedOut", false);
+					editor.commit();
+					Log.d("Facebook", fnameS);
+					// userS = new UserParticulars(fnameS, lnameS, userEmail,
+					// genderS, bdayS);
+
+					// callback should be run in the original thread,
+					// not the background thread
+					mHandler.post(new Runnable()
+					{
+						public void run()
+						{
+							ConnectDB connectCheck;
+							try
+							{
+								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
+
+								editor.putString("userName", connectCheck.getUserName());
+								editor.putString("emailFB_Login", connectCheck.getUserEmail());
+								editor.putString("userDB_FBID", connectCheck.getUserID());
+								editor.commit();
+
+								// editor.commit();
+								// name.setText("Hello " + nameS + ",");
+								mProgress.dismiss();
+								dialog.dismiss();
+								postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
+//								postToWall();
+								// Log.d("Facebook session 2: ",
+								// Boolean.toString(facebook.isSessionValid()));
+							}
+							catch (NoSuchAlgorithmException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							catch (UnsupportedEncodingException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							// globalVar = ((GlobalVariable)
+							// getApplicationContext());
+							// globalVar.setName(nameS);
+							catch (IOException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+							// String token = facebook.getAccessToken();
+							// long token_expires = facebook.getAccessExpires();
+
+							// SharedPreferences prefs=
+							// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
+							//
+							// prefs.edit().putLong("access_expires",
+							// token_expires).commit();
+							//
+							// prefs.edit().putString("access_token",
+							// token).commit();
+							//
+							// prefs.edit().putString("name", nameS).commit();
+							// fname.setText(fnameS);
+							// lname.setText(lnameS);
+							// email.setText(emailS);
+							// if (genderS.equals("male"))
+							// {
+							// male.setChecked(true);
+							// female.setChecked(false);
+							// }
+							// else if (genderS.equals("female"))
+							// {
+							// female.setChecked(true);
+							// male.setChecked(false);
+							// }
+							//
+							// for (int i = 0; i < 3; i++)
+							// {
+							// bdayInt[i] = getBday(bdayS)[i];
+							// }
+							// bday.setText("Your Birthdate is: " + bdayInt[0]
+							// +"/" + bdayInt[1] + "/" + bdayInt[2]);
+						}
+					});
+				}
+				catch (JSONException e)
+				{
+					Log.w("Facebook-Example", "JSON Error in response");
+				}
+				catch (FacebookError e)
+				{
+					Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
+				}
+			}
+		}
+
+		public Facebook getFacebook()
+		{
+			return this.facebook;
+		}
+
 	}
 
 }

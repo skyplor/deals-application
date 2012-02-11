@@ -49,7 +49,6 @@ public class MapResult extends MapActivity
 	// private LocationListener locationListener;
 	private MapView mapView;
 	private MapController mapController;
-	private Button logout;
 	private static GlobalVariable globalVar;
 	Handler mHandler = new Handler();
 	List<Overlay> listOfOverlays;
@@ -59,7 +58,7 @@ public class MapResult extends MapActivity
 	Drawable drawableUser;
 	Drawable drawableItem;
 
-	private Boolean fbBtn;
+//	private Boolean fbBtn;
 	List<Shop> shoplist;
 
 	@Override
@@ -69,9 +68,16 @@ public class MapResult extends MapActivity
 
 		setContentView(R.layout.mapresult);
 
-		// Intent intent = getIntent();
 		shoplist = new ArrayList<Shop>();
-		shoplist = Search.shoplist;
+		Intent intent = getIntent();
+		if(intent.getBooleanExtra("main", false))
+		{
+			shoplist = Main.shoplist;
+		}
+		else if(intent.getBooleanExtra("search", false))
+		{
+			shoplist = Search.shoplist;
+		}
 		// shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
 
 		// locationManager = (LocationManager)
@@ -83,22 +89,13 @@ public class MapResult extends MapActivity
 		// 0, 0, locationListener);
 
 		mapView = (MapView) findViewById(R.id.mapView);
-		logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
 //		fbBtn = globalVar.getfbBtn();
 		// Log.d("FbButton: ", fbBtn.toString());
 		for (int i = 0; i < shoplist.size(); i++)
 		{
 			Log.d("shoplist", shoplist.get(i).getAddress());
-		}
-		if (!fbBtn)
-		{
-			initLogout(INIT_NORM);
-		}
-		else
-		{
-			initLogout(INIT_FB);
-		}
+		}		
 
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
@@ -150,22 +147,7 @@ public class MapResult extends MapActivity
 		mapView.invalidate();
 		// }
 	}
-
-	private void initLogout(final int type)
-	{
-		// TODO Auto-generated method stub
-		logout.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-
-				// TODO Auto-generated method stub
-				doLogout(type);
-			}
-		});
-	}
-
+	
 	protected boolean isRouteDisplayed()
 	{
 		return false;

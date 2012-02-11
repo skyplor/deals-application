@@ -205,7 +205,7 @@ public class Search extends Activity implements OnClickListener
 			//Save the results' details into a list of shops
 			//Put into bundles to be passed to the next intent
 			Intent intent = new Intent(this, MapResult.class);
-//			intent.putExtra("shoplist", shoplist);
+			intent.putExtra("search", true);
 			//Start new intent MapResult.
 			startActivity(intent);
 			
@@ -360,7 +360,7 @@ public class Search extends Activity implements OnClickListener
 					arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 					tempShop[i].setName(json_data.getString("name"));
 					
-					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), json_data.getString("shoptype"));
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
 					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrPro, tempShop);
@@ -380,7 +380,7 @@ public class Search extends Activity implements OnClickListener
 					arrShop[i].setLat((String) json_data.get("lat"));
 					arrShop[i].setLng((String) json_data.get("lng"));
 
-					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), json_data.getString("shoptype"));
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
 					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrShop);
