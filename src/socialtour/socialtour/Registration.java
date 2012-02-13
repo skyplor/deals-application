@@ -34,7 +34,7 @@ public class Registration extends Activity {
 	private EditText name;
 	private EditText email;
 	private EditText password;
-
+	private static int REGISTRATION=2;
 
 	UserParticulars user;
 
@@ -112,7 +112,8 @@ public class Registration extends Activity {
 				ConnectDB connect;
 				try
 				{
-					connect = new ConnectDB(name.getText().toString(), email.getText().toString(), password.getText().toString(), "user_norm");
+					SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+					connect = new ConnectDB(name.getText().toString(), email.getText().toString(), password.getText().toString(), "user_norm", REGISTRATION, Registration.this);
 					if (connect.inputResult())
 					{
 						GlobalVariable globalVar = ((GlobalVariable) getApplicationContext());
@@ -121,7 +122,6 @@ public class Registration extends Activity {
 						globalVar.setHashPw(connect.getPassword());
 						globalVar.setEm(email.getText().toString());
 
-						SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 						SharedPreferences.Editor editor = login.edit();
 						editor.putString("userID", connect.getUserID());
 						editor.putString("userName", connect.getUserName());

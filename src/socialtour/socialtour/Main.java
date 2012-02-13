@@ -159,7 +159,7 @@ public class Main extends Activity implements OnClickListener
 		twitBtn = globalVar.getTwitBtn();
 
 		facebook = globalVar.getFBState();
-		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, 4);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
 

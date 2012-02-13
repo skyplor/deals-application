@@ -64,6 +64,8 @@ public class Container extends TabActivity
 	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
+	private static final int CONTAINER = 4;
+	
 	FbConnect fbConnect;
 	private static GlobalVariable globalVar;
 
@@ -145,7 +147,7 @@ public class Container extends TabActivity
 			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			fblogout = login.getBoolean("FacebookLoggedOut", true);
 
-			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+			mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, CONTAINER);
 			mTwitter.setListener(mTwLoginDialogListener);
 			globalVar.setTwitState(mTwitter);
 
@@ -552,8 +554,9 @@ public class Container extends TabActivity
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
-
+								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", CONTAINER, Container.this);
+								Log.d("username in container: ", connectCheck.getUserName());
+								
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
 								editor.putString("userDB_FBID", connectCheck.getUserID());

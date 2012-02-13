@@ -1,6 +1,9 @@
 package socialtour.socialtour;
 
 import java.io.BufferedReader;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 //import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,6 +48,8 @@ import socialtour.socialtour.models.Shop;
 //import com.facebook.android.Util;
 
 //import android.os.Looper;
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.ParseException;
 import android.util.Log;
 
@@ -66,6 +71,8 @@ public class ConnectDB
 
 	List<Shop> shop;
 	Shop[] shopArray;
+	
+	private static int SETTINGS = 1, REGISTRATION = 2, PRODUCTDETAIL = 3, CONTAINER = 4, TWITTERAPP = 5;
 
 	public Shop[] getShopArray()
 	{
@@ -244,15 +251,69 @@ public class ConnectDB
 	// }
 	// }
 
-	public ConnectDB(String name, String emailortwitID, String password, String userType) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	public ConnectDB(String name, String emailortwitID, String password, String userType, int classnumber, Context context) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
-
+		SharedPreferences sharedpref = context.getSharedPreferences("com.ntu.fypshop", Context.MODE_PRIVATE);
+		Boolean twitter = (!sharedpref.getString("userDB_TWITID", "").equals(""));
+		Boolean fb = (!sharedpref.getString("userDB_FBID", "").equals(""));
+		Boolean norm = (!sharedpref.getString("userID", "").equals(""));
+		
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		String hashedPass = "";
 
 		// the data to send
 		nameValuePairs.add(new BasicNameValuePair("name", name));
 		nameValuePairs.add(new BasicNameValuePair("userType", userType));
+		Log.d("Class number: ", Integer.toString(classnumber));
+		if(classnumber == SETTINGS)
+		{
+			Log.d("norm: ", Boolean.toString(norm));
+			Log.d("fb: ", Boolean.toString(fb));
+			nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
+			if(userType.equals("user_fb") && norm && twitter)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "1"));
+				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+				nameValuePairs.add(new BasicNameValuePair("twitID",sharedpref.getString("userDB_TWITID", "")));
+				
+			}
+			else if(userType.equals("user_fb") && norm && !twitter)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "2"));
+				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+			}
+			else if(userType.equals("user_fb") && !norm && twitter)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "3"));
+				nameValuePairs.add(new BasicNameValuePair("twitID",sharedpref.getString("userDB_TWITID", "")));
+			}
+			else if (userType.equals("user_twit") && norm && fb)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "4"));
+				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+				nameValuePairs.add(new BasicNameValuePair("fbID",sharedpref.getString("userDB_FBID", "")));
+			}
+			else if (userType.equals("user_twit") && norm && !fb)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "5"));
+				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+			}
+			else if (userType.equals("user_twit") && !norm && fb)
+			{
+				nameValuePairs.add(new BasicNameValuePair("accType", "6"));
+				nameValuePairs.add(new BasicNameValuePair("fbID",sharedpref.getString("userDB_FBID", "")));
+			}
+		}
+		
+		else if (classnumber == REGISTRATION)
+		{
+			nameValuePairs.add(new BasicNameValuePair("connectType", "registration"));
+		}
+		
+		else if (classnumber == CONTAINER)
+		{
+			nameValuePairs.add(new BasicNameValuePair("connectType", "container"));
+		}
 
 		if (userType.equals("user_norm"))
 		{
@@ -287,7 +348,10 @@ public class ConnectDB
 		{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
-
+			for(NameValuePair nvp: nameValuePairs)
+			{
+				Log.d("NameValuePairs: ", nvp.getName() + ": " + nvp.getValue());
+			}
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
@@ -312,9 +376,13 @@ public class ConnectDB
 			is.close();
 
 			result = line;// sb.toString();
-			Log.d("Result in ConnectDB: ", result);
+			if(result==null||result.equals("null"))
+			{
+				Log.d("Result in ConnectDB: ", "null");
+			}
 			if (!result.equals("null"))
 			{
+				Log.d("Result in ConnectDB: ", result);
 				try
 				{
 					JSONArray jArray = new JSONArray(result);
@@ -357,7 +425,7 @@ public class ConnectDB
 
 		catch (Exception exc)
 		{
-			Log.e("log_tag", "Error converting result " + exc.toString());
+			Log.e("ConnectDB exception: ", "Error converting result " + exc.toString());
 		}
 
 		// parse json data

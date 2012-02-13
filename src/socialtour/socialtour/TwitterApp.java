@@ -40,11 +40,13 @@ public class TwitterApp {
 	public static final String CALLBACK_SCHEME = "twitterapp";
 	public static final String CALLBACK_URL = CALLBACK_SCHEME + "://connect";
 	private static final String TAG = "TwitterApp";
+	private static int TWITTERAPP;
 
-	public TwitterApp(Context context, String consumerKey, String secretKey)
+	public TwitterApp(Context context, String consumerKey, String secretKey, Integer intClass)
 	{
 		this.context = context;
 
+		this.TWITTERAPP = intClass;
 		mTwitter = new TwitterFactory().getInstance();
 		mSession = new TwitterSession(context);
 		mProgressDlg = new ProgressDialog(context);
@@ -169,7 +171,7 @@ public class TwitterApp {
 					configureToken();
 
 					User user = mTwitter.verifyCredentials();
-					ConnectDB connectDB = new ConnectDB(user.getName(), Long.toString(user.getId()), "password", "user_twit");
+					ConnectDB connectDB = new ConnectDB(user.getName(), Long.toString(user.getId()), "password", "user_twit", TWITTERAPP, context);
 					mSession.storeAccessToken(mAccessToken, user.getName(), Long.toString(user.getId()), connectDB.getUserID());
 					
 					what = 0;

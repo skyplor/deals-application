@@ -105,6 +105,7 @@ public class Productdetail extends Activity implements OnClickListener
 	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
+	private static final int PRODUCTDETAIL = 3;
 
 	int likes = 0, dislikes = 0, percent = 0;
 	double dprice = 0;
@@ -358,7 +359,7 @@ public class Productdetail extends Activity implements OnClickListener
 			ImageButton fbshare = (ImageButton) dialog.findViewById(R.id.fbShareBtn);
 			ImageButton twitshare = (ImageButton) dialog.findViewById(R.id.twitShareBtn);
 			
-			mTwitter = new TwitterApp(getParent(), twitter_consumer_key, twitter_secret_key);
+			mTwitter = new TwitterApp(getParent(), twitter_consumer_key, twitter_secret_key, PRODUCTDETAIL);
 			mTwitter.setListener(mTwLoginDialogListener);
 			globalVar.setTwitState(mTwitter);
 
@@ -951,7 +952,7 @@ public class Productdetail extends Activity implements OnClickListener
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
+								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", PRODUCTDETAIL, Productdetail.this);
 
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());

@@ -48,7 +48,7 @@ public class Settings extends Activity
 	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
-	private final int LOGOUT = 1, FB = 2, TWIT = 3;
+	private final int LOGOUT = 1, FB = 2, TWIT = 3, SETTINGS = 1;
 
 	FbConnect fbConnect;
 
@@ -88,7 +88,7 @@ public class Settings extends Activity
 			Log.d("Facebook state", "not null");
 		}
 
-		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, SETTINGS);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
 
@@ -549,8 +549,8 @@ public class Settings extends Activity
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
-
+								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", SETTINGS, Settings.this);
+								Log.d("userName: ", connectCheck.getUserName());
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
 								editor.putString("userDB_FBID", connectCheck.getUserID());

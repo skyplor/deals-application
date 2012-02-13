@@ -99,7 +99,7 @@ public class LoginPage extends Activity {
 		fbInit();
 
 		twitInit();
-		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, 4);
 		mTwitter.setListener(mTwLoginDialogListener);
 		if (mTwitter.hasAccessToken())
 		{

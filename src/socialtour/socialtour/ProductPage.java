@@ -62,6 +62,7 @@ public class ProductPage extends Activity
 	private TwitterApp mTwitter;
 	AsyncFacebookRunner asyncRunner;
 	private String status;
+	private static final int PRODUCTPAGE = 6;
 
 	private final String[] FACEBOOK_PERMISSION =
 	{ "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
@@ -90,7 +91,7 @@ public class ProductPage extends Activity
 		fbshareBtn = (ImageButton) findViewById(R.id.fbShareBtn);
 		twitshareBtn = (ImageButton) findViewById(R.id.twitShareBtn);
 
-		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key);
+		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, PRODUCTPAGE);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
 
@@ -558,7 +559,7 @@ public class ProductPage extends Activity
 						ConnectDB connectCheck;
 						try
 						{
-							connectCheck = new ConnectDB(userName, userEmail, "", "user_fb");
+							connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", PRODUCTPAGE, ProductPage.this);
 							sharedPref = getApplicationContext().getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 							editor = sharedPref.edit();
 							editor.putString("userName", connectCheck.getUserName());
