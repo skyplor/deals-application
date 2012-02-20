@@ -44,7 +44,7 @@ public class ImageLoader {
         else
         {
             queuePhoto(url, activity, imageView);
-            imageView.setImageResource(stub_id);
+            imageView.setImageBitmap(null);
         }    
     }
         
@@ -113,7 +113,7 @@ public class ImageLoader {
             
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize=scale;
+            o2.inSampleSize=2;
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {}
         return null;
@@ -201,7 +201,7 @@ public class ImageLoader {
             if(bitmap!=null)
                 imageView.setImageBitmap(bitmap);
             else
-                imageView.setImageResource(stub_id);
+                imageView.setImageBitmap(null);
         }
     }
 

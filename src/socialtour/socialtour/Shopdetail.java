@@ -57,7 +57,6 @@ public class Shopdetail extends MapActivity{
 
 	Product[] arrPro;
 	TextView shopname, shopaddress;
-	ImageView icon;
 	ListView detailBrowse;
 	
 	SimpleLazyAdapter adapter;
@@ -74,7 +73,6 @@ public class Shopdetail extends MapActivity{
 		mapView = (MapView) findViewById(R.id.shopMap);
 		shopname = (TextView)findViewById(R.id.shopdetailName);
 		shopaddress = (TextView)findViewById(R.id.lblDetailshopaddress);
-		icon = (ImageView)findViewById(R.id.imgShop);
 		detailBrowse = (ListView)findViewById(R.id.listDetailBrowse);
 		globalVar = ((GlobalVariable) getApplicationContext());
 		
@@ -94,7 +92,6 @@ public class Shopdetail extends MapActivity{
 			Shop shopDetail = globalVar.getShop().get(0);
 			name = shopDetail.getName();
 			address = shopDetail.getAddress();
-			iconid = shopDetail.getIcon();
 			shopid = shopDetail.getId();
 			latitude = Double.parseDouble(shopDetail.getLat());
 			longitude = Double.parseDouble(shopDetail.getLng());
@@ -102,7 +99,6 @@ public class Shopdetail extends MapActivity{
 		
 		shopname.setText(name);
 		shopaddress.setText(address);
-		icon.setImageResource(iconid);
         getProduct(shopid);
         
 		gp = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));

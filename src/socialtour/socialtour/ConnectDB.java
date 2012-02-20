@@ -494,7 +494,7 @@ public class ConnectDB
 			for (int i = 0; i < jArray.length(); i++)
 			{
 				jsonObj = jArray.getJSONObject(i);
-				shop.add(new Shop(jsonObj.getInt("id"), jsonObj.getString("address"), jsonObj.getString("name"), jsonObj.getString("lat"), jsonObj.getString("lng"), jsonObj.getString("shoptype")));
+				shop.add(new Shop(jsonObj.getInt("id"), jsonObj.getString("address"), jsonObj.getString("name"), jsonObj.getString("lat"), jsonObj.getString("lng")));
 			}
 			// JSONArray values = jsonObj.getJSONArray("row");
 			// for (int i = 0; i < values.length(); i++)

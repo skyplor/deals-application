@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class TabGroup2Activity extends TabGroupActivity implements OnClickListener{
 	private static final int CAMERA_PIC_REQUEST = 1337;
@@ -24,17 +25,19 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.share);
-        
-        Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
-		Container.btn2.setEnabled(true);
-		Container.btn3.setEnabled(true);
+        Container.btn1.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setVisibility(ImageView.INVISIBLE);
+        Container.btn3.setVisibility(ImageView.INVISIBLE);
+        //Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
+        //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
+        //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
+        //Container.btn1.setEnabled(false);
+        //Container.btn2.setEnabled(false);
+        //Container.btn3.setEnabled(false);
         
         btnShare = (Button)findViewById(R.id.sharebutton);
         btnShare.setOnClickListener(this);
         //openAddPhoto();
-
         //if (bundle !=null){
         	//Uri photoUri = (Uri) bundle.get("pic");
         	//Intent i = new Intent("socialtour.socialtour.STARTCAMERA");
@@ -47,11 +50,18 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 	@Override
 	public void onResume(){
 		super.onResume();
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
-		Container.btn2.setEnabled(true);
-		Container.btn3.setEnabled(true);
+		Container.btn1.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setVisibility(ImageView.INVISIBLE);
+        Container.btn3.setVisibility(ImageView.INVISIBLE);
+		//Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
+        //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
+        //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
+        //Container.btn1.setImageResource(R.drawable.transparent);
+        //Container.btn2.setImageResource(R.drawable.transparent);
+        //Container.btn3.setImageResource(R.drawable.transparent);
+        //Container.btn1.setEnabled(false);
+        //Container.btn2.setEnabled(false);
+        //Container.btn3.setEnabled(false);
 	}
     
     @Override
@@ -74,7 +84,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     		//Bundle bundle=data.getExtras();
 	        //Bitmap pic = (Bitmap) bundle.get("pic");
     		//Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-    		_path=Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
+    		_path=Environment.getExternalStorageDirectory().getPath();
     		File file = new File( _path, "testing.jpg");
     		outputFileUri = Uri.fromFile(file);
     		Bundle bundle=getIntent().getExtras();
@@ -176,7 +186,8 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     
     protected void startCameraActivity()
     {
-    	_path=Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
+    	_path=Environment.getExternalStorageDirectory().getPath();
+    	//_path=Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
     	//Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     	//  File file = new File(_path, "test.jpg");
     	//  Uri outputFileUri = Uri.fromFile(file);

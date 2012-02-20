@@ -2,119 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/relative1"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"
+        android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dip" >
-    </RelativeLayout>
-
-    <TableLayout
-        android:id="@+id/tableLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="200dip"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/relative1"
-        android:layout_marginTop="50dip" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/txtCaption1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Ready to share a deal?"
-                android:textColor="#000000"
-                android:textSize="20dip" >
-            </TextView>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/txtCaption2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="1. Capture an Image / Select from Gallery"
-                android:textColor="#463E3F" >
-            </TextView>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/txtCaption3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="2. Select Shop"
-                android:textColor="#463E3F" >
-            </TextView>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/txtCaption4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="3. Choose Product Category"
-                android:textColor="#463E3F" >
-            </TextView>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/txtCaption5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="4. Input Product Price"
-                android:textColor="#463E3F" >
-            </TextView>
-        </TableRow>
-    </TableLayout>
-
-    <Button
+        android:layout_marginTop="10dip" >
+        <ImageView
+                android:id="@+id/imgsharetitle"
+                android:layout_width="200px"
+                android:layout_height="125px"
+                android:src="@drawable/sharetitle"
+                android:layout_centerHorizontal="true"
+                >
+            </ImageView>
+        
+        <ImageView
+                android:id="@+id/imgshareinstructions"
+                android:layout_width="300px"
+                android:layout_height="200px"
+                android:src="@drawable/shareinstructions"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/imgsharetitle">
+            </ImageView>
+            
+        <Button
         android:id="@+id/sharebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:text="Click here to start"
-        android:layout_below="@+id/tableLayout1"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/imgshareinstructions"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dip">
     </Button>
-
+    </RelativeLayout>
 </RelativeLayout>

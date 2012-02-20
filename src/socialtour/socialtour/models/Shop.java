@@ -8,7 +8,6 @@ public class Shop {
 	public String name;
 	public String lat;
 	public String lng;
-	public String type = "men";
 	public String distance;
 	
 	public Shop(){
@@ -29,10 +28,9 @@ public class Shop {
 		lng = lg;
 		distance = dt;
 	}
-	public Shop(int id, String add, String nm, String lt, String lg, String type)
+	public Shop(int id, String add, String nm, String lt, String lg)
 	{
 		this.id = id;
-		this.type = type;
 		address = add;
 		name = nm;
 		lat = lt;
@@ -83,31 +81,6 @@ public class Shop {
 	}
 	public void setDistance(String distance) {
 		this.distance = distance;
-	}
-	
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public int getIcon(){
-		if (this.getType().equals("men")){
-			return R.drawable.men;
-		}else if (this.getType().equals("women")){
-			return R.drawable.women;
-		}else if (this.getType().equals("children")){
-			return R.drawable.children;
-		}else if (this.getType().equals("unisex")){
-			return R.drawable.unisex;
-		}else if (this.getType().equals("bags")){
-			return R.drawable.bag;
-		}else if (this.getType().equals("accessories")){
-			return R.drawable.accessories;
-		}else if (this.getType().equals("shoes")){
-			return R.drawable.shoe;
-		}
-		return -1;
 	}
 	
 }

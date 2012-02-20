@@ -2,42 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background"
     android:orientation="vertical" >
 
+    <ImageView
+                android:id="@+id/imgstep3"
+                android:layout_width="300px"
+                android:layout_height="50px"
+                android:src="@drawable/step3"
+                android:layout_alignParentLeft="true">
+            </ImageView>
+    
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="370dip"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dip" >
+        android:layout_marginTop="40dip" >
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:gravity="center"
+            android:layout_marginTop="10dip">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category1"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/men" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category2"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/women" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category3"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/cosmetics" >
+            </ImageView>
         </TableRow>
 
         <TableRow
@@ -77,26 +86,26 @@
             android:layout_height="wrap_content"
             android:gravity="center" >
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category4"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/digital" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category5"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/household" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category6"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/kids" >
+            </ImageView>
         </TableRow>
 
         <TableRow
@@ -109,7 +118,7 @@
                 android:id="@+id/txtCategory4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Electronics" 
+                android:text="Digital" 
                 android:layout_gravity="center"
                 android:textColor="#3E3535"/>
 
@@ -136,26 +145,26 @@
             android:layout_height="wrap_content"
             android:gravity="center" >
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category7"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/groceries" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category8"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/entertainment" >
+            </ImageView>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/category9"
                 android:layout_width="100dip"
                 android:layout_height="100dip"
-                android:src="@drawable/stub" >
-            </ImageButton>
+                android:src="@drawable/others" >
+            </ImageView>
         </TableRow>
 
         <TableRow
@@ -176,7 +185,7 @@
                 android:id="@+id/txtCategory8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Games/Books"
+                android:text="Entertainment"
                 android:layout_gravity="center"
                 android:textColor="#3E3535" />
 

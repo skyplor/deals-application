@@ -52,13 +52,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -66,15 +64,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomButtonsController;
-import android.widget.ZoomControls;
 
 public class Addplace extends MapActivity implements OnClickListener
 {
@@ -90,9 +84,6 @@ public class Addplace extends MapActivity implements OnClickListener
 	MapOverlay lockScrollOverlay;
 	private LockableScrollView scroll;
 	private LinearLayout scrollChildLinearLayout;
-	Spinner category;
-	String[] categories =
-	{ "men", "women", "children", "unisex", "bags", "accessories", "shoes" };
 
 	List<String> addrList = null;
 	List<String> shopDetail;
@@ -175,9 +166,6 @@ public class Addplace extends MapActivity implements OnClickListener
 
 		btnAdd = (Button) findViewById(R.id.uploadProduct);
 
-		SpinnerAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-		category = (Spinner) findViewById(R.id.shopcategorylist);
-		category.setAdapter(adapter);
 		btnAdd.setOnClickListener(this);
 
 		mapView.setBuiltInZoomControls(true);
@@ -190,24 +178,6 @@ public class Addplace extends MapActivity implements OnClickListener
 		lockScrollOverlay = new MapOverlay();
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.add(lockScrollOverlay);
-		
-//		ZoomButtonsController zbc = mapView.getZoomButtonsController();
-//		ViewGroup container = zbc.getContainer();
-//		for(int i = 0; i<container.getChildCount(); i++)
-//		{
-//			View child = container.getChildAt(i);
-//			if(child instanceof ZoomControls)
-//			{
-//				Log.d("In Addplace: ", "Child instance");
-//				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) child.getLayoutParams();
-//				lp.
-//				lp.gravity = Gravity.TOP;// | Gravity.CENTER_HORIZONTAL;
-//				child.requestLayout();
-//				break;
-//			}
-//		}
-		
-		
 
 		init();
 	}
@@ -696,12 +666,10 @@ public class Addplace extends MapActivity implements OnClickListener
 	{
 		String shopname = mapSearchBox.getText().toString().trim();
 		String address = searchAddress.getText().toString().trim();
-		String selectedcategory = category.getSelectedItem().toString();
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("name", shopname));
 		nameValuePairs.add(new BasicNameValuePair("address", address));
-		nameValuePairs.add(new BasicNameValuePair("shoptype", selectedcategory));
 		nameValuePairs.add(new BasicNameValuePair("lat", Double.toString(globalVar.getGeoPoint().getLatitudeE6() / 1E6)));
 		nameValuePairs.add(new BasicNameValuePair("long", Double.toString(globalVar.getGeoPoint().getLongitudeE6() / 1E6)));
 		// http post

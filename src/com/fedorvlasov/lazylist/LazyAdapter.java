@@ -44,17 +44,28 @@ public class LazyAdapter extends BaseAdapter {
         View vi=convertView;
         if(convertView==null)
             vi = inflater.inflate(R.layout.imageitem, null);
-
         TextView text=(TextView)vi.findViewById(R.id.text);;
         ImageView image=(ImageView)vi.findViewById(R.id.image2);
-        ImageView typelogo=(ImageView)vi.findViewById(R.id.typeLogo);
         TextView percent = (TextView)vi.findViewById(R.id.percentTesting);
         TextView desc = (TextView)vi.findViewById(R.id.txtDescription);
+        TextView username = (TextView)vi.findViewById(R.id.txtOwner);
+        TextView date = (TextView)vi.findViewById(R.id.txtDate);
+        TextView productprice = (TextView)vi.findViewById(R.id.productprice);
+        double price = data[position].getDprice() * 1000;
+        long tempprice = Math.round(price);
+        double finalprice = tempprice / 1000;
+        productprice.setText("$" + Double.toString(finalprice) + "0");
+        username.setText(data[position].getUser_name());
+        date.setText(data[position].getCreated().toString());
         String productname = data[position].getFilename().substring(0,data[position].getFilename().lastIndexOf("."));
-        
         text.setText(productname);
+        TextView distance = (TextView)vi.findViewById(R.id.txtHownear);
+        if (shop[position].getDist() !=null){
+        	Double currDistance = Double.valueOf(shop[position].getDist());
+            long intDistance = Math.round(currDistance);
+            distance.setText(Long.toString(intDistance) + " m away");
+        }
         imageLoader.DisplayImage(data[position].getUrl(), activity, image);
-        typelogo.setImageResource(shop[position].getIcon());
         percent.setText(data[position].getPercentdiscount() + "%");
         desc.setText(shop[position].getName());
         return vi;

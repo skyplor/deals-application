@@ -49,6 +49,7 @@ public class MapResult extends MapActivity
 	// private LocationListener locationListener;
 	private MapView mapView;
 	private MapController mapController;
+	//private Button logout;
 	private static GlobalVariable globalVar;
 	Handler mHandler = new Handler();
 	List<Overlay> listOfOverlays;
@@ -76,7 +77,7 @@ public class MapResult extends MapActivity
 		}
 		else if(intent.getBooleanExtra("search", false))
 		{
-			shoplist = Search.shoplist;
+		shoplist = Search.shoplist;
 		}
 		// shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
 
@@ -89,13 +90,14 @@ public class MapResult extends MapActivity
 		// 0, 0, locationListener);
 
 		mapView = (MapView) findViewById(R.id.mapView);
+		//logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
 //		fbBtn = globalVar.getfbBtn();
 		// Log.d("FbButton: ", fbBtn.toString());
 		for (int i = 0; i < shoplist.size(); i++)
 		{
 			Log.d("shoplist", shoplist.get(i).getAddress());
-		}		
+		}
 
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
@@ -147,7 +149,7 @@ public class MapResult extends MapActivity
 		mapView.invalidate();
 		// }
 	}
-	
+
 	protected boolean isRouteDisplayed()
 	{
 		return false;
@@ -460,15 +462,16 @@ public class MapResult extends MapActivity
 		@Override
 		public boolean onBalloonTap(int index, OverlayItem item)
 		{
-			Intent myintent = new Intent(MapResult.this, Shopdetail.class);
+			Intent myintent = new Intent(getParent(), Shopdetail.class);
 			myintent.putExtra("shopid", shoplist.get(index).getId());
 			myintent.putExtra("shopname", shoplist.get(index).getName());
 			myintent.putExtra("shopaddress", shoplist.get(index).getAddress());
-			int icon = shoplist.get(index).getIcon();
-			myintent.putExtra("icon", icon);
+			//int icon = shoplist.get(index).getIcon();
+			//myintent.putExtra("icon", icon);
 			myintent.putExtra("lat", shoplist.get(index).getLat());
 			myintent.putExtra("long", shoplist.get(index).getLng());
-			startActivity(myintent);
+			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			parentActivity.startChildActivity("Shop Detail", myintent);
 			return (super.onBalloonTap(index, item));
 		}
 	}

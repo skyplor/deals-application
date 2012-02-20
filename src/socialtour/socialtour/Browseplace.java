@@ -1,6 +1,7 @@
 package socialtour.socialtour;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,8 +29,10 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.ParseException;
 import android.net.Uri;
@@ -37,7 +40,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,7 +52,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Browseplace extends Activity {
+public class Browseplace extends Activity implements OnClickListener{
         
         //protected String[] employees;
         //protected Integer[] employeesid;
@@ -57,9 +62,10 @@ public class Browseplace extends Activity {
         String result = null;
         InputStream is = null;
         StringBuilder sb=null;
-        Button search,addplace;
+        Button search;
+        ImageView addplace, backtomain;
         ListView list;
-        
+        float coordinates[] = {0,0};
         protected Cursor cursor;
         //protected ListAdapter adapter;
         
@@ -69,25 +75,49 @@ public class Browseplace extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.placeselection);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Container.btn1.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn3.setVisibility(ImageView.VISIBLE);
+        Container.btn2.setImageResource(R.drawable.quitsharing);
+        Container.btn3.setImageResource(R.drawable.addplace);
+		backtomain = Container.btn2;
+		addplace = Container.btn3;
+		//backtomain.setImageResource(R.drawable.quitsharing);
+		//addplace.setImageResource(R.drawable.addplace);
+		//addplace.setVisibility(View.VISIBLE);
+		//addplace.setImageResource(R.drawable.addplace);
         
-        Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
         //getShop();
         //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
         //ListView employeeList = (ListView) findViewById(R.id.list);
         //employeeList.setAdapter(adapter);
-        
         search = (Button) findViewById(R.id.searchButton);
         list = (ListView) findViewById(R.id.list);
-        addplace = (Button) findViewById(R.id.addPlace);
-               
+        
+        backtomain.setOnClickListener(this);
+        addplace.setOnClickListener(this);
+        
         Bundle bundle=getIntent().getExtras();
         Uri photoUri = (Uri) bundle.get("pic");
+        
+        if (bundle !=null){
+        	try{
+        	ExifInterface exif = new ExifInterface(photoUri.getPath());
+        	StringBuilder builder = new StringBuilder();
+        	exif.getLatLong(coordinates);
+        	//String lati = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+        	//String longi = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+        	}catch (IOException e){
+        		
+        	}
+        }
+        /*
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(photoUri, new String[] {
+        Cursor c = cr.query(newUri, new String[] {
         		MediaStore.Images.ImageColumns.DATA,
                 MediaStore.Images.ImageColumns.LATITUDE,
                 MediaStore.Images.ImageColumns.LONGITUDE
@@ -101,6 +131,7 @@ public class Browseplace extends Activity {
                 longitude = c.getDouble(c.getColumnIndexOrThrow
         (MediaStore.Images.ImageColumns.LONGITUDE));
               }
+              */
               getShop("",true);
             
 		search.setOnClickListener(new View.OnClickListener() {
@@ -108,34 +139,13 @@ public class Browseplace extends Activity {
             	EditText shopname = (EditText) findViewById(R.id.searchText);
             	//doFileUpload();
             	boolean passed = validate(shopname.getText().toString().trim());
-            	if (passed)
-				{
-					getShop(shopname.getText().toString(), false);
-            	}
-				else
-				{
+            	if (passed){
+            		getShop(shopname.getText().toString(), false);
+            	}else{
             		promptError();
             	}
             }
         });
-		
-		addplace.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	/*
-            	Intent i = new Intent("socialtour.socialtour.ADDPLACE");
-            	Bundle bundle=getIntent().getExtras();
-		        Uri pic = (Uri) bundle.get("pic");
-		        i.putExtra("pic", pic);
-            	startActivity(i);*/
-            	
-            	Intent i = new Intent(getParent(), Addplace.class);
-   		     	Bundle bundle=getIntent().getExtras();
-   		     	Uri pic = (Uri) bundle.get("pic");
-   		     	i.putExtra("pic", pic);
-   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-   		     	parentActivity.startChildActivity("Add Place", i);
-            }
-        }); 
 		
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
@@ -165,16 +175,35 @@ public class Browseplace extends Activity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
+		Container.btn1.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn3.setVisibility(ImageView.VISIBLE);
+        Container.btn2.setImageResource(R.drawable.quitsharing);
+        Container.btn3.setImageResource(R.drawable.addplace);
+		backtomain = Container.btn2;
+		addplace = Container.btn3;
 	}
+	
+	@Override
+	public void onClick(View v) {
+		if (v==addplace){
+			Intent i = new Intent(getParent(), Addplace.class);
+		     	Bundle bundle=getIntent().getExtras();
+		     	Uri pic = (Uri) bundle.get("pic");
+		     	i.putExtra("pic", pic);
+		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+		     	parentActivity.startChildActivity("Add Place", i);
+		}else if (v==backtomain){
+			confirmationquit();
+		}
+	}
+    
     public void getShop(String shopname, boolean start){
     	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
     	String path = "";
     	if (start){
-    		nameValuePairs.add(new BasicNameValuePair("lat",Double.toString(latitude)));
-    		nameValuePairs.add(new BasicNameValuePair("long",Double.toString(longitude)));
+    		nameValuePairs.add(new BasicNameValuePair("lat",Float.toString(coordinates[0])));
+    		nameValuePairs.add(new BasicNameValuePair("long",Float.toString(coordinates[1])));
     		path = Constants.CONNECTIONSTRING + "coordinates.php";
     	}else{
     		nameValuePairs.add(new BasicNameValuePair("shop",shopname));
@@ -222,7 +251,6 @@ public class Browseplace extends Activity {
     	             shop[i].setId(json_data.getInt("id"));
     	             shop[i].setName(json_data.getString("name"));
     	             shop[i].setAddress(json_data.getString("address"));
-    	             shop[i].setType(json_data.getString("shoptype"));
     	         }
     	      	adapter=new SimpleLazyAdapter(this, shop);
     	        //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
@@ -230,7 +258,7 @@ public class Browseplace extends Activity {
     	        employeeList.setAdapter(adapter);
     	      }
     	      catch(JSONException e1){
-    	    	  Toast.makeText(getBaseContext(), "No category Found" ,Toast.LENGTH_LONG).show();
+    	    	  Toast.makeText(getBaseContext(), "No shop found" ,Toast.LENGTH_LONG).show();
     	      } catch (ParseException e1) {
     				e1.printStackTrace();
     		}
@@ -254,6 +282,28 @@ public class Browseplace extends Activity {
 	            }});
 	        dialog.show();
    }
+    
+    private void confirmationquit(){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	        dialog.setTitle("You are in the midst of sharing. Quit Sharing?");
+	        
+	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();
+	                Intent i = new Intent(getParent(), TabGroup2Activity.class);
+	   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	   		     	parentActivity.startChildActivity("Back to Main", i);
+	                
+	            }});
+	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();               
+	            }});
+	        dialog.show();
+   }
+    
     /*protected void onListItemClick(ListView parent, View view, int position, long id) {
         Intent intent = new Intent(this, Attraction.class);
         intent.putExtra("EMPLOYEE_ID", employeesid[position]);

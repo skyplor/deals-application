@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/productlayout"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView
+		android:text="Shop Information"
+		android:id="@+id/shopInfo"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:clickable="true"
+		android:gravity="center_vertical">
+	</TextView>
+
+	<LinearLayout
+		android:id="@+id/sharelayout"
+		android:orientation="horizontal"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		<ImageButton
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:background="@null"
+			android:src="@drawable/fb_share_button"
+			android:id="@+id/fbShareBtn"
+			android:padding="10px">
+		</ImageButton>
+		<ImageButton
+			android:id="@+id/twitShareBtn"
+			android:background="@null"
+			android:src="@drawable/twit_share_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="10px">
+		</ImageButton>
+	</LinearLayout>
+	
+</LinearLayout>

@@ -1,53 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="top">
+
      <LinearLayout
     android:layout_width="fill_parent"
-    android:layout_height="50dip"
-    android:background="#FFFFFF"
+    android:layout_height="30dip"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@drawable/dealsouttitlebar">
 
     <ImageView
         android:id="@+id/imgTitle"
-        android:layout_width="100dip"
-        android:layout_height="30dip"
-        android:layout_gravity="center"
+        android:layout_width="100px"
+        android:layout_height="30px"
+        android:layout_gravity="left|center_vertical"
         android:src="@drawable/dealsouttitle" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="right|bottom">
+        android:gravity="right">
 
-        <Button
+        <ImageView
             android:id="@+id/headerLatest"
-            android:layout_width="65dip"
-            android:layout_height="40dip"
-            android:text="Latest"
-            android:textSize="8dip"
-            android:layout_marginRight="-4.0dip"/>
+            android:layout_width="45px"
+            android:layout_height="30px"
+            android:src="@drawable/latestbuttondynamic"
+            android:layout_gravity="center_vertical"/>
 
-        <Button
+        <ImageView
             android:id="@+id/headerHot"
-            android:layout_width="65dip"
-            android:layout_height="40dip"
-            android:text="Hot"
-            android:textSize="8dip"
-            android:layout_marginLeft="-4.0dip"
-            android:layout_marginRight="-4.0dip"/>
+            android:layout_width="45px"
+            android:layout_height="30px"
+            android:src="@drawable/hotbuttondynamic"
+            android:layout_gravity="center_vertical"/>
 
-        <Button
+        <ImageView
             android:id="@+id/headerNearby"
-            android:layout_width="65dip"
-            android:layout_height="40dip"
-            android:text="Nearby"
-            android:textSize="8dip"
-            android:layout_marginLeft="-4.0dip"/>
+            android:layout_width="45px"
+            android:layout_height="30px"
+            android:src="@drawable/nearbybuttondynamic"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
 </LinearLayout>
@@ -56,20 +52,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
-
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" 
-
-
             android:layout_weight="1"
-
-            android:layout_marginTop="50dip">
-
-
-
+            android:background="#FFFFFF"
+            android:layout_marginTop="30dip">
             </FrameLayout>
         <TabWidget
             android:id="@android:id/tabs"

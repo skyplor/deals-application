@@ -18,7 +18,7 @@ public class SimpleLazyAdapter extends BaseAdapter {
     private Product[] data;
     private Shop[] shop, tempShop;
     private static LayoutInflater inflater=null;
-    public ImageLoader imageLoader;
+    public SimpleImageLoader imageLoader;
     private boolean isProduct;
     
     public SimpleLazyAdapter(Activity a, Product[] d, Shop[] s) {
@@ -26,7 +26,7 @@ public class SimpleLazyAdapter extends BaseAdapter {
         tempShop = s;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
+        imageLoader=new SimpleImageLoader(activity.getApplicationContext());
         isProduct = true;
     }
     
@@ -34,7 +34,7 @@ public class SimpleLazyAdapter extends BaseAdapter {
     	shop = s;
         activity = a;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
+        imageLoader=new SimpleImageLoader(activity.getApplicationContext());
         isProduct = false;
     }
     
@@ -42,7 +42,7 @@ public class SimpleLazyAdapter extends BaseAdapter {
     	activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
+        imageLoader=new SimpleImageLoader(activity.getApplicationContext());
         isProduct = true;
     }
 
@@ -83,8 +83,9 @@ public class SimpleLazyAdapter extends BaseAdapter {
         	imageLoader.DisplayImage(data[position].getUrl(), activity, image);
         	percent.setText(data[position].getPercentdiscount() + "% Off");
         }else{
-        	int drawable = shop[position].getIcon();
-        	image.setImageResource(drawable);
+        	//int drawable = data[position].getIcon();
+        	//image.setImageResource(drawable);
+        	image.setVisibility(View.GONE);
         	text.setText(shop[position].getName());
         	desc.setText(shop[position].getAddress());
         }

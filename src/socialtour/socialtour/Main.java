@@ -3,6 +3,7 @@ package socialtour.socialtour;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.List;
@@ -65,6 +66,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 //import android.widget.RadioGroup;
@@ -93,7 +95,7 @@ public class Main extends Activity implements OnClickListener
 	private LocationManager locationManager;
 	private GPSLocationListener locationListener;
 	private GeoPoint point = new GeoPoint(1304256, 103832538);
-
+	private static int currentState; //can be 1 for latest, 2 for hot, 3 for nearby
 	Handler mHandler = new Handler();
 	private ProgressDialog mProgress;
 
@@ -112,10 +114,10 @@ public class Main extends Activity implements OnClickListener
 
 	Product[] arrPro;
 	Shop[] shop;
-	Button latest, nearby, hot;// , logout;
+	ImageView latest, nearby, hot;// , logout;
 	ListView searchResult;
 	LazyAdapter adapter;
-	
+
 	Shop shopresult;
 	public static List<Shop> shoplist = new ArrayList<Shop>();
 
@@ -139,19 +141,20 @@ public class Main extends Activity implements OnClickListener
 			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
 		}
 		
-		Container.btn1.setText("Latest");
-		Container.btn2.setText("Hot");
-		Container.btn3.setText("Nearby");
+		//Container.btn1.setText("Latest");
+		//Container.btn2.setText("Hot");
+		//Container.btn3.setText("Nearby");
 		
 		latest = Container.btn1;
-		nearby = Container.btn2;
-		hot = Container.btn3;
+		nearby = Container.btn3;
+		hot = Container.btn2;
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
 
 		latest.setOnClickListener(this);
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
+		currentState = 1;
 		latest.setEnabled(false);
 
 		globalVar = ((GlobalVariable) getApplicationContext());
@@ -255,13 +258,28 @@ public class Main extends Activity implements OnClickListener
 	public void onResume(){
 		super.onResume();
 		
-		Container.btn1.setText("Latest");
-		Container.btn2.setText("Hot");
-		Container.btn3.setText("Nearby");
-		
-		Container.btn1.setVisibility(View.VISIBLE);
-		Container.btn2.setVisibility(View.VISIBLE);
-		Container.btn3.setVisibility(View.VISIBLE);
+		latest.setVisibility(View.VISIBLE);
+		hot.setVisibility(View.VISIBLE);
+		nearby.setVisibility(View.VISIBLE);
+		latest.setImageResource(R.drawable.latestbuttondynamic);
+		hot.setImageResource(R.drawable.hotbuttondynamic);
+		nearby.setImageResource(R.drawable.nearbybuttondynamic);
+		if (currentState == 1){
+			latest.setEnabled(false);
+			nearby.setEnabled(true);
+			hot.setEnabled(true);
+		}else if (currentState == 2){
+			hot.setEnabled(false);
+			nearby.setEnabled(true);
+			latest.setEnabled(true);
+		}else if (currentState == 3){
+			nearby.setEnabled(false);
+			latest.setEnabled(true);
+			hot.setEnabled(true);
+		}
+		latest.setOnClickListener(this);
+		nearby.setOnClickListener(this);
+		hot.setOnClickListener(this);
 	}
 	
 	@Override
@@ -293,7 +311,8 @@ public class Main extends Activity implements OnClickListener
 			Toast.makeText(getParent(), "You pressed the Map!", Toast.LENGTH_SHORT).show();
 			Intent intent3 = new Intent(getParent(),socialtour.socialtour.MapResult.class);
 			intent3.putExtra("main", true);
-			startActivity(intent3);
+			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			parentActivity.startChildActivity("Map Result", intent3);
 			break;
 		}
 		return true;
@@ -380,6 +399,7 @@ public class Main extends Activity implements OnClickListener
 		if (v == latest)
 		{
 			getProduct("Latest");
+			currentState = 1;
 			latest.setEnabled(false);
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
@@ -389,6 +409,7 @@ public class Main extends Activity implements OnClickListener
 			if (CheckEnableGPS())
 			{
 				getProduct("Nearby");
+				currentState = 3;
 				nearby.setEnabled(false);
 				latest.setEnabled(true);
 				hot.setEnabled(true);
@@ -421,6 +442,7 @@ public class Main extends Activity implements OnClickListener
 		else if (v == hot)
 		{
 			getProduct("Hot");
+			currentState = 2;
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
@@ -519,15 +541,20 @@ public class Main extends Activity implements OnClickListener
 				json_data = jArray.getJSONObject(i);
 				arrPro[i] = new Product();
 				shop[i] = new Shop();
+				arrPro[i].setUser_name(json_data.getString("user_name"));
+				arrPro[i].setCreated(Date.valueOf(json_data.getString("created_date")));
+				arrPro[i].setDprice(json_data.getDouble("dprice"));
 				arrPro[i].setId(json_data.getInt("id"));
 				arrPro[i].setFilename(json_data.getString("filename"));
 				arrPro[i].setUrl(json_data.getString("url"));
 				arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
+				arrPro[i].setCategory(json_data.getString("category"));
 				shop[i].setName(json_data.getString("name"));
-				
-				shopresult = new Shop(json_data.getInt("place_id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
+				shopresult = new Shop(json_data.getInt("place_id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));//, json_data.getString("shoptype"));
 				shoplist.add(shopresult);
-				//shop[i].setType(json_data.getString("shoptype"));
+				if (mode.equals("Nearby")){
+					shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
+				}
 				// employees[i] = ct_name;
 				// employeesid[i] = ct_id;
 			}
@@ -538,7 +565,6 @@ public class Main extends Activity implements OnClickListener
 		}
 		catch (JSONException e1)
 		{
-			Log.d("JSON exception: ", e1.toString());
 			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_SHORT).show();
 		}
 		catch (ParseException e1)

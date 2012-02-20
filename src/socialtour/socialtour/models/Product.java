@@ -2,15 +2,20 @@ package socialtour.socialtour.models;
 
 import java.util.Date;
 
+import socialtour.socialtour.R;
+
 public class Product {
 	private int id;
 	private int userid;
+	private String usertype;
+	private String user_name;
 	private String filename;
 	private String sourcepath;
 	private String url;
 	private String type;
 	private int shopid;
 	private String category;
+	private String subcategory;
 	private String brand;
 	private double dprice;
 	private double oprice;
@@ -108,6 +113,46 @@ public class Product {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getUsertype() {
+		return usertype;
+	}
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
+	}
+	public String getSubcategory() {
+		return subcategory;
+	}
+	public void setSubcategory(String subcategory) {
+		this.subcategory = subcategory;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+	public int getIcon(){
+		if (this.getCategory().equals("Women")){
+			return R.drawable.womensmall;
+		}else if (this.getCategory().equals("Men")){
+			return R.drawable.mensmall;
+		}else if (this.getCategory().equals("Cosmetics")){
+			return R.drawable.cosmeticssmall;
+		}else if (this.getCategory().equals("Digital")){
+			return R.drawable.digitalsmall;
+		}else if (this.getCategory().equals("Household")){
+			return R.drawable.householdsmall;
+		}else if (this.getCategory().equals("Kids")){
+			return R.drawable.kidssmall;
+		}else if (this.getCategory().equals("Entertainment")){
+			return R.drawable.entertainmentsmall;
+		}else if (this.getCategory().equals("Groceries")){
+			return R.drawable.groceriessmall;
+		}else if (this.getCategory().equals("Others")){
+			return R.drawable.otherssmall;
+		}
+		return -1;
 	}
 	
 }

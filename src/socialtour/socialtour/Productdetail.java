@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -40,15 +41,15 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 
-import socialtour.socialtour.ProductPage.WallPostDialogListener;
-import socialtour.socialtour.ProductPage.WallPostRequestListener;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Shop;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -87,16 +88,16 @@ public class Productdetail extends Activity implements OnClickListener
 	String result = null;
 	Bitmap bmImg;
 	ImageView imagedisplay;
-	Button btnLike, btnDislike, btnShare, btnBack;
+	ImageView btnLike, btnDislike, btnShare;
 	int productid = 0;
 	String filename;
-	TextView lbllikes, lbldislikes, lblbrand, lblcategory, lblproduct, lblshop, lbladdress, lblpercent, lblprice;
-	GlobalVariable globalVar;
-	
+	TextView lbllikes, lbldislikes, lblcategory, lblproduct, lblshop, lbladdress, lblpercent, lblprice, lblusername, lbluploaddate;
+	GlobalVariable globalVar;	
+	private String commentType = null;
 	FbConnect fbConnect;
 	private Facebook facebook;
 	private ProgressDialog mProgress;
-
+	
 	private TwitterApp mTwitter;
 	
 	AsyncFacebookRunner asyncRunner;
@@ -109,8 +110,7 @@ public class Productdetail extends Activity implements OnClickListener
 
 	int likes = 0, dislikes = 0, percent = 0;
 	double dprice = 0;
-	String category = "", productname = "", shopname = "", brand = "", address = "", imageUrl = "";
-	
+	String category = "",subcategory="", productname = "", shopname = "", brand = "", address = "", username = "",createddate = "";
 	private String fnameS;
 	private String lnameS;
 	private String userName;
@@ -118,9 +118,8 @@ public class Productdetail extends Activity implements OnClickListener
 	// private String genderS;
 	// private String bdayS;
 	private String uid;
-
 	private String status;
-	
+
 	private Dialog dialog;
 
 	public void onCreate(Bundle savedInstanceState)
@@ -128,15 +127,20 @@ public class Productdetail extends Activity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.productdetail);
 		
-		Container.btn1.setText("Like");
-		Container.btn2.setText("Dislike");
-		Container.btn3.setText("Share");
-		Container.btn1.setEnabled(true);
-		Container.btn2.setEnabled(true);
-		Container.btn3.setEnabled(true);
-		Container.btn1.setVisibility(View.VISIBLE);
-		Container.btn2.setVisibility(View.VISIBLE);
-		Container.btn3.setVisibility(View.VISIBLE);
+		btnLike = Container.btn1;
+		btnDislike = Container.btn2;
+		btnShare = Container.btn3;
+		
+		btnLike.setEnabled(true);
+		btnDislike.setEnabled(true);
+		btnShare.setEnabled(true);
+		btnLike.setVisibility(View.VISIBLE);
+		btnDislike.setVisibility(View.VISIBLE);
+		btnShare.setVisibility(View.VISIBLE);
+		
+		btnLike.setImageResource(R.drawable.like);
+		btnDislike.setImageResource(R.drawable.dislike);
+		btnShare.setImageResource(R.drawable.share);
 		
 		globalVar = ((GlobalVariable) getApplicationContext());
 		facebook = globalVar.getFBState();
@@ -144,14 +148,10 @@ public class Productdetail extends Activity implements OnClickListener
 		productid = (Integer) bundle.get("lastproductid");
 		filename = importData(productid);
 		downloadFile(filename);
-		btnLike = Container.btn1;
-		btnDislike = Container.btn2;
-		btnShare = Container.btn3;
 		mProgress = new ProgressDialog(getParent());
 
 		btnLike.setOnClickListener(this);
 		btnDislike.setOnClickListener(this);
-//		btnBack.setOnClickListener(this);
 		btnShare.setOnClickListener(this);
 	}
 
@@ -170,9 +170,16 @@ public class Productdetail extends Activity implements OnClickListener
 	@Override
 	public void onResume(){
 		super.onResume();
-		Container.btn1.setVisibility(View.VISIBLE);
-		Container.btn2.setVisibility(View.VISIBLE);
-		Container.btn3.setVisibility(View.VISIBLE);
+		btnLike.setEnabled(true);
+		btnDislike.setEnabled(true);
+		btnShare.setEnabled(true);
+		btnLike.setVisibility(View.VISIBLE);
+		btnDislike.setVisibility(View.VISIBLE);
+		btnShare.setVisibility(View.VISIBLE);
+		
+		btnLike.setImageResource(R.drawable.like);
+		btnDislike.setImageResource(R.drawable.dislike);
+		btnShare.setImageResource(R.drawable.share);
 	}
 	
 	private String importData(int lastinsertedid)
@@ -227,11 +234,13 @@ public class Productdetail extends Activity implements OnClickListener
 				dislikes = json_data.getInt("dislikes");
 				percent = json_data.getInt("percentdiscount");
 				category = json_data.getString("category");
+				subcategory = json_data.getString("subcategory");
 				productname = json_data.getString("filename");
 				shopname = json_data.getString("name");
 				address = json_data.getString("address");
-				brand = json_data.getString("brand");
 				dprice = json_data.getDouble("dprice");
+				createddate = json_data.getString("created_date");
+				username = json_data.getString("user_name");
 			}
 		}
 		catch (JSONException e1)
@@ -245,72 +254,67 @@ public class Productdetail extends Activity implements OnClickListener
 
 		lbllikes = (TextView) findViewById(R.id.lblLikes);
 		lbldislikes = (TextView) findViewById(R.id.lblDislikes);
-		lblbrand = (TextView) findViewById(R.id.lblBrand);
 		lblcategory = (TextView) findViewById(R.id.lblCategory);
 		lblproduct = (TextView) findViewById(R.id.lblProductname);
 		lblshop = (TextView) findViewById(R.id.shopname);
 		lbladdress = (TextView) findViewById(R.id.lblshopaddress);
 		lblpercent = (TextView) findViewById(R.id.lblPercent);
 		lblprice = (TextView) findViewById(R.id.lblPrice);
-
+		lblusername = (TextView)findViewById(R.id.lblUploadedby);
+		lbluploaddate = (TextView)findViewById(R.id.lblCreateddate);
+		
 		lblshop.setOnClickListener(this);
 		lbladdress.setOnClickListener(this);
-		lbllikes.setText(Integer.toString(likes) + " likes");
-		lbldislikes.setText(Integer.toString(dislikes) + " dislikes");
-		lblbrand.setText(brand);
-		lblcategory.setText(category);
-		lblproduct.setText(productname);
+		lbllikes.setText(Integer.toString(likes));
+		lbldislikes.setText(Integer.toString(dislikes));
+		lblcategory.setText("Category: " + category + "-->" + subcategory);
+		String productname2 = productname.substring(0, productname.indexOf("."));
+		lblproduct.setText(productname2);
 		lblshop.setText(shopname);
 		lbladdress.setText(address);
-		lblpercent.setText(Integer.toString(percent));
-		lblprice.setText(Double.toString(dprice));
+		lblpercent.setText(Integer.toString(percent) + "%");
+		lblprice.setText("$" + Double.toString(dprice));
+		lblusername.setText("Uploaded by: " + username);
+		lbluploaddate.setText("Created on: " + createddate);
 		return productname;
 	}
 
-	void downloadFile(String filename)
-	{
+	void downloadFile(String filename){
 
-		URL myFileUrl = null;
-		if (filename.contains(" "))
-		{
+		URL myFileUrl =null;
+		
+		if (filename.contains(" ")){
 			filename = filename.replace(" ", "%20");
 		}
-		try
-		{
-			// myFileUrl= new URL("http://172.22.177.204/FYP/FYP/uploads/" +
-			// filename);
-			myFileUrl = new URL(Constants.CONNECTIONSTRING + "FYP/uploads/" + filename);
+		
+		try {
+			//myFileUrl= new URL("http://172.22.177.204/FYP/FYP/uploads/" + filename);
+		myFileUrl= new URL(Constants.CONNECTIONSTRING + "FYP/uploads/" + filename);
+		} catch (MalformedURLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
-		catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		try {
+		HttpURLConnection conn= (HttpURLConnection)myFileUrl.openConnection();
+		conn.setDoInput(true);
+		conn.connect();
+		int length = conn.getContentLength();
+		int[] bitmapData =new int[length];
+		byte[] bitmapData2 =new byte[length];
+		InputStream is = conn.getInputStream();
+		BitmapFactory.Options options=new BitmapFactory.Options();
+		options.inSampleSize = 2;
+		bmImg = BitmapFactory.decodeStream(is, null, options);
+		
+		//bmImg = BitmapFactory.decodeStream(is);
+		imagedisplay =(ImageView) findViewById(R.id.imgProduct);
+		imagedisplay.setImageBitmap(null);
+		imagedisplay.setImageBitmap(bmImg);
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
-		try
-		{
-			HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-			conn.setDoInput(true);
-			conn.connect();
-			int length = conn.getContentLength();
-			int[] bitmapData = new int[length];
-			byte[] bitmapData2 = new byte[length];
-			InputStream is = conn.getInputStream();
-
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 8;
-			bmImg = BitmapFactory.decodeStream(is, null, options);
-
-			// bmImg = BitmapFactory.decodeStream(is);
-			imagedisplay = (ImageView) findViewById(R.id.imgProduct);
-			imagedisplay.setImageBitmap(null);
-			imagedisplay.setImageBitmap(bmImg);
 		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void onClick(View v)
@@ -318,26 +322,46 @@ public class Productdetail extends Activity implements OnClickListener
 		TextView lbllikes, lbldislikes;
 		ProgressDialog mProgress;
 		
+		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+    	String userid = "",usertype="";
+    	if (!userDetails.getString("userID", "").equals("")){
+    		userid = userDetails.getString("userID", "");
+    		usertype = "user_norm";
+    	}else if (!userDetails.getString("userDB_FBID", "").equals("")){
+    		userid = userDetails.getString("userDB_FBID", "");
+    		usertype = "user_fb";
+    	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
+    		userid = userDetails.getString("userDB_TWITID", "");
+    		usertype = "user_twit";
+    	}
+		
 		if (v == btnLike)
 		{
-			lbllikes = (TextView) findViewById(R.id.lblLikes);
-			int numberlikes = Integer.parseInt(lbllikes.getText().toString().substring(0, 1));
-			numberlikes++;
-			lbllikes.setText(Integer.toString(numberlikes) + " likes");
-			updateComments("likes", productid, numberlikes);
-			btnLike.setEnabled(false);
-			btnDislike.setEnabled(false);
-
+			boolean existed = checkCount(userid,usertype,Integer.toString(productid));
+			if (existed == true){
+				//prompt error dialog	
+				alertCommented();
+			}else{
+				lbllikes = (TextView) findViewById(R.id.lblLikes);
+				int numberlikes = Integer.parseInt(lbllikes.getText().toString().substring(0, 1));
+				numberlikes++;
+				lbllikes.setText(Integer.toString(numberlikes) + " likes");
+				updateComments("likes", productid, numberlikes,userid,usertype);
+			}
 		}
 		else if (v == btnDislike)
 		{
-			lbldislikes = (TextView) findViewById(R.id.lblDislikes);
-			int numberdislikes = Integer.parseInt(lbldislikes.getText().toString().substring(0, 1));
-			numberdislikes++;
-			lbldislikes.setText(Integer.toString(numberdislikes) + " dislikes");
-			updateComments("dislikes", productid, numberdislikes);
-			btnLike.setEnabled(false);
-			btnDislike.setEnabled(false);
+			boolean existed = checkCount(userid,usertype,Integer.toString(productid));
+			if (existed == true){
+				//prompt error dialog
+				alertCommented();		
+			}else{
+				lbldislikes = (TextView) findViewById(R.id.lblDislikes);
+				int numberdislikes = Integer.parseInt(lbldislikes.getText().toString().substring(0, 1));
+				numberdislikes++;
+				lbldislikes.setText(Integer.toString(numberdislikes) + " dislikes");
+				updateComments("dislikes", productid, numberdislikes,userid,usertype);
+			}
 		}
 		else if (v == btnShare)
 		{
@@ -466,11 +490,6 @@ public class Productdetail extends Activity implements OnClickListener
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 			parentActivity.startChildActivity("Shop Detail", shopIntent);
 		}
-		else if (v == btnBack)
-		{
-			Intent i = new Intent(getParent(), Container.class);
-			startActivity(i);
-		}
 	}
 	
 	protected void gotoFacebookConnect()
@@ -535,7 +554,7 @@ public class Productdetail extends Activity implements OnClickListener
 
 		fbDialog.show();
 	}
-
+	
 	private void postReview(String review)
 	{
 		// post to server
@@ -599,7 +618,7 @@ public class Productdetail extends Activity implements OnClickListener
 
 		}
 	};
-	
+
 	public void postWithoutDialog(String message, String link, String name, String caption, String imageUrl)
 	{
 		// Bundle params = new Bundle();
@@ -608,7 +627,7 @@ public class Productdetail extends Activity implements OnClickListener
 		// params.putString("name", name);
 		// params.putString("caption", caption);
 		// params.putString("picture", imageUrl);
-		//
+//
 		// asyncRunner = new AsyncFacebookRunner(mFacebook);
 		// asyncRunner.request("me/feed", params, "POST", new
 		// WallPostRequestListener(), null);
@@ -739,12 +758,12 @@ public class Productdetail extends Activity implements OnClickListener
 				asyncRunner = new AsyncFacebookRunner(facebook);
 				asyncRunner.request(postId, new WallPostRequestListener());
 				// mDeleteButton.setOnClickListener(new OnClickListener()
-				// {
+//		{
 				// public void onClick(View v)
 				// {
 				// asyncRunner.request(postId, new Bundle(), "DELETE", new
 				// WallPostDeleteListener(), null);
-				// }
+//		}
 				// });
 			}
 			else
@@ -754,7 +773,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 	}
 
-	private void updateComments(String type, int id, int numberComments)
+	private void updateComments(String type, int id, int numberComments, String userid, String usertype)
 	{
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(id)));
@@ -776,6 +795,8 @@ public class Productdetail extends Activity implements OnClickListener
 
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String response = httpclient.execute(httppost, responseHandler);
+			nameValuePairs.add(new BasicNameValuePair("userid", userid));
+			nameValuePairs.add(new BasicNameValuePair("usertype", usertype));
 			httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertcomments.php");
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -788,7 +809,93 @@ public class Productdetail extends Activity implements OnClickListener
 			Log.e("log_tag", "Error in http connection" + e.toString());
 		}
 	}
-	public class FbConnect
+	
+	private boolean checkCount(String userid, String usertype, String prodid){
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id", userid));
+		nameValuePairs.add(new BasicNameValuePair("usertype", usertype));
+		nameValuePairs.add(new BasicNameValuePair("prodid", prodid));
+		// http post
+		try
+		{
+			HttpClient httpclient = new DefaultHttpClient();
+			// HttpPost httppost = new
+			// HttpPost("http://172.22.177.204/FYP/database.php");
+			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "commentscount.php");
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		}
+		catch (Exception e)
+		{
+			Log.e("log_tag", "Error in http connection" + e.toString());
+		}
+		// convert response to string
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+			String line = "0";
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line + "\n");
+			}
+			is.close();
+			result = sb.toString();
+		}
+		catch (Exception e)
+		{
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+		
+		try
+		{
+			jArray = new JSONArray(result);
+			JSONObject json_data = null;
+			for (int i = 0; i < jArray.length(); i++)
+			{
+				json_data = jArray.getJSONObject(i);
+				commentType = json_data.getString("category");
+			}
+			
+			if (commentType!=null){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		catch (JSONException e1)
+		{
+			Toast.makeText(getBaseContext(), "Error! No JSON Record for this entry", Toast.LENGTH_LONG).show();
+		}
+		catch (ParseException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+    private void alertCommented(){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	     String title = null;
+	     if (commentType.equals("likes")){
+	    	 title = "You have already liked this deal previously";
+	     }else if (commentType.equals("dislike")){
+	    	 title = "You have already disliked this deal previously";
+	     }
+	        dialog.setTitle(title);
+	        dialog.setNeutralButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();               
+	            }});
+	        dialog.show();
+}
+public class FbConnect
 	{
 
 		private final String[] FACEBOOK_PERMISSION =
@@ -1040,5 +1147,4 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 
 	}
-
 }

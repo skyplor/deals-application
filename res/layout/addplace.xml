@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#98AFC7"
+    android:background="@drawable/background"
     android:orientation="vertical" >
 
     <socialtour.socialtour.LockableScrollView
         android:id="@+id/ScrollView01"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:id="@+id/LinearLayout02"
@@ -40,6 +40,7 @@
                         android:id="@+id/txtShopname"
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_rounded_corners"
                         android:singleLine="true" >
                     </AutoCompleteTextView>
 
@@ -70,30 +71,9 @@
                         android:id="@+id/txtShopaddress"
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_rounded_corners"
                         android:singleLine="true" >
                     </EditText>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dip"
-                        android:text="Category:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <Spinner
-                        android:id="@+id/shopcategorylist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-                    </Spinner>
                 </TableRow>
             </TableLayout>
 
@@ -111,27 +91,21 @@
                         android:id="@+id/addShopMap"
                         android:layout_width="320dip"
                         android:layout_height="300dip"
+                        android:layout_marginTop="10dip"
                         android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ"
                         android:clickable="true"
                         android:enabled="true" >
-                    </com.google.android.maps.MapView>                   
-                    
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <Button
-                        android:id="@+id/uploadProduct"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Submit" >
-                    </Button>
+                    </com.google.android.maps.MapView>
                 </TableRow>
             </TableLayout>
+
+            <Button
+                android:id="@+id/uploadProduct"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Submit" >
+            </Button>
         </LinearLayout>
     </socialtour.socialtour.LockableScrollView>
-
 </LinearLayout>

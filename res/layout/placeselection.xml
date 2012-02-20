@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content">
-		<EditText android:id="@+id/searchText" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="1" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
 
-		<Button android:id="@+id/searchButton" android:text="Search"
-			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/imgstep2"
+        android:layout_width="300px"
+        android:layout_height="50px"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/step2" >
+    </ImageView>
 
-	</LinearLayout>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/lblSelectShop" android:text="Select Shop:"></TextView>
-	<ListView android:id="@+id/list" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-		<Button android:id="@+id/addPlace" android:text="Add Place"
-			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_rounded_corners" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgsearchresults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:src="@drawable/searchresults" >
+    </ImageView>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

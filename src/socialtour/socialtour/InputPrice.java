@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,13 +53,16 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	private RadioGroup radGrp;
 	boolean isPercent = true;
 	Uri imageUri;
+	ImageView addplace, backtomain;
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		setContentView(R.layout.step5);
 		
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.INVISIBLE);
+        Container.btn2.setImageResource(R.drawable.quitsharing);
+        Container.btn3.setImageResource(R.drawable.addplace);
+		backtomain = Container.btn2;
+		addplace = Container.btn3;
 		
 		txtInput = (TextView) findViewById(R.id.txtInput);
 		txtInput2 = (EditText) findViewById(R.id.txtPrice);
@@ -74,9 +78,13 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	@Override
 	public void onResume(){
 		super.onResume();
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn2.setVisibility(View.GONE);
-		Container.btn3.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.INVISIBLE);
+        Container.btn2.setImageResource(R.drawable.quitsharing);
+        Container.btn3.setImageResource(R.drawable.addplace);
+		backtomain = Container.btn2;
+		addplace = Container.btn3;
+		backtomain.setOnClickListener(this);
+		addplace.setOnClickListener(this);
 	}
 	
     @Override
@@ -115,8 +123,21 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
         	String oriStr = Double.toString(ori);
         	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         	
-        	
-        	
+        	SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+        	String userid = "",usertype="";
+        	if (!userDetails.getString("userID", "").equals("")){
+        		userid = userDetails.getString("userID", "");
+        		usertype = "user_norm";
+        	}else if (!userDetails.getString("userDB_FBID", "").equals("")){
+        		userid = userDetails.getString("userDB_FBID", "");
+        		usertype = "user_fb";
+        	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
+        		userid = userDetails.getString("userDB_TWITID", "");
+        		usertype = "user_twit";
+        	}
+
+        	nameValuePairs.add(new BasicNameValuePair("userid",userid));
+        	nameValuePairs.add(new BasicNameValuePair("usertype",usertype));
         	nameValuePairs.add(new BasicNameValuePair("filename",txtNameInput2.getText().toString() + ".jpg"));
         	nameValuePairs.add(new BasicNameValuePair("sourcepath",Constants.UPLOAD_PATH));
         	nameValuePairs.add(new BasicNameValuePair("url",Constants.CONNECTIONSTRING + "FYP/uploads/" + name));
@@ -125,6 +146,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
         	nameValuePairs.add(new BasicNameValuePair("place_id",Integer.toString(placeid)));
         	nameValuePairs.add(new BasicNameValuePair("dprice",disStr));
         	nameValuePairs.add(new BasicNameValuePair("category",getIntent().getStringExtra("category")));
+        	nameValuePairs.add(new BasicNameValuePair("subcategory",getIntent().getStringExtra("subcategory")));
         	nameValuePairs.add(new BasicNameValuePair("percentdiscount",percentageStr));
         	nameValuePairs.add(new BasicNameValuePair("oprice",oriStr));
         	
@@ -154,6 +176,15 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
         	}catch(Exception e){
     	         Log.e("log_tag", "Error in http connection"+e.toString());
     	    }
+		}else if (v==addplace){
+			Intent i = new Intent(getParent(), Addplace.class);
+	     	Bundle bundle=getIntent().getExtras();
+	     	Uri pic = (Uri) bundle.get("pic");
+	     	i.putExtra("pic", pic);
+	     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	     	parentActivity.startChildActivity("Add Place", i);
+		}else if (v==backtomain){
+			confirmationquit();
 		}
 	}
 	
@@ -285,4 +316,25 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	            }});
 	        dialog.show();
     }
+    
+    private void confirmationquit(){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	        dialog.setTitle("You are in the midst of sharing. Quit Sharing?");
+	        
+	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();
+	                Intent i = new Intent(getParent(), TabGroup2Activity.class);
+	   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	   		     	parentActivity.startChildActivity("Back to Main", i);
+	                
+	            }});
+	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();               
+	            }});
+	        dialog.show();
+ }
 }

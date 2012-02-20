@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/productdetailLayout"
-
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#98AFC7"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <ScrollView
@@ -12,193 +11,191 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/LinearLayout02"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="400dip"
             android:orientation="vertical" >
+			
+            <ImageView
+                android:id="@+id/imgProductBackground"
+                android:layout_width="300dip"
+                android:layout_height="300dip"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/productdetail"
+                android:layout_marginTop="5dip">
+            </ImageView>
+            
             <ImageView
                 android:id="@+id/imgProduct"
-                android:layout_width="wrap_content"
-                android:layout_height="200dip"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dip">
+                android:layout_width="230dip"
+                android:layout_height="230dip"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="36dip">
             </ImageView>
-
+            
+            <TextView
+                android:id="@+id/lblLikes"
+                android:layout_width="30dip"
+                android:layout_height="45dip"
+                android:text="1"
+                android:textSize="40dip"
+                android:textStyle="bold"
+                android:textColor="#144ded"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="160dip"
+                android:layout_gravity="center_vertical|right" >
+            </TextView>
+            
+            <ImageView
+                android:id="@+id/imglove"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="110dip"
+                android:src="@drawable/likepic">
+            </ImageView>
+            
+            <TextView
+                android:id="@+id/lblDislikes"
+                android:layout_width="30dip"
+                android:layout_height="45dip"
+                android:text="1"
+                android:textSize="40dip"
+                android:textStyle="bold"
+                android:textColor="#144ded"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="60dip"
+                android:layout_gravity="center_vertical|right">
+            </TextView>
+            
+            <ImageView
+                android:id="@+id/imgsadface"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dip"
+                android:src="@drawable/dislikepic">
+            </ImageView>
+            
+            <ImageView
+                android:id="@+id/typeBadge"
+                android:layout_width="120px"
+                android:layout_height="120px"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/imgProductBackground"
+                android:layout_marginTop="-100dip"
+                
+                android:src="@drawable/badge" >
+            </ImageView>
+            
+            <TextView
+                android:id="@+id/lblPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/imgProductBackground"
+                android:layout_marginRight="25dip"
+                android:layout_marginTop="-75dip"
+                android:text="30%"
+                android:textColor="#283860"
+                android:textSize="30dip"
+                android:textStyle="bold" >
+            </TextView>
+            
             <TextView
                 android:id="@+id/lblProductname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Product name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#000000" >
-            </TextView>
-
-            <TextView
-
-                android:id="@+id/shopname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-
-
-                android:text="Shop name"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFFFFF" >
+            	android:layout_height="wrap_content"
+            	android:textColor="#302217"
+            	android:textSize="23dip"
+            	android:layout_marginLeft="30dip"
+            	android:textStyle="bold"
+            	android:layout_below="@+id/imgProductBackground">
             </TextView>
-
+            
+            <TextView
+                android:id="@+id/shopname"
+                android:text="Shop name"
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:textColor="#302217"
+            	android:textSize="16dip"
+            	android:layout_marginLeft="30dip"
+            	android:textStyle="bold"
+            	android:layout_below="@+id/lblProductname">
+            </TextView>
+            
             <TextView
                 android:id="@+id/lblshopaddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
                 android:text="Shop address"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#FFFFFF" >
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:clickable="true"
+            	android:textColor="#302217"
+            	android:textSize="12dip"
+            	android:layout_marginLeft="30dip"
+            	android:layout_below="@+id/shopname">
+            </TextView>
+            
+            <TextView
+                android:id="@+id/lblCategory"
+                android:text="Category: "
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:clickable="true"
+            	android:textColor="#302217"
+            	android:textSize="12dip"
+            	android:layout_marginLeft="30dip"
+            	android:layout_below="@+id/lblshopaddress">
+            </TextView>
+            
+            <TextView
+                android:id="@+id/lblUploadedby"
+                android:text="Uploaded by: "
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:clickable="true"
+            	android:textColor="#302217"
+            	android:textSize="12dip"
+            	android:layout_marginLeft="30dip"
+            	android:layout_below="@+id/lblCategory">
+            </TextView>
+            
+            <TextView
+                android:id="@+id/lblCreateddate"
+                android:text="Created on: "
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:clickable="true"
+            	android:textColor="#302217"
+            	android:textSize="12dip"
+            	android:layout_marginLeft="30dip"
+            	android:layout_below="@+id/lblUploadedby">
+            </TextView>
+            
+            <TextView
+                android:id="@+id/lblPrice"
+                android:text="$10.50"
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:textColor="#283860"
+            	android:layout_alignParentRight="true"
+            	android:layout_marginRight="20dip"
+            	android:layout_marginTop="-5dip"
+            	android:textSize="35dip"
+            	android:textStyle="bold"
+            	android:layout_below="@+id/typeBadge">
             </TextView>
 
-            <TableLayout
-                android:id="@+id/tableLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TableRow
-                    android:id="@+id/tableRow5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Product Name:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/lblCategory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Brand:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/lblBrand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Brand:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Price:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/lblPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Price:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Percent Discount:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/lblPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Percent Discount:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/tableRow10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/lblLikes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="  Likes"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#000000" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/lblDislikes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="  Dislikes"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#000000" >
-                    </TextView>
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
-
-</LinearLayout>
+</RelativeLayout>

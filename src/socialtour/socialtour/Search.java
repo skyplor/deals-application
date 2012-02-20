@@ -40,6 +40,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -77,10 +78,11 @@ public class Search extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
+		
 		Container.btn1.setVisibility(View.GONE);
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
-
+		
 		btnSearch = (Button) findViewById(R.id.btnSearch);
 		txtSearch = (EditText) findViewById(R.id.txtSearch);
 		radSearch = (RadioGroup) findViewById(R.id.radSearch);
@@ -137,8 +139,6 @@ public class Search extends Activity implements OnClickListener
 					intent.putExtra("shopid", arrShop[pos].getId());
 					intent.putExtra("shopname", arrShop[pos].getName());
 					intent.putExtra("shopaddress", arrShop[pos].getAddress());
-					int icon = arrShop[pos].getIcon();
-					intent.putExtra("icon", icon);
 					intent.putExtra("lat", arrShop[pos].getLat());
 					intent.putExtra("long", arrShop[pos].getLng());
 					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
@@ -163,6 +163,7 @@ public class Search extends Activity implements OnClickListener
     	}
     	return true;
     }
+	
 	@Override
 	public void onClick(View v)
 	{
@@ -202,12 +203,17 @@ public class Search extends Activity implements OnClickListener
 		}
 		else if (v == mapview)
 		{
+			Intent intent = new Intent(getParent(), MapResult.class);
+			intent.putExtra("search", true);
+			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			parentActivity.startChildActivity("Map Result", intent);
+			
 			//Save the results' details into a list of shops
 			//Put into bundles to be passed to the next intent
-			Intent intent = new Intent(this, MapResult.class);
-			intent.putExtra("search", true);
+			//Intent intent = new Intent(this, MapResult.class);
+//			intent.putExtra("shoplist", shoplist);
 			//Start new intent MapResult.
-			startActivity(intent);
+			//startActivity(intent);
 			
 			
 //			if (searchStr.equals(""))
@@ -243,6 +249,7 @@ public class Search extends Activity implements OnClickListener
 	            }});
 	        dialog.show();
     }
+
 	public void getProduct(String searchstr, String mode, Boolean location)
 	{
 		searchResult.setAdapter(null);
@@ -360,7 +367,7 @@ public class Search extends Activity implements OnClickListener
 					arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 					tempShop[i].setName(json_data.getString("name"));
 					
-					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));
 					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrPro, tempShop);
@@ -376,11 +383,10 @@ public class Search extends Activity implements OnClickListener
 					arrShop[i].setId(json_data.getInt("id"));
 					arrShop[i].setName(json_data.getString("name"));
 					arrShop[i].setAddress(json_data.getString("address"));
-					arrShop[i].setType(json_data.getString("shoptype"));
 					arrShop[i].setLat((String) json_data.get("lat"));
 					arrShop[i].setLng((String) json_data.get("lng"));
 
-					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"), "men");//, json_data.getString("shoptype"));
+					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));
 					shoplist.add(shopResult);
 				}
 				adapter = new SimpleLazyAdapter(this, arrShop);

@@ -44,6 +44,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
@@ -86,7 +87,7 @@ public class Container extends TabActivity
 //	private UserParticulars userS;
 
 	//Button logout;
-	public static Button btn1,btn2,btn3;
+	public static ImageView btn1,btn2,btn3;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
 	TabHost tabHost; // The activity TabHost
@@ -97,9 +98,9 @@ public class Container extends TabActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.container);
 		
-		btn1= (Button) findViewById(R.id.headerLatest);
-		btn2= (Button) findViewById(R.id.headerHot);
-		btn3= (Button) findViewById(R.id.headerNearby);
+		btn1= (ImageView) findViewById(R.id.headerLatest);
+		btn2= (ImageView) findViewById(R.id.headerHot);
+		btn3= (ImageView) findViewById(R.id.headerNearby);
 
 		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
@@ -138,12 +139,11 @@ public class Container extends TabActivity
 			 * } });
 			 */
 
-
-
-			globalVar = ((GlobalVariable) getApplicationContext());			
+			globalVar = ((GlobalVariable) getApplicationContext());
 			twitBtn = globalVar.getTwitBtn();
+
 			facebook = globalVar.getFBState();
-			
+
 			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			fblogout = login.getBoolean("FacebookLoggedOut", true);
 
@@ -152,7 +152,7 @@ public class Container extends TabActivity
 			globalVar.setTwitState(mTwitter);
 
 			mProgress = new ProgressDialog(this);
-			
+
 			Log.d("FB session in container: ", Boolean.toString(facebook.isSessionValid()));
 
 			try
@@ -224,16 +224,16 @@ public class Container extends TabActivity
 			intent = new Intent().setClass(this, TabGroup1Activity.class);
 
 			// Initialize a TabSpec for each tab and add it to the TabHost
-			spec = tabHost.newTabSpec("home").setIndicator("Browse", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			spec = tabHost.newTabSpec("home").setIndicator("Browse", res.getDrawable(R.drawable.browsebutton)).setContent(intent);
 			tabHost.addTab(spec);
 
 			// Do the same for the other tabs
 			intent = new Intent().setClass(this, TabGroup2Activity.class);
-			spec = tabHost.newTabSpec("attraction").setIndicator("Share", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			spec = tabHost.newTabSpec("attraction").setIndicator("Share", res.getDrawable(R.drawable.sharebutton)).setContent(intent);
 			tabHost.addTab(spec);
 
 			intent = new Intent().setClass(this, TabGroup3Activity.class);
-			spec = tabHost.newTabSpec("checkin").setIndicator("Search", res.getDrawable(R.drawable.ic_tab_artists)).setContent(intent);
+			spec = tabHost.newTabSpec("checkin").setIndicator("Search", res.getDrawable(R.drawable.searchbutton)).setContent(intent);
 			tabHost.addTab(spec);
 
 			tabHost.setCurrentTab(0);
@@ -256,8 +256,10 @@ public class Container extends TabActivity
 						}
 						return false;
 					} 
-		        });
-		    }
+		        }); 
+		    }      
+
+
 			tabHost.setOnTabChangedListener(new OnTabChangeListener()
 			{
 				@Override
@@ -304,7 +306,6 @@ public class Container extends TabActivity
 		return true;
 	}
 	/*
-
 	private void init(final int type)
 	{
 
@@ -346,7 +347,6 @@ public class Container extends TabActivity
 			editor.putString("userFBID", null);
 			editor.putString("emailLogin", null);
 			editor.commit();
-			
 			globalVar = ((GlobalVariable) getApplicationContext());
 			Facebook mFacebook = globalVar.getFBState();
 //			globalVar.setfbBtn(false);
@@ -452,7 +452,7 @@ public class Container extends TabActivity
 			}
 			else
 			{
-				login();
+			login();
 			}
 			// }
 			// else
@@ -556,7 +556,7 @@ public class Container extends TabActivity
 							{
 								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", CONTAINER, Container.this);
 								Log.d("username in container: ", connectCheck.getUserName());
-								
+
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
 								editor.putString("userDB_FBID", connectCheck.getUserID());
