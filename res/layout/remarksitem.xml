@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="30dip"
+    android:padding="5dip" 
+    android:background="@drawable/background2"
+    android:cacheColorHint="#00000000">
+
+    <TextView
+        android:id="@+id/txtnameremarks"
+        android:layout_width="100dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dip"
+        android:text="Lee Ming En:"
+        android:textColor="#302217"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtremarks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/txtnameremarks"
+        android:textColor="#302217"
+        android:text="'this is great!'"
+        android:textSize="15dp"/>
+
+</RelativeLayout>

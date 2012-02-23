@@ -16,16 +16,16 @@ import android.widget.ImageView;
 public class ChooseCategory extends Activity implements OnClickListener{
 	private ImageView cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,cat9;
 	private String categoryname, subcategory;
-	ImageView addplace, backtomain;
+	ImageView backtomain;
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		setContentView(R.layout.step4);
 		
 		Container.btn1.setVisibility(View.INVISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
-        Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
-		addplace = Container.btn3;
+		Container.btn2.setVisibility(View.INVISIBLE);
+		Container.btn3.setVisibility(View.INVISIBLE);
+        //Container.btn3.setImageResource(R.drawable.quitsharing);
+		backtomain = Container.home;
 		
 		cat1 = (ImageView)findViewById(R.id.category1);
 		cat2 = (ImageView)findViewById(R.id.category2);
@@ -47,19 +47,17 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		cat8.setOnClickListener(this);
 		cat9.setOnClickListener(this);
 		backtomain.setOnClickListener(this);
-		addplace.setOnClickListener(this);
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
 		Container.btn1.setVisibility(View.INVISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
-        Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
-		addplace = Container.btn3;
+		Container.btn2.setVisibility(View.INVISIBLE);
+		Container.btn3.setVisibility(View.INVISIBLE);
+        //Container.btn3.setImageResource(R.drawable.quitsharing);
+		backtomain = Container.home;
 		backtomain.setOnClickListener(this);
-		addplace.setOnClickListener(this);
 	}
 	
 	@Override
@@ -144,13 +142,6 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		builder.show();
 		//AlertDialog alert = builder.create();
 		//alert.show();
-		}else if (v==addplace){
-			Intent i = new Intent(getParent(), Addplace.class);
-		     	Bundle bundle=getIntent().getExtras();
-		     	Uri pic = (Uri) bundle.get("pic");
-		     	i.putExtra("pic", pic);
-		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-		     	parentActivity.startChildActivity("Add Place", i);
 		}else if (v==backtomain){
 				confirmationquit();
 		}
@@ -158,15 +149,15 @@ public class ChooseCategory extends Activity implements OnClickListener{
 	
     private void confirmationquit(){
 	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
-	        dialog.setTitle("You are in the midst of sharing. Quit Sharing?");
-	        
+	        dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
 	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
 	                dialog.dismiss();
-	                Intent i = new Intent(getParent(), TabGroup2Activity.class);
-	   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	parentActivity.startChildActivity("Back to Main", i);
+	                Intent i = getBaseContext().getPackageManager()
+		   		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+		                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		                startActivity(i);
 	                
 	            }});
 	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){

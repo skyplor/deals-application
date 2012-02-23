@@ -1,201 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/productdetailLayout"
+    android:id="@+id/relativeLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical" >
-
+    android:layout_height="fill_parent" >
+	
     <ScrollView
         android:id="@+id/ScrollView01"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
+    
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="700dp"
+        android:background="#eeeeee" >
+        
+        <ImageView
+            android:id="@+id/imgUser"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/user" >
+        </ImageView>
 
-        <RelativeLayout
-            android:id="@+id/LinearLayout02"
-            android:layout_width="fill_parent"
-            android:layout_height="400dip"
-            android:orientation="vertical" >
-			
-            <ImageView
-                android:id="@+id/imgProductBackground"
-                android:layout_width="300dip"
-                android:layout_height="300dip"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/productdetail"
-                android:layout_marginTop="5dip">
-            </ImageView>
+        <TextView
+            android:id="@+id/lblUploadedby"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@+id/imgUser"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="2dp"
+            android:text="Mingen Lee"
+            android:textColor="#302217"
+            android:textSize="15dp"
+            android:textStyle="bold" >
+        </TextView>
+		       
+        <TextView
+                android:id="@+id/lblRemarks"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="11"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#302217"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/imgRemarks"
+                android:layout_below="@+id/lblCategory"
+                android:layout_marginTop="2dp" >
+            </TextView>
             
-            <ImageView
-                android:id="@+id/imgProduct"
-                android:layout_width="230dip"
-                android:layout_height="230dip"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="36dip">
-            </ImageView>
-            
-            <TextView
+        <Button
+            	android:id="@+id/btnshowmorecomments"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:text="Show more"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/lblRemarks"
+                android:layout_below="@+id/lblCategory"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/button_rounded_corners" />
+        
+        <ImageView
+            android:id="@+id/imglove"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:src="@drawable/likepicbrown"
+            android:layout_marginRight="5dip"
+            android:layout_below="@+id/latestcomments" >
+        </ImageView>
+        
+        <TextView
                 android:id="@+id/lblLikes"
-                android:layout_width="30dip"
-                android:layout_height="45dip"
-                android:text="1"
-                android:textSize="40dip"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="11"
+                android:textSize="20dp"
                 android:textStyle="bold"
-                android:textColor="#144ded"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="160dip"
-                android:layout_gravity="center_vertical|right" >
+                android:textColor="#302217"
+                android:layout_toRightOf="@+id/imglove"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/latestcomments" >
             </TextView>
             
-            <ImageView
-                android:id="@+id/imglove"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="110dip"
-                android:src="@drawable/likepic">
-            </ImageView>
-            
-            <TextView
-                android:id="@+id/lblDislikes"
-                android:layout_width="30dip"
-                android:layout_height="45dip"
-                android:text="1"
-                android:textSize="40dip"
-                android:textStyle="bold"
-                android:textColor="#144ded"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="60dip"
-                android:layout_gravity="center_vertical|right">
-            </TextView>
-            
-            <ImageView
-                android:id="@+id/imgsadface"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="10dip"
-                android:src="@drawable/dislikepic">
-            </ImageView>
-            
-            <ImageView
-                android:id="@+id/typeBadge"
-                android:layout_width="120px"
-                android:layout_height="120px"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/imgProductBackground"
-                android:layout_marginTop="-100dip"
-                
-                android:src="@drawable/badge" >
-            </ImageView>
-            
-            <TextView
-                android:id="@+id/lblPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/imgProductBackground"
-                android:layout_marginRight="25dip"
-                android:layout_marginTop="-75dip"
-                android:text="30%"
-                android:textColor="#283860"
-                android:textSize="30dip"
-                android:textStyle="bold" >
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblProductname"
-                android:text="Product name"
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:textColor="#302217"
-            	android:textSize="23dip"
-            	android:layout_marginLeft="30dip"
-            	android:textStyle="bold"
-            	android:layout_below="@+id/imgProductBackground">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/shopname"
-                android:text="Shop name"
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:textColor="#302217"
-            	android:textSize="16dip"
-            	android:layout_marginLeft="30dip"
-            	android:textStyle="bold"
-            	android:layout_below="@+id/lblProductname">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblshopaddress"
-                android:text="Shop address"
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:clickable="true"
-            	android:textColor="#302217"
-            	android:textSize="12dip"
-            	android:layout_marginLeft="30dip"
-            	android:layout_below="@+id/shopname">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblCategory"
-                android:text="Category: "
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:clickable="true"
-            	android:textColor="#302217"
-            	android:textSize="12dip"
-            	android:layout_marginLeft="30dip"
-            	android:layout_below="@+id/lblshopaddress">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblUploadedby"
-                android:text="Uploaded by: "
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:clickable="true"
-            	android:textColor="#302217"
-            	android:textSize="12dip"
-            	android:layout_marginLeft="30dip"
-            	android:layout_below="@+id/lblCategory">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblCreateddate"
-                android:text="Created on: "
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:clickable="true"
-            	android:textColor="#302217"
-            	android:textSize="12dip"
-            	android:layout_marginLeft="30dip"
-            	android:layout_below="@+id/lblUploadedby">
-            </TextView>
-            
-            <TextView
-                android:id="@+id/lblPrice"
-                android:text="$10.50"
-                android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:textColor="#283860"
-            	android:layout_alignParentRight="true"
-            	android:layout_marginRight="20dip"
-            	android:layout_marginTop="-5dip"
-            	android:textSize="35dip"
-            	android:textStyle="bold"
-            	android:layout_below="@+id/typeBadge">
-            </TextView>
+        <TextView
+            android:id="@+id/lbllikealready"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/latestcomments"
+            android:text="(you have already like this deal!)"
+            android:layout_toRightOf="@+id/lblLikes"
+            android:textColor="#302217"
+            android:layout_marginLeft="2dp"
+            android:textSize="15dp"
+            android:layout_marginTop="7dp"
+            android:visibility="invisible" />
+        
+        <TextView
+            android:id="@+id/lblCreateddate"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_alignRight="@+id/imgProduct"
+            android:layout_above="@+id/imgProduct"
+            android:text="23 Feb 2011"
+            android:textColor="#989898"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical|right" >
+        </TextView>
 
-        </RelativeLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/lblbeforeprice"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblshopaddress"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:text="Usual Price: $10.00"
+            android:textColor="#283860"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp">
+        </TextView>
+        
+        <TextView
+            android:id="@+id/lblPrice"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblbeforeprice"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:text="Discounted Price: $10.00"
+            android:textColor="#283860"
+            android:textSize="17dp"
+            android:textStyle="bold">
+        </TextView>
+        
+        <TextView
+            android:id="@+id/lblCategory"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblPrice"
+            android:text="Category: Accessories (Men)"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:textColor="#302217"
+            android:layout_marginLeft="2dp"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp" />
 
+        <TextView
+            android:id="@+id/shopname"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imgshoplogo"
+            android:layout_below="@+id/lblProductname"
+            android:text="Ang Mo Kio Hub"
+            android:textColor="#302217"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp" />
+        
+        <TextView
+            android:id="@+id/lblshopaddress"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imgshoplogo"
+            android:layout_below="@+id/shopname"
+            android:text="Blk 670 Woodlands Drive 71 #05-18"
+            android:layout_marginTop="3dp"
+            android:textColor="#302217"
+            android:textSize="15dp" />
+        
+        <ImageView
+            android:id="@+id/imgRemarks"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:layout_below="@+id/lblCategory"
+            android:src="@drawable/comment"
+            android:layout_marginTop="5dp" >
+        </ImageView>
+        
+        <TextView
+            android:id="@+id/latestcomments"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgRemarks"
+            android:text="'this product is good'"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:textColor="#302217"
+            android:layout_marginLeft="2dp"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp" />
+		
+        <ImageView
+            android:id="@+id/imgshoplogo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:layout_below="@+id/lblProductname"
+            android:src="@drawable/shopicon"
+            android:layout_marginTop="5dp" >
+        </ImageView>
+        
+        <TextView
+            android:id="@+id/lblProductname"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imgProduct"
+            android:layout_below="@+id/imgProduct"
+            android:text="TextView"
+            android:textColor="#302217"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/typeBadge"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/lblProductname"
+            android:layout_alignRight="@+id/imgProduct"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="7dp"
+            android:src="@drawable/badge" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/lblPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/shopname"
+            android:layout_below="@+id/lblProductname"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:text="30%"
+            android:textColor="#283860"
+            android:textSize="30dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="300dp"
+            android:layout_height="360dp"
+            android:layout_below="@+id/lblUploadedby"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/border" />
+    </RelativeLayout>
+</ScrollView>
 </RelativeLayout>

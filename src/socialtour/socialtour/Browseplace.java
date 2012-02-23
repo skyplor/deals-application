@@ -80,11 +80,12 @@ public class Browseplace extends Activity implements OnClickListener{
         setContentView(R.layout.placeselection);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Container.btn1.setVisibility(ImageView.INVISIBLE);
-        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.VISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
         Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
+        Container.btn3.getLayoutParams().width = 65;
+        //Container.btn3.setImageResource(R.drawable.quitsharing);
+		backtomain = Container.home;
 		addplace = Container.btn3;
 		//backtomain.setImageResource(R.drawable.quitsharing);
 		//addplace.setImageResource(R.drawable.addplace);
@@ -107,8 +108,8 @@ public class Browseplace extends Activity implements OnClickListener{
         if (bundle !=null){
         	try{
         	ExifInterface exif = new ExifInterface(photoUri.getPath());
-        	StringBuilder builder = new StringBuilder();
         	exif.getLatLong(coordinates);
+        	
         	//String lati = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         	//String longi = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         	}catch (IOException e){
@@ -171,17 +172,18 @@ public class Browseplace extends Activity implements OnClickListener{
 		    }
 		}); 
     }
-    
+        
 	@Override
 	public void onResume(){
 		super.onResume();
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
-        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.VISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
         Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
+		backtomain = Container.home;
 		addplace = Container.btn3;
+		backtomain.setOnClickListener(this);
+        addplace.setOnClickListener(this);
 	}
 	
 	@Override
@@ -285,15 +287,24 @@ public class Browseplace extends Activity implements OnClickListener{
     
     private void confirmationquit(){
 	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
-	        dialog.setTitle("You are in the midst of sharing. Quit Sharing?");
+	        dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
 	        
 	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
 	                dialog.dismiss();
-	                Intent i = new Intent(getParent(), TabGroup2Activity.class);
-	   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	parentActivity.startChildActivity("Back to Main", i);
+	                
+	                TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	                Intent i = new Intent("socialtour.socialtour.TABGROUP2ACTIVITY");
+	                //Intent i = getBaseContext().getPackageManager()
+	   		        //     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+	                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+	                parentActivity.startChildActivity("Back to Main", i);
+	                
+	                //Intent i = getBaseContext().getPackageManager()
+		   		    //         .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+		            //    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		            //    startActivity(i);
 	                
 	            }});
 	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){

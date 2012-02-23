@@ -92,9 +92,9 @@ public class Main extends Activity implements OnClickListener
 	private Facebook facebook;
 
 	private TwitterApp mTwitter;
-	private LocationManager locationManager;
-	private GPSLocationListener locationListener;
-	private GeoPoint point = new GeoPoint(1304256, 103832538);
+	public static LocationManager locationManager;
+	public static GPSLocationListener locationListener;
+	public static GeoPoint point = new GeoPoint(1304256, 103832538);
 	private static int currentState; //can be 1 for latest, 2 for hot, 3 for nearby
 	Handler mHandler = new Handler();
 	private ProgressDialog mProgress;
@@ -156,7 +156,7 @@ public class Main extends Activity implements OnClickListener
 		hot.setOnClickListener(this);
 		currentState = 1;
 		latest.setEnabled(false);
-
+					
 		globalVar = ((GlobalVariable) getApplicationContext());
 //		fbBtn = globalVar.getfbBtn();
 		twitBtn = globalVar.getTwitBtn();
@@ -172,7 +172,7 @@ public class Main extends Activity implements OnClickListener
 
 		locationListener = new GPSLocationListener();
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 //		Log.d("FbButton: ", fbBtn.toString());
 		// SharedPreferences sharedPref =
@@ -417,7 +417,7 @@ public class Main extends Activity implements OnClickListener
 			else
 			{
 				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
-				alertDialog.setMessage("Please turn on GPS");
+				alertDialog.setMessage("Please turn on your GPS");
 				alertDialog.setCancelable(true);
 				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
 				{
@@ -448,12 +448,12 @@ public class Main extends Activity implements OnClickListener
 			latest.setEnabled(true);
 		}
 	}
-
+	
 	private Boolean CheckEnableGPS()
 	{
 		// TODO Auto-generated method stub
 		String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		if (!provider.equals(""))
+		if (provider.contains("network") || provider.contains("gps"))
 		{
 			// GPS Enabled
 			// Toast.makeText(AndroidEnableGPS.this, "GPS Enabled: " + provider,
@@ -544,11 +544,13 @@ public class Main extends Activity implements OnClickListener
 				arrPro[i].setUser_name(json_data.getString("user_name"));
 				arrPro[i].setCreated(Date.valueOf(json_data.getString("created_date")));
 				arrPro[i].setDprice(json_data.getDouble("dprice"));
-				arrPro[i].setId(json_data.getInt("id"));
+				arrPro[i].setId(json_data.getInt("prod_id"));
 				arrPro[i].setFilename(json_data.getString("filename"));
 				arrPro[i].setUrl(json_data.getString("url"));
 				arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
 				arrPro[i].setCategory(json_data.getString("category"));
+				arrPro[i].setLikes(json_data.getInt("likes"));
+				arrPro[i].setRemarks(json_data.getInt("remarks"));
 				shop[i].setName(json_data.getString("name"));
 				shopresult = new Shop(json_data.getInt("place_id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));//, json_data.getString("shoptype"));
 				shoplist.add(shopresult);
@@ -653,9 +655,7 @@ public class Main extends Activity implements OnClickListener
 		{
 			if (location != null)
 			{
-
 				point = new GeoPoint((int) (location.getLatitude() * 1E6), (int) (location.getLongitude() * 1E6));
-
 				// add marker
 				// MapOverlay mapOverlay = new MapOverlay(MY_POINT);
 				// mapOverlay.setPointToDraw(point);
@@ -686,7 +686,7 @@ public class Main extends Activity implements OnClickListener
 		public void onProviderEnabled(String provider)
 		{
 			// TODO Auto-generated method stub
-
+			String omg = "";
 		}
 
 		@Override

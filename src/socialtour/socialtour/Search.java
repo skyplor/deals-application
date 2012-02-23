@@ -33,6 +33,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -47,6 +48,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -66,6 +68,7 @@ public class Search extends Activity implements OnClickListener
 	RadioGroup radSearch;
 	ListView searchResult;
 	SimpleLazyAdapter adapter;
+	ImageView searchresultslbl;
 	boolean isProduct;
 	private LocationManager locationManager;
 	private GPSLocationListener locationListener;
@@ -88,6 +91,7 @@ public class Search extends Activity implements OnClickListener
 		radSearch = (RadioGroup) findViewById(R.id.radSearch);
 		searchResult = (ListView) findViewById(R.id.listSearch);
 		mapview = (Button) findViewById(R.id.btnMap);
+		searchresultslbl = (ImageView) findViewById(R.id.imgsearchresults);
 		btnSearch.setOnClickListener(this);
 		mapview.setOnClickListener(this);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -350,6 +354,7 @@ public class Search extends Activity implements OnClickListener
 		try
 		{
 			mapview.setEnabled(true);
+			mapview.setTextColor(Color.parseColor("#FFFFFF"));
 			jArray = new JSONArray(result);
 			JSONObject json_data = null;
 			if (mode.equals("Product"))
@@ -393,12 +398,14 @@ public class Search extends Activity implements OnClickListener
 			}
 			// ListAdapter adapter = new ArrayAdapter<String>(this,
 			// android.R.layout.simple_list_item_1, employees);
+			searchresultslbl.setVisibility(View.VISIBLE);
 			searchResult.setAdapter(adapter);
 		}
 		catch (JSONException e1)
 		{
 			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_LONG).show();
 			mapview.setEnabled(false);
+			mapview.setTextColor(Color.parseColor("#000000"));
 		}
 		catch (ParseException e1)
 		{

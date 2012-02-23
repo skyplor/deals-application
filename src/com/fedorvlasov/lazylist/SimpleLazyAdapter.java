@@ -86,8 +86,11 @@ public class SimpleLazyAdapter extends BaseAdapter {
         	//int drawable = data[position].getIcon();
         	//image.setImageResource(drawable);
         	image.setVisibility(View.GONE);
+        	percent.setVisibility(View.GONE);
         	text.setText(shop[position].getName());
         	desc.setText(shop[position].getAddress());
+        	text.getLayoutParams().width = 300;
+        	desc.getLayoutParams().width = 300;
         }
         
         

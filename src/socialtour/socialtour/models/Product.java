@@ -22,7 +22,7 @@ public class Product {
 	private int percentdiscount;
 	private Date created;
 	private int likes;
-	private int dislikes;
+	private int remarks;
 	
 	public int getId() {
 		return id;
@@ -102,11 +102,11 @@ public class Product {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-	public int getDislikes() {
-		return dislikes;
+	public int getRemarks() {
+		return remarks;
 	}
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
+	public void setRemarks(int dislikes) {
+		this.remarks = dislikes;
 	}
 	public String getUrl() {
 		return url;

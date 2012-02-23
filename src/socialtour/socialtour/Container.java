@@ -40,9 +40,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -52,7 +54,7 @@ import android.widget.TabHost.TabSpec;
 //import android.widget.TabHost.OnTabChangeListener;
 
 @SuppressWarnings("deprecation")
-public class Container extends TabActivity
+public class Container extends TabActivity implements OnClickListener
 {
 
 	private static final int CAMERA_PIC_REQUEST = 1337;
@@ -88,9 +90,10 @@ public class Container extends TabActivity
 
 	//Button logout;
 	public static ImageView btn1,btn2,btn3;
+	public static ImageView home;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
-	TabHost tabHost; // The activity TabHost
+	public static TabHost tabHost; // The activity TabHost
 	TabSpec spec; // Resusable TabSpec for each tab
 
 	public void onCreate(Bundle savedInstanceState)
@@ -101,34 +104,45 @@ public class Container extends TabActivity
 		btn1= (ImageView) findViewById(R.id.headerLatest);
 		btn2= (ImageView) findViewById(R.id.headerHot);
 		btn3= (ImageView) findViewById(R.id.headerNearby);
-
+		home = (ImageView) findViewById(R.id.imgHome);
 		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
-
+		
+		home.setOnClickListener(this);
+		
 		if (APP_ID == null)
 		{
 			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
 		}
-
+		
 		if (!haveInternet(this))
 		{
-			AlertDialog alertDialog = new AlertDialog.Builder(Container.this).create();
-			alertDialog.setMessage("Unable to connect to the Internet.");
-			alertDialog.setButton("OK", new DialogInterface.OnClickListener()
-			{
-				public void onClick(DialogInterface dialog, int which)
+				AlertDialog alertDialog = new AlertDialog.Builder(Container.this).create();
+				alertDialog.setMessage("This app requires the use of the internet to function properly. Enable it now?");
+				alertDialog.setCancelable(true);
+				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
 				{
-					dialog.dismiss();
-					KillProcess();
-				}
-
-			});
-
-			alertDialog.show();
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+						startActivity(intent);
+						finish();
+					}
+				});
+				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						finish();
+					}
+				});
+				alertDialog.show();
 		}
 		else
-		{
+		{ 
 			//logout = (Button) findViewById(R.id.logoutBtn1);
 
 			/*
@@ -224,62 +238,29 @@ public class Container extends TabActivity
 			intent = new Intent().setClass(this, TabGroup1Activity.class);
 
 			// Initialize a TabSpec for each tab and add it to the TabHost
-			spec = tabHost.newTabSpec("home").setIndicator("Browse", res.getDrawable(R.drawable.browsebutton)).setContent(intent);
+			spec = tabHost.newTabSpec("browse").setIndicator("Browse", res.getDrawable(R.drawable.browsebutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			tabHost.addTab(spec);
 
 			// Do the same for the other tabs
 			intent = new Intent().setClass(this, TabGroup2Activity.class);
-			spec = tabHost.newTabSpec("attraction").setIndicator("Share", res.getDrawable(R.drawable.sharebutton)).setContent(intent);
+			spec = tabHost.newTabSpec("share").setIndicator("Share", res.getDrawable(R.drawable.sharebutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			tabHost.addTab(spec);
 
 			intent = new Intent().setClass(this, TabGroup3Activity.class);
-			spec = tabHost.newTabSpec("checkin").setIndicator("Search", res.getDrawable(R.drawable.searchbutton)).setContent(intent);
+			spec = tabHost.newTabSpec("search").setIndicator("Search", res.getDrawable(R.drawable.searchbutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			tabHost.addTab(spec);
-
 			tabHost.setCurrentTab(0);
-
-			//click on selected tab 
-		    int numberOfTabs = tabHost.getTabWidget().getChildCount();
-		    for(int t=0; t<numberOfTabs; t++){ 
-		        tabHost.getTabWidget().getChildAt(t).setOnTouchListener(new View.OnTouchListener() {
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						if(event.getAction()==MotionEvent.ACTION_UP){
-							if (getTabHost().getCurrentTab() == currentTab){
-								if (currentTab == 0){
-								}else if (currentTab == 1){
-									
-								}else if (currentTab == 2){
-									
-								}
-							}
-						}
-						return false;
-					} 
-		        }); 
-		    }      
-
-
-			tabHost.setOnTabChangedListener(new OnTabChangeListener()
-			{
-				@Override
-				public void onTabChanged(String arg0)
-				{
-					int index = tabHost.getCurrentTab();
-					if (index == 0)
-					{
-						currentTab = 0;
-					}else if (index == 1){
-						currentTab = 1;
-					}else if (index == 2){
-						currentTab = 2;
-					}
-
-					// TabGroupActivity parentActivity =
-					// (TabGroupActivity)getParent();
-					// parentActivity.
-				}
-			});
+		}
+	}
+	
+	@Override
+	public void onClick(View v)
+	{
+		if (v== home){
+			Intent i = getBaseContext().getPackageManager()
+		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
 		}
 	}
 

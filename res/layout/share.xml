@@ -32,11 +32,14 @@
         <Button
         android:id="@+id/sharebutton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Click here to start"
         android:layout_below="@+id/imgshareinstructions"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dip">
+        android:layout_marginTop="10dip"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/button_rounded_corners">
     </Button>
     </RelativeLayout>
 </RelativeLayout>

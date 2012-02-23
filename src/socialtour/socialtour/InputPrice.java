@@ -24,6 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,23 +54,25 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	private RadioGroup radGrp;
 	boolean isPercent = true;
 	Uri imageUri;
-	ImageView addplace, backtomain;
+	ImageView backtomain;
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		setContentView(R.layout.step5);
 		
 		Container.btn1.setVisibility(View.INVISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
-        Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
-		addplace = Container.btn3;
+		Container.btn2.setVisibility(View.INVISIBLE);
+		Container.btn3.setVisibility(View.INVISIBLE);
+        //Container.btn3.setImageResource(R.drawable.quitsharing);
+		backtomain = Container.home;
 		
+		backtomain.setOnClickListener(this);
 		txtInput = (TextView) findViewById(R.id.txtInput);
 		txtInput2 = (EditText) findViewById(R.id.txtPrice);
 		txtSecondInput = (EditText) findViewById(R.id.txtPrice2);
 		txtNameInput2 = (EditText) findViewById(R.id.txtNameInput2);
 		btnSubmitdeal = (Button) findViewById(R.id.submitdealbutton);
 		radGrp = (RadioGroup) findViewById(R.id.radSelection);
+		percentImage = (ImageView) findViewById(R.id.percentimage);
 		
 		btnSubmitdeal.setOnClickListener(this);
 		radGrp.setOnCheckedChangeListener(this);
@@ -79,12 +82,11 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	public void onResume(){
 		super.onResume();
 		Container.btn1.setVisibility(View.INVISIBLE);
-        Container.btn2.setImageResource(R.drawable.quitsharing);
-        Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.btn2;
-		addplace = Container.btn3;
+		Container.btn2.setVisibility(View.INVISIBLE);
+		Container.btn3.setVisibility(View.INVISIBLE);
+        //Container.btn3.setImageResource(R.drawable.quitsharing);
+		backtomain = Container.home;
 		backtomain.setOnClickListener(this);
-		addplace.setOnClickListener(this);
 	}
 	
     @Override
@@ -93,15 +95,18 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		if (checkedId == R.id.radPercent){
 			txtInput.setText("Percentage Discount?");
 			isPercent = true;
+			percentImage.setVisibility(View.VISIBLE);
 		}else if (checkedId == R.id.radOriginal){
 			txtInput.setText("Original Price?");
 			isPercent = false;
+			percentImage.setVisibility(View.INVISIBLE);
 		}
     	}
 	}
 	
 	@Override
 	public void onClick(View v) {
+		boolean proceed = true;
 		if(v==btnSubmitdeal) {
 			String name = txtNameInput2.getText().toString().trim() + ".jpg";
 			doFileUpload(name);
@@ -113,76 +118,79 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
         	if (isPercent){
         		percentage = Double.parseDouble(txtSecondInput.getText().toString());
         		ori = (100 / (100 - percentage)) * dis;
+        		if (percentage != Math.round(percentage) || (percentage < 0 || percentage >100)){
+        			promptError("Please enter an integer value between 1 to 100");
+        			proceed = false;
+        		}
         	}else{
         		ori = Integer.parseInt(txtSecondInput.getText().toString());
         		percentage = (int) Math.round((Math.abs(dis - ori) / ori) * 100);
         		//calculate percent discount
         	}
-        	String percentageStr = Double.toString(percentage);
-        	String disStr = Double.toString(dis);
-        	String oriStr = Double.toString(ori);
-        	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        	
-        	SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-        	String userid = "",usertype="";
-        	if (!userDetails.getString("userID", "").equals("")){
-        		userid = userDetails.getString("userID", "");
-        		usertype = "user_norm";
-        	}else if (!userDetails.getString("userDB_FBID", "").equals("")){
-        		userid = userDetails.getString("userDB_FBID", "");
-        		usertype = "user_fb";
-        	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
-        		userid = userDetails.getString("userDB_TWITID", "");
-        		usertype = "user_twit";
-        	}
+        	if (proceed){
+        		String percentageStr = Double.toString(percentage);
+            	String disStr = Double.toString(dis);
+            	String oriStr = Double.toString(ori);
+            	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            	
+            	SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+            	String userid = "",usertype="",username="";
+            	if (!userDetails.getString("userID", "").equals("")){
+            		userid = userDetails.getString("userID", "");
+            		usertype = "user_norm";
+            		username = userDetails.getString("userName", "");
+            	}else if (!userDetails.getString("userDB_FBID", "").equals("")){
+            		userid = userDetails.getString("userDB_FBID", "");
+            		usertype = "user_fb";
+            		username = userDetails.getString("userFBname", "");
+            	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
+            		userid = userDetails.getString("userDB_TWITID", "");
+            		usertype = "user_twit";
+            		username = userDetails.getString("userName", "");
+            	}
 
-        	nameValuePairs.add(new BasicNameValuePair("userid",userid));
-        	nameValuePairs.add(new BasicNameValuePair("usertype",usertype));
-        	nameValuePairs.add(new BasicNameValuePair("filename",txtNameInput2.getText().toString() + ".jpg"));
-        	nameValuePairs.add(new BasicNameValuePair("sourcepath",Constants.UPLOAD_PATH));
-        	nameValuePairs.add(new BasicNameValuePair("url",Constants.CONNECTIONSTRING + "FYP/uploads/" + name));
-        	nameValuePairs.add(new BasicNameValuePair("type","JPG"));
-        	int placeid = getIntent().getIntExtra("EMPLOYEE_ID",0);
-        	nameValuePairs.add(new BasicNameValuePair("place_id",Integer.toString(placeid)));
-        	nameValuePairs.add(new BasicNameValuePair("dprice",disStr));
-        	nameValuePairs.add(new BasicNameValuePair("category",getIntent().getStringExtra("category")));
-        	nameValuePairs.add(new BasicNameValuePair("subcategory",getIntent().getStringExtra("subcategory")));
-        	nameValuePairs.add(new BasicNameValuePair("percentdiscount",percentageStr));
-        	nameValuePairs.add(new BasicNameValuePair("oprice",oriStr));
-        	
-        	//http post
-        	try{
-        	     HttpClient httpclient = new DefaultHttpClient();
-        	     //HttpPost httppost = new HttpPost("http://172.22.177.204/FYP/insert.php");
-        	     
-        	     HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insert.php");
-        	     httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-        	     
-        	     ResponseHandler<String> responseHandler=new BasicResponseHandler();
-        	     String response = httpclient.execute(httppost, responseHandler);
-        	     //HttpResponse response = httpclient.execute(httppost);
-        	               	     
-        	     //HttpEntity entity = response.getEntity();
-        	     //is = entity.getContent();
-        	     int lastid = Integer.parseInt(response);
-        	     acknowledge(lastid);
-        	     /*
-        	     Intent i = new Intent("socialtour.socialtour.PRODUCTDETAIL");
-        	     i.putExtra("lastproductid", lastid);
- 		         startActivity(i);*/
- 		         
- 		         
-        	
-        	}catch(Exception e){
-    	         Log.e("log_tag", "Error in http connection"+e.toString());
-    	    }
-		}else if (v==addplace){
-			Intent i = new Intent(getParent(), Addplace.class);
-	     	Bundle bundle=getIntent().getExtras();
-	     	Uri pic = (Uri) bundle.get("pic");
-	     	i.putExtra("pic", pic);
-	     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	     	parentActivity.startChildActivity("Add Place", i);
+            	nameValuePairs.add(new BasicNameValuePair("userid",userid));
+            	nameValuePairs.add(new BasicNameValuePair("usertype",usertype));
+            	nameValuePairs.add(new BasicNameValuePair("filename",txtNameInput2.getText().toString() + ".jpg"));
+            	nameValuePairs.add(new BasicNameValuePair("username",username));
+            	nameValuePairs.add(new BasicNameValuePair("sourcepath",Constants.UPLOAD_PATH));
+            	nameValuePairs.add(new BasicNameValuePair("url",Constants.CONNECTIONSTRING + "FYP/uploads/" + name));
+            	nameValuePairs.add(new BasicNameValuePair("type","JPG"));
+            	int placeid = getIntent().getIntExtra("EMPLOYEE_ID",0);
+            	nameValuePairs.add(new BasicNameValuePair("place_id",Integer.toString(placeid)));
+            	nameValuePairs.add(new BasicNameValuePair("dprice",disStr));
+            	nameValuePairs.add(new BasicNameValuePair("category",getIntent().getStringExtra("category")));
+            	nameValuePairs.add(new BasicNameValuePair("subcategory",getIntent().getStringExtra("subcategory")));
+            	nameValuePairs.add(new BasicNameValuePair("percentdiscount",percentageStr));
+            	nameValuePairs.add(new BasicNameValuePair("oprice",oriStr));
+            	
+            	//http post
+            	try{
+            	     HttpClient httpclient = new DefaultHttpClient();
+            	     //HttpPost httppost = new HttpPost("http://172.22.177.204/FYP/insert.php");
+            	     
+            	     HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insert.php");
+            	     httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            	     
+            	     ResponseHandler<String> responseHandler=new BasicResponseHandler();
+            	     String response = httpclient.execute(httppost, responseHandler);
+            	     //HttpResponse response = httpclient.execute(httppost);
+            	               	     
+            	     //HttpEntity entity = response.getEntity();
+            	     //is = entity.getContent();
+            	     int lastid = Integer.parseInt(response);
+            	     acknowledge(lastid);
+            	     /*
+            	     Intent i = new Intent("socialtour.socialtour.PRODUCTDETAIL");
+            	     i.putExtra("lastproductid", lastid);
+     		         startActivity(i);*/
+     		         
+     		         
+            	
+            	}catch(Exception e){
+        	         Log.e("log_tag", "Error in http connection"+e.toString());
+        	    }
+        	}
 		}else if (v==backtomain){
 			confirmationquit();
 		}
@@ -319,15 +327,23 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
     
     private void confirmationquit(){
 	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
-	        dialog.setTitle("You are in the midst of sharing. Quit Sharing?");
+	        dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
 	        
 	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
 	                dialog.dismiss();
-	                Intent i = new Intent(getParent(), TabGroup2Activity.class);
-	   		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	parentActivity.startChildActivity("Back to Main", i);
+	                //TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	                //LocalActivityManager manager = parentActivity.getLocalActivityManager();
+	                //manager.destroyActivity("share", true);
+	                //manager.startActivity("share", new Intent(getParent(), TabGroup2Activity.class));
+	                TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	                Intent i = new Intent(getParent(),TabGroup2Activity.class);
+	                //Intent i = getBaseContext().getPackageManager()
+	   		        //     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+	                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	                parentActivity.startChildActivity("Back to Main", i);
+	                //startActivity(i);
 	                
 	            }});
 	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
@@ -337,4 +353,16 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	            }});
 	        dialog.show();
  }
+    
+    private void promptError(String errormsg){
+	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
+	        dialog.setTitle(errormsg);
+
+	        dialog.setNeutralButton("OK",new android.content.DialogInterface.OnClickListener(){
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.dismiss();
+	            }});
+	        dialog.show();
+   }  
 }

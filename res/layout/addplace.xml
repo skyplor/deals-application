@@ -20,25 +20,31 @@
                 android:id="@+id/tableLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
-                <TableRow
+				<TableRow
                     android:id="@+id/tableRow5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
-
-                    <TextView
+                
+				    <TextView
                         android:id="@+id/textView9"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Shop Name:"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
+                        android:textColor="#000000"
+                        android:textStyle="bold" >
                     </TextView>
+				    
+                </TableRow>
+                <TableRow
+                    android:id="@+id/tableRow5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
                     <AutoCompleteTextView
                         android:id="@+id/txtShopname"
-                        android:layout_width="180dp"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_rounded_corners"
                         android:singleLine="true" >
@@ -46,11 +52,31 @@
 
                     <Button
                         android:id="@+id/searchShopsBtn"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="Search" >
+                        android:layout_width="30dip"
+                        android:layout_height="35dip"
+                        android:gravity="center"
+                        android:text="Search"
+                        android:textColor="#FFFFFF"
+            			android:textStyle="bold"
+            			android:background="@drawable/button_rounded_corners">
                     </Button>
+                </TableRow>
+                
+                <TableRow
+                    android:id="@+id/tableRow5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                    
+                     <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address:"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#000000"
+                        android:textStyle="bold" >
+                    </TextView>
+                    
                 </TableRow>
 
                 <TableRow
@@ -58,22 +84,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Address:"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#000000" >
-                    </TextView>
-
                     <EditText
                         android:id="@+id/txtShopaddress"
-                        android:layout_width="180dp"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_rounded_corners"
                         android:singleLine="true" >
                     </EditText>
+
+                    <Button
+                        android:id="@+id/uploadProduct"
+                        android:layout_width="70dip"
+                        android:layout_height="35dip"
+                        android:gravity="center"
+                        android:text="Submit"
+                        android:textColor="#FFFFFF"
+            			android:textStyle="bold"
+            			android:background="@drawable/button_rounded_corners">
+                    </Button>
                 </TableRow>
             </TableLayout>
 
@@ -90,7 +118,7 @@
                     <com.google.android.maps.MapView
                         android:id="@+id/addShopMap"
                         android:layout_width="320dip"
-                        android:layout_height="300dip"
+                        android:layout_height="280dip"
                         android:layout_marginTop="10dip"
                         android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ"
                         android:clickable="true"
@@ -98,14 +126,7 @@
                     </com.google.android.maps.MapView>
                 </TableRow>
             </TableLayout>
-
-            <Button
-                android:id="@+id/uploadProduct"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Submit" >
-            </Button>
         </LinearLayout>
     </socialtour.socialtour.LockableScrollView>
+
 </LinearLayout>
