@@ -120,10 +120,12 @@ public class ChooseCategory extends Activity implements OnClickListener{
 				Intent i = new Intent(getParent(), InputPrice.class);
 				Bundle bundle=getIntent().getExtras();
 				Uri imageUri = (Uri) bundle.get("pic");
-				int tempShopId = bundle.getInt("EMPLOYEE_ID");
-				String tempShopName = bundle.getString("EMPLOYEE_NAME");
-				i.putExtra("EMPLOYEE_ID", tempShopId);
-		        i.putExtra("EMPLOYEE_NAME", tempShopName);
+				int tempShopId = bundle.getInt("SHOP_ID");
+				String tempShopName = bundle.getString("SHOP_NAME");
+				String tempShopAddress = bundle.getString("SHOP_ADDRESS");
+				i.putExtra("SHOP_ID", tempShopId);
+		        i.putExtra("SHOP_NAME", tempShopName);
+		        i.putExtra("SHOP_ADDRESS", tempShopAddress);
 		        i.putExtra("category", categoryname);
 		        i.putExtra("subcategory", subcategory);
 				i.putExtra("pic", imageUri);

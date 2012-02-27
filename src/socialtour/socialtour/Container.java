@@ -299,53 +299,53 @@ public class Container extends TabActivity implements OnClickListener
 		});
 	}*/
 
-	private void doLogout(int type)
-	{
-		if (type == INIT_NORM)
-		{
-			// Logout logic here...
-			globalVar = ((GlobalVariable) getApplicationContext());
-			globalVar.setName("");
-			globalVar.setHashPw("");
-			globalVar.setEm("");
-
-			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-			SharedPreferences.Editor editor = login.edit();
-			editor.putString("userName", null);
-			editor.putString("userID", null);
-			editor.putString("emailLogin", null);
-			editor.putString("pwLogin", null);
-			editor.commit();
-		}
-		else if (type == INIT_FB)
-		{
-			// Go to LoginPage
-			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-			SharedPreferences.Editor editor = login.edit();
-			editor.putString("userFBname", null);
-			editor.putString("userName", null);
-			editor.putString("userID", null);
-			editor.putString("userFBID", null);
-			editor.putString("emailLogin", null);
-			editor.commit();
-			globalVar = ((GlobalVariable) getApplicationContext());
-			Facebook mFacebook = globalVar.getFBState();
-//			globalVar.setfbBtn(false);
-			SessionEvents.onLogoutBegin();
-			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
-			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
-		}
-		else
-		{
-			mTwitter.resetAccessToken();
-			globalVar.setTwitBtn(false);
-		}
-
-		// Return to the login activity
-		Intent intent = new Intent(this, LoginPage.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-	}
+//	private void doLogout(int type)
+//	{
+//		if (type == INIT_NORM)
+//		{
+//			// Logout logic here...
+//			globalVar = ((GlobalVariable) getApplicationContext());
+//			globalVar.setName("");
+//			globalVar.setHashPw("");
+//			globalVar.setEm("");
+//
+//			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+//			SharedPreferences.Editor editor = login.edit();
+//			editor.putString("userName", null);
+//			editor.putString("userID", null);
+//			editor.putString("emailLogin", null);
+//			editor.putString("pwLogin", null);
+//			editor.commit();
+//		}
+//		else if (type == INIT_FB)
+//		{
+//			// Go to LoginPage
+//			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+//			SharedPreferences.Editor editor = login.edit();
+//			editor.putString("userFBname", null);
+//			editor.putString("userName", null);
+//			editor.putString("userID", null);
+//			editor.putString("userFBID", null);
+//			editor.putString("emailLogin", null);
+//			editor.commit();
+//			globalVar = ((GlobalVariable) getApplicationContext());
+//			Facebook mFacebook = globalVar.getFBState();
+////			globalVar.setfbBtn(false);
+//			SessionEvents.onLogoutBegin();
+//			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
+//			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
+//		}
+//		else
+//		{
+//			mTwitter.resetAccessToken();
+//			globalVar.setTwitBtn(false);
+//		}
+//
+//		// Return to the login activity
+//		Intent intent = new Intent(this, LoginPage.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		startActivity(intent);
+//	}
 
 	// @Override
 	// protected void onResume()
@@ -540,7 +540,8 @@ public class Container extends TabActivity implements OnClickListener
 
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
-								editor.putString("userDB_FBID", connectCheck.getUserID());
+								editor.putString("userDB_FBID", connectCheck.getUserFbTwNmID());
+								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
 //								editor.commit();

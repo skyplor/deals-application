@@ -43,8 +43,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Shopdetail extends MapActivity{
-	
+public class Shopdetail extends MapActivity
+{
+
 	private MapView mapView;
 	private MapController mapController;
 	private GeoPoint gp;
@@ -58,37 +59,41 @@ public class Shopdetail extends MapActivity{
 	Product[] arrPro;
 	TextView shopname, shopaddress;
 	ListView detailBrowse;
-	
+
 	SimpleLazyAdapter adapter;
-	
+
 	InputStream is = null;
-	StringBuilder sb=null;
+	StringBuilder sb = null;
 	JSONArray jArray;
 	String result = null;
-	
-	public void onCreate(Bundle savedInstanceState) {
+
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shopdetail);
-		
+
 		mapView = (MapView) findViewById(R.id.shopMap);
-		shopname = (TextView)findViewById(R.id.shopdetailName);
-		shopaddress = (TextView)findViewById(R.id.lblDetailshopaddress);
-		detailBrowse = (ListView)findViewById(R.id.listDetailBrowse);
+		shopname = (TextView) findViewById(R.id.shopdetailName);
+		shopaddress = (TextView) findViewById(R.id.lblDetailshopaddress);
+		detailBrowse = (ListView) findViewById(R.id.listDetailBrowse);
 		globalVar = ((GlobalVariable) getApplicationContext());
-		
-		Bundle bundle=getIntent().getExtras();
+
+		Bundle bundle = getIntent().getExtras();
 		String name = "", address = "";
 		int iconid = -1, shopid = -1;
 		Double latitude = 0.0, longitude = 0.0;
-		if (bundle!=null){
+		if (bundle != null)
+		{
 			name = bundle.getString("shopname");
 			address = bundle.getString("shopaddress");
 			iconid = bundle.getInt("icon");
 			shopid = bundle.getInt("shopid");
 			latitude = Double.parseDouble(bundle.getString("lat"));
 			longitude = Double.parseDouble(bundle.getString("long"));
-			//get latitude and longitude
-		}else{
+			// get latitude and longitude
+		}
+		else
+		{
 			Shop shopDetail = globalVar.getShop().get(0);
 			name = shopDetail.getName();
 			address = shopDetail.getAddress();
@@ -96,11 +101,11 @@ public class Shopdetail extends MapActivity{
 			latitude = Double.parseDouble(shopDetail.getLat());
 			longitude = Double.parseDouble(shopDetail.getLng());
 		}
-		
+
 		shopname.setText(name);
 		shopaddress.setText(address);
-        getProduct(shopid);
-        
+		getProduct(shopid);
+
 		gp = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
 
 		mapView.setBuiltInZoomControls(false);
@@ -117,76 +122,99 @@ public class Shopdetail extends MapActivity{
 		mapOverlays.clear();
 		mapOverlays.add(itemizedOverlay);
 		mapView.invalidate();
-		
-		detailBrowse.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    @Override
-		    public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-		    	/*
-		    		Intent intent = new Intent("socialtour.socialtour.PRODUCTDETAIL");
-		    		intent.putExtra("lastproductid", arrPro[pos].getId());
-		    		startActivity(intent);*/
-		    	
-		    		Intent intent = new Intent(getParent(), Productdetail.class);
-		    		intent.putExtra("lastproductid", arrPro[pos].getId());
-			     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-			     	parentActivity.startChildActivity("Product Detail", intent);
-		    }
-		}); 
-	}
-	
-	public void getProduct(int shopid){
-		detailBrowse.setAdapter(null);
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("shopid",Integer.toString(shopid)));
-		try{
-   	     HttpClient httpclient = new DefaultHttpClient();
-   	     HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "shopproducts.php");
-   	     httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-   	     HttpResponse response = httpclient.execute(httppost);
-   	     HttpEntity entity = response.getEntity();
-   	     is = entity.getContent();
-   	     }catch(Exception e){
-   	         Log.e("log_tag", "Error in http connection"+e.toString());
-   	    }
-   	//convert response to string
-     	try{
-     	      BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-     	       sb = new StringBuilder();
-     	       sb.append(reader.readLine() + "\n");
-     	       String line="0";
-     	       while ((line = reader.readLine()) != null) {
-     	                      sb.append(line + "\n");
-     	        }
-     	        is.close();
-     	        result=sb.toString();
-     	        }catch(Exception e){
-     	              Log.e("log_tag", "Error converting result "+e.toString());
-     	        }
-     	try{
-     	      jArray = new JSONArray(result);
-     	      JSONObject json_data=null;
-     	    	 arrPro = new Product[jArray.length()];
-     	    	 for(int i=0;i<jArray.length();i++){
-     	             json_data = jArray.getJSONObject(i);
-     	             arrPro[i] = new Product();
-     	             arrPro[i].setId(json_data.getInt("id"));
-     	             arrPro[i].setFilename(json_data.getString("filename"));
-     	             arrPro[i].setUrl(json_data.getString("url"));
-     	             arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
-     	         }
-     	    	 adapter = new SimpleLazyAdapter(this,arrPro);
-     	        //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
-     	        detailBrowse.setAdapter(adapter);
-     	      }
-     	      catch(JSONException e1){
-     	    	  Toast.makeText(getBaseContext(), "No products Found" ,Toast.LENGTH_LONG).show();
-     	      } catch (ParseException e1) {
-     				e1.printStackTrace();
-     		} 
-   	     
+
+		detailBrowse.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+			{
+				/*
+				 * Intent intent = new
+				 * Intent("socialtour.socialtour.PRODUCTDETAIL");
+				 * intent.putExtra("lastproductid", arrPro[pos].getId());
+				 * startActivity(intent);
+				 */
+
+				Intent intent = new Intent(getParent(), Productdetail.class);
+				intent.putExtra("lastproductid", arrPro[pos].getId());
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("Product Detail", intent);
+			}
+		});
 	}
 
-   class MapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
+	public void getProduct(int shopid)
+	{
+		detailBrowse.setAdapter(null);
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("shopid", Integer.toString(shopid)));
+		try
+		{
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "shopproducts.php");
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		}
+		catch (Exception e)
+		{
+			Log.e("log_tag", "Error in http connection" + e.toString());
+		}
+		// convert response to string
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+			String line = "0";
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line + "\n");
+			}
+			is.close();
+			result = sb.toString();
+		}
+		catch (Exception e)
+		{
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+		try
+		{
+			jArray = new JSONArray(result);
+			JSONObject json_data = null;
+			arrPro = new Product[jArray.length()];
+			for (int i = 0; i < jArray.length(); i++)
+			{
+				json_data = jArray.getJSONObject(i);
+				arrPro[i] = new Product();
+				arrPro[i].setId(json_data.getInt("id"));
+				arrPro[i].setFilename(json_data.getString("title"));
+				arrPro[i].setUrl("");// json_data.getString("url"));
+
+				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
+				JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
+				int discountPercent = (int) jextraObjPercent.getDouble("value");
+				arrPro[i].setPercentdiscount(discountPercent);
+			}
+			adapter = new SimpleLazyAdapter(this, arrPro);
+			// ListAdapter adapter = new ArrayAdapter<String>(this,
+			// android.R.layout.simple_list_item_1, employees);
+			detailBrowse.setAdapter(adapter);
+		}
+		catch (JSONException e1)
+		{
+			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_LONG).show();
+		}
+		catch (ParseException e1)
+		{
+			e1.printStackTrace();
+		}
+
+	}
+
+	class MapItemizedOverlay extends ItemizedOverlay<OverlayItem>
+	{
 
 		private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 

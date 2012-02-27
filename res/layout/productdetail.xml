@@ -163,7 +163,8 @@
             android:textColor="#302217"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp" 
+            android:clickable="true" />
         
         <TextView
             android:id="@+id/lblshopaddress"
@@ -174,7 +175,8 @@
             android:text="Blk 670 Woodlands Drive 71 #05-18"
             android:layout_marginTop="3dp"
             android:textColor="#302217"
-            android:textSize="15dp" />
+            android:textSize="15dp" 
+            android:clickable="true" />
         
         <ImageView
             android:id="@+id/imgRemarks"

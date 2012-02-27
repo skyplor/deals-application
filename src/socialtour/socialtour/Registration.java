@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -57,7 +58,7 @@ public class Registration extends Activity {
 		email = (EditText) findViewById(R.id.emailTxtBox);
 		password = (EditText) findViewById(R.id.passwordTxtBox);
 		regBtn = (Button) findViewById(R.id.regBtn);
-
+		Log.d("in registration, oncreate", "true");
 		reginit();
 		// Calendar cal = Calendar.getInstance();
 		// mYear = cal.get(Calendar.YEAR);
@@ -113,6 +114,7 @@ public class Registration extends Activity {
 				try
 				{
 					SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
+					Log.d("In registration: reg btn: ", "true");
 					connect = new ConnectDB(name.getText().toString(), email.getText().toString(), password.getText().toString(), "user_norm", REGISTRATION, Registration.this);
 					if (connect.inputResult())
 					{

@@ -216,6 +216,7 @@ public class LoginPage extends Activity {
 					editor.putString("pwLogin", connectCheck.getPassword());
 					editor.putString("userName", connectCheck.getUserName());
 					editor.putString("userID", connectCheck.getUserID());
+					editor.putString("userDB_NMID", connectCheck.getUserFbTwNmID());
 					editor.commit();
 
 					Intent intent = new Intent(v.getContext(), Container.class);

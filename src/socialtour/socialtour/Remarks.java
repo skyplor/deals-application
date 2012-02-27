@@ -156,19 +156,19 @@ public class Remarks extends Activity implements OnClickListener{
     	String userid = "",usertype="";
     	if (!userDetails.getString("userID", "").equals("")){
     		userid = userDetails.getString("userID", "");
-    		usertype = "user_norm";
-    	}else if (!userDetails.getString("userDB_FBID", "").equals("")){
-    		userid = userDetails.getString("userDB_FBID", "");
-    		usertype = "user_fb";
-    	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
-    		userid = userDetails.getString("userDB_TWITID", "");
-    		usertype = "user_twit";
+//    		usertype = "user_norm";
     	}
+//    	else if (!userDetails.getString("userDB_FBID", "").equals("")){
+//    		userid = userDetails.getString("userDB_FBID", "");
+//    		usertype = "user_fb";
+//    	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
+//    		userid = userDetails.getString("userDB_TWITID", "");
+//    		usertype = "user_twit";
+//    	}
 		
 		
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("userid", userid));
-		nameValuePairs.add(new BasicNameValuePair("usertype", usertype));
 		nameValuePairs.add(new BasicNameValuePair("productid", Integer.toString(productid)));
 		nameValuePairs.add(new BasicNameValuePair("desc", remarks));
 

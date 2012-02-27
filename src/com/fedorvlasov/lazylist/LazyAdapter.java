@@ -66,7 +66,7 @@ public class LazyAdapter extends BaseAdapter {
         DateFormat df2 = new SimpleDateFormat("dd MMM yyyy");
         String finalDate = df2.format(prodDate);
         date.setText(finalDate);
-        String productname = data[position].getFilename().substring(0,data[position].getFilename().lastIndexOf("."));
+        String productname = data[position].getFilename();//.substring(0,data[position].getFilename().lastIndexOf("."));
         text.setText(productname);
         noLikes.setText(Integer.toString(data[position].getLikes()));
         noRemarks.setText(Integer.toString(data[position].getRemarks()));
@@ -76,7 +76,7 @@ public class LazyAdapter extends BaseAdapter {
             long intDistance = Math.round(currDistance);
             distance.setText("(" + Long.toString(intDistance) + " m away)");
         }
-        imageLoader.DisplayImage(data[position].getUrl(), activity, image);
+        imageLoader.DisplayImage(Integer.toString(data[position].getId()), activity, image);
         percent.setText(data[position].getPercentdiscount() + "%");
         desc.setText(shop[position].getName());
         return vi;

@@ -162,8 +162,9 @@ public class Browseplace extends Activity implements OnClickListener{
 		        startActivity(intent);*/
 		        
 		        Intent intent = new Intent(getParent(), ChooseCategory.class);
-		        intent.putExtra("EMPLOYEE_ID", shop[pos].getId());
-		        intent.putExtra("EMPLOYEE_NAME", shop[pos].getName());
+		        intent.putExtra("SHOP_ID", shop[pos].getId());
+		        intent.putExtra("SHOP_NAME", shop[pos].getName());
+		        intent.putExtra("SHOP_ADDRESS", shop[pos].getAddress());
 		        Bundle bundle=getIntent().getExtras();
 		        Uri pic = (Uri) bundle.get("pic");
 		        intent.putExtra("pic", pic);

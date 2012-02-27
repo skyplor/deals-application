@@ -505,8 +505,8 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
         } else {
         	intent.setData(outputFileUri);
         	//intent.putExtra("crop", "true");
-            //intent.putExtra("outputX", 160);
-            //intent.putExtra("outputY", 160);
+            intent.putExtra("outputX", 160);
+            intent.putExtra("outputY", 160);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);

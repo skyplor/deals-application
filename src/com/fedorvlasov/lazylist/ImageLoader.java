@@ -6,19 +6,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Stack;
 import java.util.WeakHashMap;
 
+import socialtour.socialtour.Constants;
 import socialtour.socialtour.R;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -35,24 +40,24 @@ public class ImageLoader {
     }
     
     final int stub_id=R.drawable.stub;
-    public void DisplayImage(String url, Activity activity, ImageView imageView)
+    public void DisplayImage(String productid, Activity activity, ImageView imageView)
     {
-        imageViews.put(imageView, url);
-        Bitmap bitmap=memoryCache.get(url);
+        imageViews.put(imageView, productid);
+        Bitmap bitmap=memoryCache.get(productid);
         if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
         else
         {
-            queuePhoto(url, activity, imageView);
+            queuePhoto(productid, activity, imageView);
             imageView.setImageBitmap(null);
         }    
     }
         
-    private void queuePhoto(String url, Activity activity, ImageView imageView)
+    private void queuePhoto(String id, Activity activity, ImageView imageView)
     {
         //This ImageView may be used for other images before. So there may be some old tasks in the queue. We need to discard them. 
         photosQueue.Clean(imageView);
-        PhotoToLoad p=new PhotoToLoad(url, imageView);
+        PhotoToLoad p=new PhotoToLoad(id, imageView);
         synchronized(photosQueue.photosToLoad){
             photosQueue.photosToLoad.push(p);
             photosQueue.photosToLoad.notifyAll();
@@ -63,8 +68,20 @@ public class ImageLoader {
             photoLoaderThread.start();
     }
     
-    private Bitmap getBitmap(String url) 
+    private Bitmap getBitmap(String productid) 
     {
+    	String hashedimagename = "";
+		try
+		{
+			hashedimagename = MungPass("Image" + productid) + ".jpg";
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String url = Constants.DOWNLOAD_PATH + "joomla25/media/k2/items/src/" + hashedimagename;
+		Log.d("in ImageLoader, getBitmap, url: ", url);
         File f=fileCache.getFile(url);
         
         //from SD cache
@@ -122,10 +139,10 @@ public class ImageLoader {
     //Task for the queue
     private class PhotoToLoad
     {
-        public String url;
+        public String id;
         public ImageView imageView;
         public PhotoToLoad(String u, ImageView i){
-            url=u; 
+            id=u; 
             imageView=i;
         }
     }
@@ -170,10 +187,10 @@ public class ImageLoader {
                         synchronized(photosQueue.photosToLoad){
                             photoToLoad=photosQueue.photosToLoad.pop();
                         }
-                        Bitmap bmp=getBitmap(photoToLoad.url);
-                        memoryCache.put(photoToLoad.url, bmp);
+                        Bitmap bmp=getBitmap(photoToLoad.id);
+                        memoryCache.put(photoToLoad.id, bmp);
                         String tag=imageViews.get(photoToLoad.imageView);
-                        if(tag!=null && tag.equals(photoToLoad.url)){
+                        if(tag!=null && tag.equals(photoToLoad.id)){
                             BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad.imageView);
                             Activity a=(Activity)photoToLoad.imageView.getContext();
                             a.runOnUiThread(bd);
@@ -209,5 +226,13 @@ public class ImageLoader {
         memoryCache.clear();
         fileCache.clear();
     }
+    private static String MungPass(String pass) throws NoSuchAlgorithmException
+	{
+		MessageDigest m = MessageDigest.getInstance("MD5");
+		byte[] data = pass.getBytes();
+		m.update(data, 0, data.length);
+		BigInteger i = new BigInteger(1, m.digest());
+		return String.format("%1$032X", i);
+	}
 
 }

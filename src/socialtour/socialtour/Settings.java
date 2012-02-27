@@ -254,6 +254,7 @@ public class Settings extends Activity
 			editor.putString("userFBID", null);
 			editor.putString("userDB_FBID", null);
 			editor.putString("userID", null);
+			editor.putString("userDB_NMID", null);
 			editor.putString("emailLogin", null);
 			editor.putString("emailFB_Login", null);
 			editor.putString("pwLogin", null);
@@ -283,7 +284,7 @@ public class Settings extends Activity
 			SharedPreferences.Editor editor = login.edit();
 			editor.putString("userFBname", null);
 //			editor.putString("userName", null);
-//			editor.putString("userID", null);
+			editor.putString("userID", null);
 			editor.putString("userFBID", null);
 			editor.putString("userDB_FBID", null);
 			editor.putString("emailFB_Login", null);
@@ -553,7 +554,8 @@ public class Settings extends Activity
 								Log.d("userName: ", connectCheck.getUserName());
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
-								editor.putString("userDB_FBID", connectCheck.getUserID());
+								editor.putString("userDB_FBID", connectCheck.getUserFbTwNmID());
+								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
 								// editor.commit();

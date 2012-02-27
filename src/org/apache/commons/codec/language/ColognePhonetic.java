@@ -22,12 +22,13 @@ import java.util.Locale;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.StringEncoder;
 
+
 /**
  * <p>
  * Encodes a string into a Cologne Phonetic value.
  * </p>
  * <p>
- * Implements the <a href="http://de.wikipedia.org/wiki/K%C3%B6lner_Phonetik">“Kölner Phonetic”</a> (Cologne Phonetic)
+ * Implements the <a href="http://de.wikipedia.org/wiki/K%C3%B6lner_Phonetik">“Kölner Phonetic�?</a> (Cologne Phonetic)
  * algorithm issued by Hans Joachim Postel in 1969.
  * </p>
  * 
@@ -168,7 +169,7 @@ import org.apache.commons.codec.StringEncoder;
  * 
  * <li>
  * <h3>Step 3:</h3>
- * Removal of all codes “0” except at the beginning. This means that two or more identical consecutive digits can occur
+ * Removal of all codes “0�? except at the beginning. This means that two or more identical consecutive digits can occur
  * if they occur after removing the "0" digits.
  * 
  * <h4>Example:</h4>
@@ -394,7 +395,7 @@ public class ColognePhonetic implements StringEncoder {
     }
 
     /*
-     * Converts the string to upper case and replaces germanic umlauts, and the “ß”.
+     * Converts the string to upper case and replaces germanic umlauts, and the “ß�?.
      */
     private String preprocess(String text) {
         text = text.toUpperCase(Locale.GERMAN);

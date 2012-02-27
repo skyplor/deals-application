@@ -73,14 +73,14 @@ public class SimpleLazyAdapter extends BaseAdapter {
         TextView percent = (TextView)vi.findViewById(R.id.percent);
         
         if (isProduct){
-        	String productname = data[position].getFilename().substring(0,data[position].getFilename().lastIndexOf("."));
+        	String productname = data[position].getFilename();//.substring(0,data[position].getFilename().lastIndexOf("."));
         	text.setText(productname);
         	if (tempShop !=null){
         		desc.setText(tempShop[position].getName());
         	}else{
         		desc.setText("");
         	}
-        	imageLoader.DisplayImage(data[position].getUrl(), activity, image);
+        	imageLoader.DisplayImage(Integer.toString(data[position].getId()), activity, image);
         	percent.setText(data[position].getPercentdiscount() + "% Off");
         }else{
         	//int drawable = data[position].getIcon();

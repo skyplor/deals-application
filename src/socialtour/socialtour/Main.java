@@ -3,7 +3,9 @@ package socialtour.socialtour;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.List;
@@ -95,7 +97,8 @@ public class Main extends Activity implements OnClickListener
 	public static LocationManager locationManager;
 	public static GPSLocationListener locationListener;
 	public static GeoPoint point = new GeoPoint(1304256, 103832538);
-	private static int currentState; //can be 1 for latest, 2 for hot, 3 for nearby
+	private static int currentState; // can be 1 for latest, 2 for hot, 3 for
+										// nearby
 	Handler mHandler = new Handler();
 	private ProgressDialog mProgress;
 
@@ -140,11 +143,11 @@ public class Main extends Activity implements OnClickListener
 		{
 			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " + "specified before running this example: see Example.java");
 		}
-		
-		//Container.btn1.setText("Latest");
-		//Container.btn2.setText("Hot");
-		//Container.btn3.setText("Nearby");
-		
+
+		// Container.btn1.setText("Latest");
+		// Container.btn2.setText("Hot");
+		// Container.btn3.setText("Nearby");
+
 		latest = Container.btn1;
 		nearby = Container.btn3;
 		hot = Container.btn2;
@@ -156,9 +159,9 @@ public class Main extends Activity implements OnClickListener
 		hot.setOnClickListener(this);
 		currentState = 1;
 		latest.setEnabled(false);
-					
+
 		globalVar = ((GlobalVariable) getApplicationContext());
-//		fbBtn = globalVar.getfbBtn();
+		// fbBtn = globalVar.getfbBtn();
 		twitBtn = globalVar.getTwitBtn();
 
 		facebook = globalVar.getFBState();
@@ -174,7 +177,7 @@ public class Main extends Activity implements OnClickListener
 
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
-//		Log.d("FbButton: ", fbBtn.toString());
+		// Log.d("FbButton: ", fbBtn.toString());
 		// SharedPreferences sharedPref =
 		// getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 
@@ -255,24 +258,30 @@ public class Main extends Activity implements OnClickListener
 	}
 
 	@Override
-	public void onResume(){
+	public void onResume()
+	{
 		super.onResume();
-		
+
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
-		if (currentState == 1){
+		if (currentState == 1)
+		{
 			latest.setEnabled(false);
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
-		}else if (currentState == 2){
+		}
+		else if (currentState == 2)
+		{
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
-		}else if (currentState == 3){
+		}
+		else if (currentState == 3)
+		{
 			nearby.setEnabled(false);
 			latest.setEnabled(true);
 			hot.setEnabled(true);
@@ -281,35 +290,35 @@ public class Main extends Activity implements OnClickListener
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return true;
-		
+
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch(item.getItemId())
+		switch (item.getItemId())
 		{
 		case R.id.dashboard:
 			Toast.makeText(getParent(), "You pressed the Dashboard!", Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(getParent(),Dashboard.class);
+			Intent intent = new Intent(getParent(), Dashboard.class);
 			startActivity(intent);
 			break;
 		case R.id.settings:
 			Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
-			Intent intent2 = new Intent(getParent(),socialtour.socialtour.Settings.class);
+			Intent intent2 = new Intent(getParent(), socialtour.socialtour.Settings.class);
 			startActivity(intent2);
 			break;
-			
+
 		case R.id.mapviews:
 			Toast.makeText(getParent(), "You pressed the Map!", Toast.LENGTH_SHORT).show();
-			Intent intent3 = new Intent(getParent(),socialtour.socialtour.MapResult.class);
+			Intent intent3 = new Intent(getParent(), socialtour.socialtour.MapResult.class);
 			intent3.putExtra("main", true);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 			parentActivity.startChildActivity("Map Result", intent3);
@@ -317,7 +326,7 @@ public class Main extends Activity implements OnClickListener
 		}
 		return true;
 	}
-	
+
 	private void init(final int type)
 	{
 		globalVar = ((GlobalVariable) getApplicationContext());
@@ -448,7 +457,7 @@ public class Main extends Activity implements OnClickListener
 			latest.setEnabled(true);
 		}
 	}
-	
+
 	private Boolean CheckEnableGPS()
 	{
 		// TODO Auto-generated method stub
@@ -542,19 +551,30 @@ public class Main extends Activity implements OnClickListener
 				arrPro[i] = new Product();
 				shop[i] = new Shop();
 				arrPro[i].setUser_name(json_data.getString("user_name"));
-				arrPro[i].setCreated(Date.valueOf(json_data.getString("created_date")));
-				arrPro[i].setDprice(json_data.getDouble("dprice"));
+				
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				arrPro[i].setCreated((Date) formatter.parse(json_data.getString("created")));
+
+				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
+				JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
+				int discountPercent = (int) jextraObjPercent.getDouble("value");
+				JSONObject jextraObjPrice = jextraArr.getJSONObject(4);
+				Double discountPrice = jextraObjPrice.getDouble("value");
+
+				arrPro[i].setDprice(discountPrice);
 				arrPro[i].setId(json_data.getInt("prod_id"));
-				arrPro[i].setFilename(json_data.getString("filename"));
-				arrPro[i].setUrl(json_data.getString("url"));
-				arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
+				arrPro[i].setFilename(json_data.getString("title"));
+				arrPro[i].setUrl("");// json_data.getString("url"));
+				arrPro[i].setPercentdiscount(discountPercent);
 				arrPro[i].setCategory(json_data.getString("category"));
-				arrPro[i].setLikes(json_data.getInt("likes"));
-				arrPro[i].setRemarks(json_data.getInt("remarks"));
-				shop[i].setName(json_data.getString("name"));
-				shopresult = new Shop(json_data.getInt("place_id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));//, json_data.getString("shoptype"));
+				arrPro[i].setLikes(0);// json_data.getInt("likes"));
+				arrPro[i].setRemarks(0);// json_data.getInt("remarks"));
+				shop[i].setName(json_data.getString("shop_name"));
+				shopresult = new Shop(json_data.getInt("shop_id"), json_data.getString("address"), json_data.getString("shop_name"), json_data.getString("lat"), json_data.getString("lng"));// ,
+																																																// json_data.getString("shoptype"));
 				shoplist.add(shopresult);
-				if (mode.equals("Nearby")){
+				if (mode.equals("Nearby"))
+				{
 					shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
 				}
 				// employees[i] = ct_name;
@@ -572,6 +592,11 @@ public class Main extends Activity implements OnClickListener
 		catch (ParseException e1)
 		{
 			e1.printStackTrace();
+		}
+		catch (java.text.ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

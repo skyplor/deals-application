@@ -172,7 +172,7 @@ public class TwitterApp {
 
 					User user = mTwitter.verifyCredentials();
 					ConnectDB connectDB = new ConnectDB(user.getName(), Long.toString(user.getId()), "password", "user_twit", TWITTERAPP, context);
-					mSession.storeAccessToken(mAccessToken, user.getName(), Long.toString(user.getId()), connectDB.getUserID());
+					mSession.storeAccessToken(mAccessToken, user.getName(), Long.toString(user.getId()), connectDB.getUserFbTwNmID(), connectDB.getUserID());
 					
 					what = 0;
 				}

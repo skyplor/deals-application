@@ -14,6 +14,7 @@ public class TwitterSession {
 	private static final String TWEET_AUTH_SECRET_KEY = "auth_secret_key";
 	private static final String TWEET_USER_NAME = "userName";
 	private static final String TWEET_USER_ID = "twitID";
+	private static final String USER_TID = "userDB_TWITID";
 	private static final String USER_ID = "userID";
 	private static final String SHARED = "com.ntu.fypshop";
 
@@ -24,12 +25,13 @@ public class TwitterSession {
 		editor = sharedPref.edit();
 	}
 
-	public void storeAccessToken(AccessToken accessToken, String username, String userid, String id)
+	public void storeAccessToken(AccessToken accessToken, String username, String userid, String tid, String id)
 	{
 		editor.putString(TWEET_AUTH_KEY, accessToken.getToken());
 		editor.putString(TWEET_AUTH_SECRET_KEY, accessToken.getTokenSecret());
 		editor.putString(TWEET_USER_NAME, username);
 		editor.putString(TWEET_USER_ID, userid);
+		editor.putString(USER_TID, tid);
 		editor.putString(USER_ID, id);
 
 		editor.commit();
@@ -41,6 +43,7 @@ public class TwitterSession {
 		editor.putString(TWEET_AUTH_SECRET_KEY, null);
 		editor.putString(TWEET_USER_NAME, null);
 		editor.putString(TWEET_USER_ID, null);
+		editor.putString(USER_TID, null);
 		editor.putString(USER_ID, null);
 
 		editor.commit();

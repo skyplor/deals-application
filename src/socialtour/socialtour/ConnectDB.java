@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 //import java.util.Arrays;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,7 +33,6 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.commons.codec.binary.Base64;
 //import org.json.JSONArray;
 //import org.json.JSONException;
 import org.json.JSONArray;
@@ -68,11 +68,12 @@ public class ConnectDB
 	String userName = "";
 	String userEmail = "";
 	String userTwitID = "";
+	String userFbTwNmID = "";
 
 	List<Shop> shop;
 	Shop[] shopArray;
-	
-	private static int SETTINGS = 1, REGISTRATION = 2, PRODUCTDETAIL = 3, CONTAINER = 4, TWITTERAPP = 5;
+
+	private static int SETTINGS = 1, REGISTRATION = 2, PRODUCTDETAIL = 3, CONTAINER = 4, TWITTERAPP = 5, LOGINPAGE = 0;
 
 	public Shop[] getShopArray()
 	{
@@ -97,9 +98,9 @@ public class ConnectDB
 	Product[] arrPro;
 	LazyAdapter adapter;
 
-	public ConnectDB(String email, String password, Integer type)
+	public ConnectDB(String email, String password, Integer LoginPageOrCONTAINER)
 	{
-		if (type == 0)
+		if (LoginPageOrCONTAINER == LOGINPAGE)
 		{
 			// the data to send
 			ArrayList<NameValuePair> checkSalt = new ArrayList<NameValuePair>();
@@ -126,7 +127,7 @@ public class ConnectDB
 				// Log.d("Name: ", name);
 				inSalt.close();
 
-				String hashedPass = new String(getHash(1000, password, salt.getBytes()), "UTF8");
+				String hashedPass = getHash(1, password, salt) + ":" + salt;
 				Log.d("Hashed Password: ", hashedPass);
 
 				authenticateUser(email, hashedPass);
@@ -256,8 +257,7 @@ public class ConnectDB
 		SharedPreferences sharedpref = context.getSharedPreferences("com.ntu.fypshop", Context.MODE_PRIVATE);
 		Boolean twitter = (!sharedpref.getString("userDB_TWITID", "").equals(""));
 		Boolean fb = (!sharedpref.getString("userDB_FBID", "").equals(""));
-		Boolean norm = (!sharedpref.getString("userID", "").equals(""));
-		
+		Boolean norm = (!sharedpref.getString("userDB_NMID", "").equals(""));
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		String hashedPass = "";
 
@@ -265,51 +265,51 @@ public class ConnectDB
 		nameValuePairs.add(new BasicNameValuePair("name", name));
 		nameValuePairs.add(new BasicNameValuePair("userType", userType));
 		Log.d("Class number: ", Integer.toString(classnumber));
-		if(classnumber == SETTINGS)
+		if (classnumber == SETTINGS)
 		{
-			Log.d("norm: ", Boolean.toString(norm));
-			Log.d("fb: ", Boolean.toString(fb));
+			Log.d("in ConnectDB, norm/twitter/fb: ", Boolean.toString(norm)+ " " + Boolean.toString(twitter) + " " + Boolean.toString(fb));
 			nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
-			if(userType.equals("user_fb") && norm && twitter)
+			if (userType.equals("user_fb") && norm && twitter)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "1"));
-				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
-				nameValuePairs.add(new BasicNameValuePair("twitID",sharedpref.getString("userDB_TWITID", "")));
-				
+//				nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("twitID", sharedpref.getString("userDB_TWITID", "")));
+
 			}
-			else if(userType.equals("user_fb") && norm && !twitter)
+			else if (userType.equals("user_fb") && norm && !twitter)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "2"));
-				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
 			}
-			else if(userType.equals("user_fb") && !norm && twitter)
+			else if (userType.equals("user_fb") && !norm && twitter)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "3"));
-				nameValuePairs.add(new BasicNameValuePair("twitID",sharedpref.getString("userDB_TWITID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("twitID", sharedpref.getString("userDB_TWITID", "")));
 			}
 			else if (userType.equals("user_twit") && norm && fb)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "4"));
-				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
-				nameValuePairs.add(new BasicNameValuePair("fbID",sharedpref.getString("userDB_FBID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("fbID", sharedpref.getString("userDB_FBID", "")));
 			}
 			else if (userType.equals("user_twit") && norm && !fb)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "5"));
-				nameValuePairs.add(new BasicNameValuePair("userID",sharedpref.getString("userID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
 			}
 			else if (userType.equals("user_twit") && !norm && fb)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "6"));
-				nameValuePairs.add(new BasicNameValuePair("fbID",sharedpref.getString("userDB_FBID", "")));
+//				nameValuePairs.add(new BasicNameValuePair("fbID", sharedpref.getString("userDB_FBID", "")));
 			}
+			nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
 		}
-		
+
 		else if (classnumber == REGISTRATION)
 		{
 			nameValuePairs.add(new BasicNameValuePair("connectType", "registration"));
 		}
-		
+
 		else if (classnumber == CONTAINER)
 		{
 			nameValuePairs.add(new BasicNameValuePair("connectType", "container"));
@@ -323,9 +323,9 @@ public class ConnectDB
 			random.nextBytes(salt);
 
 			nameValuePairs.add(new BasicNameValuePair("email", emailortwitID));
-			hashedPass = new String(getHash(1000, password, Base64.encodeBase64(salt)), "UTF8");
+			hashedPass = getHash(1, password, new String(salt))+":"+salt;
 			nameValuePairs.add(new BasicNameValuePair("password", hashedPass));
-			nameValuePairs.add(new BasicNameValuePair("salt", new String(Base64.encodeBase64(salt), "UTF8")));
+//			nameValuePairs.add(new BasicNameValuePair("salt", new String(Base64.encodeBase64(salt), "UTF8")));
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -348,7 +348,7 @@ public class ConnectDB
 		{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
-			for(NameValuePair nvp: nameValuePairs)
+			for (NameValuePair nvp : nameValuePairs)
 			{
 				Log.d("NameValuePairs: ", nvp.getName() + ": " + nvp.getValue());
 			}
@@ -376,7 +376,7 @@ public class ConnectDB
 			is.close();
 
 			result = line;// sb.toString();
-			if(result==null||result.equals("null"))
+			if (result == null || result.equals("null"))
 			{
 				Log.d("Result in ConnectDB: ", "null");
 			}
@@ -390,8 +390,9 @@ public class ConnectDB
 					for (int i = 0; i < jArray.length(); i++)
 					{
 						json_data = jArray.getJSONObject(i);
-						userID = json_data.getString("id");
+						userID = json_data.getString("acctid");
 						userName = json_data.getString("name");
+						userFbTwNmID = json_data.getString("id");
 						if (userType.equals("user_twit"))
 						{
 							userTwitID = json_data.getString("twitID");
@@ -487,7 +488,7 @@ public class ConnectDB
 				line = reader.readLine();
 			}
 			String result1 = sb.toString();
-			Log.d("testing line: ", result1);
+			Log.d("in ConnectDB, shopresult: ", result1);
 			JSONObject jsonObj = null;// new JSONObject(line);
 			shop = new ArrayList<Shop>();
 			JSONArray jArray = new JSONArray(result1);
@@ -695,18 +696,52 @@ public class ConnectDB
 		}
 	}
 
-	public byte[] getHash(int iterationNb, String password, byte[] salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	public String getHash(int iterationNb, String password, String salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
-		MessageDigest digest = MessageDigest.getInstance("SHA-1");
-		digest.reset();
-		digest.update(salt);
-		byte[] input = digest.digest(password.getBytes("UTF-8"));
-		for (int i = 0; i < iterationNb; i++)
+		// MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		// algorithm.reset();
+		// algorithm.update(salt);
+		// byte[] temp = algorithm.digest(password.getBytes("UTF-8"));
+		// for (int i = 0; i < iterationNb; i++)
+		// {
+		// algorithm.reset();
+		// temp = algorithm.digest(temp);
+		// }
+		String result = null;
+		String input = password + salt;
+		byte[] source;
+		try
 		{
-			digest.reset();
-			input = digest.digest(input);
+			// Get byte according by specified coding.
+			source = input.getBytes("UTF-8");
 		}
-		return Base64.encodeBase64(input);
+		catch (UnsupportedEncodingException e)
+		{
+			source = input.getBytes();
+		}
+		char hexDigits[] =
+		{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+		try
+		{
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(source);
+			// The result should be one 128 integer
+			byte temp[] = md.digest();
+			char str[] = new char[16 * 2];
+			int k = 0;
+			for (int i = 0; i < 16; i++)
+			{
+				byte byte0 = temp[i];
+				str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+				str[k++] = hexDigits[byte0 & 0xf];
+			}
+			result = new String(str);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public List<Shop> getShop()
@@ -718,6 +753,11 @@ public class ConnectDB
 	{
 		// TODO Auto-generated method stub
 		return userID;
+	}
+
+	public String getUserFbTwNmID()
+	{
+		return userFbTwNmID;
 	}
 
 	public String getUserName()

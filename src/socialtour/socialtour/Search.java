@@ -367,9 +367,13 @@ public class Search extends Activity implements OnClickListener
 					tempShop[i] = new Shop();
 					arrPro[i] = new Product();
 					arrPro[i].setId(json_data.getInt("productid"));
-					arrPro[i].setFilename(json_data.getString("filename"));
-					arrPro[i].setUrl(json_data.getString("url"));
-					arrPro[i].setPercentdiscount(json_data.getInt("percentdiscount"));
+					arrPro[i].setFilename(json_data.getString("title"));
+					arrPro[i].setUrl("");//json_data.getString("url"));
+					
+					JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
+					JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
+					int discountPercent = (int) jextraObjPercent.getDouble("value");
+					arrPro[i].setPercentdiscount(discountPercent);
 					tempShop[i].setName(json_data.getString("name"));
 					
 					Shop shopResult = new Shop(json_data.getInt("id"), json_data.getString("address"), json_data.getString("name"), json_data.getString("lat"), json_data.getString("lng"));
