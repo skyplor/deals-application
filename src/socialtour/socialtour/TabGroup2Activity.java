@@ -389,7 +389,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 						}
 					}
 					File picFile = new File(realpath);
-					Uri newUri = Uri.fromFile(picFile);
+					Uri newUri = Uri.parse("file://"+realpath);
 					
 					Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 	        		i.putExtra("pic", newUri);

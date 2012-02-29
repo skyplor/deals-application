@@ -510,8 +510,10 @@ public class Attraction extends Activity implements RadioGroup.OnCheckedChangeLi
 	private static String MungPass(String pass) throws NoSuchAlgorithmException
 	{
 		MessageDigest m = MessageDigest.getInstance("MD5");
+		m.reset();
 		byte[] data = pass.getBytes();
-		m.update(data, 0, data.length);
+//		m.update(data, 0, data.length);
+		m.update(data);
 		BigInteger i = new BigInteger(1, m.digest());
 		return String.format("%1$032X", i);
 	}

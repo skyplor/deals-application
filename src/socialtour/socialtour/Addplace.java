@@ -702,14 +702,15 @@ public class Addplace extends MapActivity implements OnClickListener
 			 * shopname); startActivity(i);
 			 */
 
-			Intent i = new Intent(getParent(), Attraction.class);
+			Intent intent = new Intent(getParent(), ChooseCategory.class);
+			intent.putExtra("SHOP_ID", lastid);
+	        intent.putExtra("SHOP_NAME", shopname);
+	        intent.putExtra("SHOP_ADDRESS", address);
 			Bundle bundle = getIntent().getExtras();
 			Uri pic = (Uri) bundle.get("pic");
-			i.putExtra("pic", pic);
-			i.putExtra("EMPLOYEE_ID", lastid);
-			i.putExtra("EMPLOYEE_NAME", shopname);
+			intent.putExtra("pic", pic);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Add Product", i);
+			parentActivity.startChildActivity("Add Product", intent);			
 
 		}
 		catch (Exception e)
