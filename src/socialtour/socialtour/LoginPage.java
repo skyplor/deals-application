@@ -197,10 +197,12 @@ public class LoginPage extends Activity {
 		// TODO Auto-generated method stub
 		login.setOnClickListener(new View.OnClickListener()
 		{
+			@Override
 			public void onClick(View v)
 			{
 				Log.d("Password: ", password.getText().toString());
 				ConnectDB connectCheck = new ConnectDB(email.getText().toString(), password.getText().toString(), 0);
+				Log.d("connectCheck.inputResult()", Boolean.toString(connectCheck.inputResult()));
 				if (connectCheck.inputResult())
 				{
 					Log.d("Authenticate User: ", "True");
@@ -219,6 +221,7 @@ public class LoginPage extends Activity {
 					editor.putString("userDB_NMID", connectCheck.getUserFbTwNmID());
 					editor.commit();
 
+					Log.d("LoginPage: userdb_nmid", connectCheck.getUserFbTwNmID());
 					Intent intent = new Intent(v.getContext(), Container.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					Log.d("GlobalVariable name: ", globalVar.getName());

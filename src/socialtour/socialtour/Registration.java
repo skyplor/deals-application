@@ -115,7 +115,7 @@ public class Registration extends Activity {
 				{
 					SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 					Log.d("In registration: reg btn: ", "true");
-					connect = new ConnectDB(name.getText().toString(), email.getText().toString(), password.getText().toString(), "user_norm", REGISTRATION, Registration.this);
+					connect = new ConnectDB(name.getText().toString(), email.getText().toString(), "", password.getText().toString(), "user_norm", REGISTRATION, Registration.this);
 					if (connect.inputResult())
 					{
 						GlobalVariable globalVar = ((GlobalVariable) getApplicationContext());

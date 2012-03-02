@@ -162,6 +162,8 @@ public class Productdetail extends Activity implements OnClickListener
 		Bundle bundle = getIntent().getExtras();
 		productid = (Integer) bundle.get("lastproductid");
 
+		alreadylike = (TextView) findViewById(R.id.lbllikealready);
+
 		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 		String userid = "", usertype = "";
 		if (!userDetails.getString("userID", "").equals(""))
@@ -258,7 +260,6 @@ public class Productdetail extends Activity implements OnClickListener
 		{
 			btnLike.setImageResource(R.drawable.likepicgray);
 			btnLike.setEnabled(false);
-			alreadylike = (TextView) findViewById(R.id.lbllikealready);
 			alreadylike.setVisibility(View.VISIBLE);
 		}
 
@@ -317,8 +318,8 @@ public class Productdetail extends Activity implements OnClickListener
 			for (int i = 0; i < jArray.length(); i++)
 			{
 				json_data = jArray.getJSONObject(i);
-				likes = 0;// json_data.getInt("likes");
-				remarks = 0;// json_data.getInt("remarks");
+				likes = json_data.getInt("likes");
+				remarks = json_data.getInt("remarks");
 				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
 				for (int j = 0; j < 5; j++)
 				{
@@ -1379,11 +1380,12 @@ public class Productdetail extends Activity implements OnClickListener
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", PRODUCTDETAIL, Productdetail.this);
+								connectCheck = new ConnectDB(userName, userEmail, uid, "", "user_fb", PRODUCTDETAIL, Productdetail.this);
 
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());
-								editor.putString("userDB_FBID", connectCheck.getUserID());
+								editor.putString("userDB_FBID", connectCheck.getUserFbTwNmID());
+								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
 								// editor.commit();
@@ -1476,6 +1478,7 @@ public class Productdetail extends Activity implements OnClickListener
 //		m.update(data, 0, data.length);
 		m.update(data);
 		BigInteger i = new BigInteger(1, m.digest());
-		return String.format("%1$032X", i);
+		String result = String.format("%1$032X", i);
+		return result.toLowerCase();
 	}
 }

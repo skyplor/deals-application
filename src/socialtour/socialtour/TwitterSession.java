@@ -44,7 +44,7 @@ public class TwitterSession {
 		editor.putString(TWEET_USER_NAME, null);
 		editor.putString(TWEET_USER_ID, null);
 		editor.putString(USER_TID, null);
-		editor.putString(USER_ID, null);
+//		editor.putString(USER_ID, null);
 
 		editor.commit();
 	}

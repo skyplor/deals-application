@@ -284,7 +284,7 @@ public class Settings extends Activity
 			SharedPreferences.Editor editor = login.edit();
 			editor.putString("userFBname", null);
 //			editor.putString("userName", null);
-			editor.putString("userID", null);
+//			editor.putString("userID", null);
 			editor.putString("userFBID", null);
 			editor.putString("userDB_FBID", null);
 			editor.putString("emailFB_Login", null);
@@ -550,7 +550,8 @@ public class Settings extends Activity
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", SETTINGS, Settings.this);
+								Log.d("in settings: uid", uid);
+								connectCheck = new ConnectDB(userName, userEmail, uid, "", "user_fb", SETTINGS, Settings.this);
 								Log.d("userName: ", connectCheck.getUserName());
 								editor.putString("userName", connectCheck.getUserName());
 								editor.putString("emailFB_Login", connectCheck.getUserEmail());

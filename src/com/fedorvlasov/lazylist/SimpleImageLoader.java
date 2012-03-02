@@ -234,7 +234,8 @@ public class SimpleImageLoader {
 //		m.update(data, 0, data.length);
 		m.update(data);
 		BigInteger i = new BigInteger(1, m.digest());
-		return String.format("%1$032X", i);
+		String result = String.format("%1$032X", i);
+		return result.toLowerCase();
 	}
 
 }

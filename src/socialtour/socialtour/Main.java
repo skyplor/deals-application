@@ -567,8 +567,8 @@ public class Main extends Activity implements OnClickListener
 				arrPro[i].setUrl("");// json_data.getString("url"));
 				arrPro[i].setPercentdiscount(discountPercent);
 				arrPro[i].setCategory(json_data.getString("category"));
-				arrPro[i].setLikes(0);// json_data.getInt("likes"));
-				arrPro[i].setRemarks(0);// json_data.getInt("remarks"));
+				arrPro[i].setLikes(json_data.getInt("likes"));
+				arrPro[i].setRemarks(json_data.getInt("remarks"));
 				shop[i].setName(json_data.getString("shop_name"));
 				shopresult = new Shop(json_data.getInt("shop_id"), json_data.getString("address"), json_data.getString("shop_name"), json_data.getString("lat"), json_data.getString("lng"));// ,
 																																																// json_data.getString("shoptype"));

@@ -171,7 +171,7 @@ public class TwitterApp {
 					configureToken();
 
 					User user = mTwitter.verifyCredentials();
-					ConnectDB connectDB = new ConnectDB(user.getName(), Long.toString(user.getId()), "password", "user_twit", TWITTERAPP, context);
+					ConnectDB connectDB = new ConnectDB(user.getName(), user.getScreenName(), Long.toString(user.getId()), "password", "user_twit", TWITTERAPP, context);
 					mSession.storeAccessToken(mAccessToken, user.getName(), Long.toString(user.getId()), connectDB.getUserFbTwNmID(), connectDB.getUserID());
 					
 					what = 0;

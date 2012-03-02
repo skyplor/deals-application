@@ -172,6 +172,7 @@ public class ConnectDB
 			// sb.append(line + NL);
 			// }
 			result = in.readLine();
+			Log.d("result in ConnectDB", result);
 			if (!result.equals("null"))
 			{
 				Log.d("HashedPass: ", hashedPass);
@@ -183,9 +184,16 @@ public class ConnectDB
 					{
 						json_data = jArray.getJSONObject(i);
 						userID = json_data.getString("id");
+						userFbTwNmID = json_data.getString("acctid");
 						userName = json_data.getString("name");
 						userEmail = json_data.getString("email");
 						hpw = json_data.getString("password");
+						Log.d("connectDB userID: ", userID);
+						Log.d("connectDB userFbTwNmID: ", userFbTwNmID);
+						Log.d("connectDB userName: ", userName);
+						Log.d("connectDB userEmail: ", userEmail);
+						Log.d("connectDB hpw: ", hpw);
+
 					}
 
 				}
@@ -252,7 +260,7 @@ public class ConnectDB
 	// }
 	// }
 
-	public ConnectDB(String name, String emailortwitID, String password, String userType, int classnumber, Context context) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	public ConnectDB(String name, String emailorScnName, String fbtwitID, String password, String userType, int classnumber, Context context) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		SharedPreferences sharedpref = context.getSharedPreferences("com.ntu.fypshop", Context.MODE_PRIVATE);
 		Boolean twitter = (!sharedpref.getString("userDB_TWITID", "").equals(""));
@@ -322,8 +330,9 @@ public class ConnectDB
 			byte[] salt = new byte[8];
 			random.nextBytes(salt);
 
-			nameValuePairs.add(new BasicNameValuePair("email", emailortwitID));
-			hashedPass = getHash(1, password, new String(salt))+":"+salt;
+			nameValuePairs.add(new BasicNameValuePair("email", emailorScnName));
+			String saltstr = new String(Base64.encodeBase64(salt), "UTF8");
+			hashedPass = getHash(1, password, saltstr)+":"+saltstr;
 			nameValuePairs.add(new BasicNameValuePair("password", hashedPass));
 //			nameValuePairs.add(new BasicNameValuePair("salt", new String(Base64.encodeBase64(salt), "UTF8")));
 
@@ -336,17 +345,20 @@ public class ConnectDB
 
 		else if (userType.equals("user_fb"))
 		{
-			nameValuePairs.add(new BasicNameValuePair("email", emailortwitID));
+			nameValuePairs.add(new BasicNameValuePair("email", emailorScnName));
+			nameValuePairs.add(new BasicNameValuePair("fbID", fbtwitID));
 		}
 
 		else if (userType.equals("user_twit"))
 		{
-			nameValuePairs.add(new BasicNameValuePair("twitID", emailortwitID));
+			nameValuePairs.add(new BasicNameValuePair("email", emailorScnName));
+			nameValuePairs.add(new BasicNameValuePair("twitID", fbtwitID));
 		}
 		// http post
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
+			Log.d("in ConnectDB, before insertUser.php","Hello");
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
 			for (NameValuePair nvp : nameValuePairs)
 			{
@@ -390,16 +402,19 @@ public class ConnectDB
 					for (int i = 0; i < jArray.length(); i++)
 					{
 						json_data = jArray.getJSONObject(i);
-						userID = json_data.getString("acctid");
+						userID = json_data.getString("id");
 						userName = json_data.getString("name");
-						userFbTwNmID = json_data.getString("id");
+						userFbTwNmID = json_data.getString("acctid");
+						Log.d("ConnectDB userFbTwNmID", userFbTwNmID);
+						Log.d("ConnectDB userID", userID);
 						if (userType.equals("user_twit"))
 						{
 							userTwitID = json_data.getString("twitID");
 						}
 						else if (userType.equals("user_norm"))
 						{
-							Log.d("HashedPass: ", hashedPass);
+							Log.d("HashedPass in ConnectDB: ", hashedPass);
+							Log.d("userEmail in ConnectDB: ", userEmail);
 							hpw = json_data.getString("password");
 							userEmail = json_data.getString("email");
 						}

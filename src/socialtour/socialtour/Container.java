@@ -535,7 +535,10 @@ public class Container extends TabActivity implements OnClickListener
 							ConnectDB connectCheck;
 							try
 							{
-								connectCheck = new ConnectDB(userName, userEmail, "", "user_fb", CONTAINER, Container.this);
+								Log.d("in Container userName: ", userName);
+								Log.d("in Container userEmail: ", userEmail);
+								Log.d("in Container uid: ", uid);
+								connectCheck = new ConnectDB(userName, userEmail, uid, "", "user_fb", CONTAINER, Container.this);
 								Log.d("username in container: ", connectCheck.getUserName());
 
 								editor.putString("userName", connectCheck.getUserName());
