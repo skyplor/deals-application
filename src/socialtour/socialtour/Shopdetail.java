@@ -78,6 +78,10 @@ public class Shopdetail extends MapActivity
 		detailBrowse = (ListView) findViewById(R.id.listDetailBrowse);
 		globalVar = ((GlobalVariable) getApplicationContext());
 
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.GONE);
+		
 		Bundle bundle = getIntent().getExtras();
 		String name = "", address = "";
 		int iconid = -1, shopid = -1;
@@ -141,6 +145,16 @@ public class Shopdetail extends MapActivity
 				parentActivity.startChildActivity("Product Detail", intent);
 			}
 		});
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.GONE);
+		Container.btn1.setVisibility(View.GONE);
+		
 	}
 
 	public void getProduct(int shopid)

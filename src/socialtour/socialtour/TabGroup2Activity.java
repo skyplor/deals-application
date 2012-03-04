@@ -44,6 +44,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 	private String type;
 	Uri outputFileUri;
 	Button btnShare;
+	ImageView home;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,8 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
         Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+        home = Container.home;
+        home.setOnClickListener(this);
         //Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
         //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
         //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
@@ -76,6 +79,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+        Container.home.setOnClickListener(this);
 		//Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
         //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
         //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
@@ -93,6 +97,11 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     		//Intent i = new Intent("socialtour.socialtour.STARTCAMERA");
     		//startChildActivity("Start Camera", i);
     		imageOptions();
+    	}else if (v==home){
+    		Intent i = getBaseContext().getPackageManager()
+  		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+               i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               startActivity(i);
     	}
     }
     

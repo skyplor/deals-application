@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -47,6 +48,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		cat8.setOnClickListener(this);
 		cat9.setOnClickListener(this);
 		backtomain.setOnClickListener(this);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
 	@Override

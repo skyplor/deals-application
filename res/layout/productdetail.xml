@@ -120,7 +120,7 @@
             android:id="@+id/lblbeforeprice"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lblshopaddress"
+            android:layout_below="@+id/btnshowshop"
             android:layout_alignLeft="@+id/imgProduct"
             android:text="Usual Price: $10.00"
             android:textColor="#283860"
@@ -177,6 +177,20 @@
             android:textColor="#302217"
             android:textSize="15dp" 
             android:clickable="true" />
+        
+        <Button
+            	android:id="@+id/btnshowshop"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:text="Show Shop"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="2dp"
+                android:layout_alignLeft="@+id/imgProduct"
+                android:layout_below="@+id/lblshopaddress"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/button_rounded_corners" />
         
         <ImageView
             android:id="@+id/imgRemarks"

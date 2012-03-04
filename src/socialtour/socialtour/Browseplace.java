@@ -295,12 +295,10 @@ public class Browseplace extends Activity implements OnClickListener{
 	            public void onClick(DialogInterface dialog, int which) {
 	                dialog.dismiss();
 	                
-	                TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	                Intent i = new Intent("socialtour.socialtour.TABGROUP2ACTIVITY");
-	                //Intent i = getBaseContext().getPackageManager()
-	   		        //     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-	                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-	                parentActivity.startChildActivity("Back to Main", i);
+	                Intent i = getBaseContext().getPackageManager()
+	   		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+	                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	                startActivity(i);
 	                
 	                //Intent i = getBaseContext().getPackageManager()
 		   		    //         .getLaunchIntentForPackage( getBaseContext().getPackageName() );

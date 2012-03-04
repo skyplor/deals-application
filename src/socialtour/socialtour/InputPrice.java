@@ -148,13 +148,17 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				ori = (100 / (100 - percentage)) * dis;
 				if (percentage != Math.round(percentage) || (percentage < 0 || percentage > 100))
 				{
-					promptError("Please enter an integer value between 1 to 100");
+					promptError("Please enter an integer value between 1 to 100 for percentage discount");
 					proceed = false;
 				}
 			}
 			else
 			{
-				ori = Integer.parseInt(txtSecondInput.getText().toString());
+				ori = Double.parseDouble(txtSecondInput.getText().toString());
+				if (dis >= ori){
+					promptError("Discounted price cannot be more than original price");
+					proceed = false;
+				}
 				percentage = (int) Math.round((Math.abs(dis - ori) / ori) * 100);
 				// calculate percent discount
 			}
@@ -604,13 +608,10 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				// manager.destroyActivity("share", true);
 				// manager.startActivity("share", new Intent(getParent(),
 				// TabGroup2Activity.class));
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				Intent i = new Intent(getParent(), TabGroup2Activity.class);
-				// Intent i = getBaseContext().getPackageManager()
-				// .getLaunchIntentForPackage( getBaseContext().getPackageName()
-				// );
+				Intent i = getBaseContext().getPackageManager()
+			             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				parentActivity.startChildActivity("Back to Main", i);
+				startActivity(i);
 				// startActivity(i);
 
 			}

@@ -5,26 +5,17 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:orientation="vertical">
-
-	<TextView
-		android:textSize="15dp"
-		android:text="@string/login"
-		android:id="@+id/loginTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/welcomeTxt"
-		android:layout_centerHorizontal="true">
-	</TextView>
+	android:orientation="vertical"
+	android:background="#eeeeee">
 
 	<ImageView
 		android:id="@+id/imageView1"
-		android:src="@drawable/icon"
+		android:src="@drawable/dealshowtitle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/loginTxt"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="20dp">
+		android:layout_marginTop="40dp">
 	</ImageView>
 
 	<EditText
@@ -33,12 +24,12 @@
 		android:id="@+id/emailTxtBox"
 		android:layout_below="@+id/imageView1"
 		android:layout_toRightOf="@+id/emailTxt"
-		android:layout_marginTop="10dp"
+		android:layout_marginTop="15dp"
+		android:layout_marginLeft="5dp"
 		android:textSize="17px"
-		android:paddingBottom="5dp"
-		android:paddingLeft="5dp"
 		android:layout_height="30dp"
-		android:hint="Please enter your email address">
+		android:hint="Please enter your email address"
+		android:background="@drawable/edittext_rounded_corners">
 	</EditText>
 
 	<TextView
@@ -46,22 +37,25 @@
 		android:id="@+id/emailTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/emailTxtBox"
-		android:layout_alignLeft="@+id/welcomeTxt">
+		android:layout_below="@+id/imageView1"
+		android:layout_marginLeft="35dp"
+		android:layout_marginTop="20dp"
+		android:textColor="#000000"
+		android:textStyle="bold">
 	</TextView>
 
 	<EditText
 		android:layout_width="210dp"
 		android:inputType="textPassword"
 		android:id="@+id/pwTxtBox"
-		android:layout_alignTop="@+id/passwordTxt"
 		android:layout_alignLeft="@+id/emailTxtBox"
 		android:textSize="17px"
 		android:textScaleX="0.7"
-		android:paddingBottom="5dp"
-		android:paddingLeft="5dp"
 		android:layout_height="30dp"
-		android:hint="Please enter your password">
+		android:layout_marginTop="20dp"
+		android:layout_below="@+id/emailTxtBox"
+		android:hint="Please enter your password"
+		android:background="@drawable/edittext_rounded_corners">
 	</EditText>
 
 	<TextView
@@ -70,19 +64,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/emailTxtBox"
-		android:layout_alignRight="@+id/emailTxt"
-		android:layout_marginTop="15dp">
-	</TextView>
-
-	<TextView
-		android:textSize="20dp"
-		android:text="@string/Welcome"
-		android:id="@+id/welcomeTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginTop="20dp">
+		android:layout_marginLeft="10dp"
+		android:layout_marginTop="25dp"
+		android:textColor="#000000"
+		android:textStyle="bold">
 	</TextView>
 
 	<!-- <ImageButton android:src="@drawable/signin_twitter_button" -->
@@ -92,14 +77,17 @@
 	<!-- </ImageButton> -->
 
 	<Button
-		android:textSize="15px"
-		android:layout_width="150dp"
+		android:layout_width="100dp"
 		android:text="Login"
 		android:id="@+id/loginBtn"
 		android:layout_height="38dp"
 		android:layout_below="@+id/pwTxtBox"
-		android:layout_toRightOf="@+id/passwordTxt"
-		android:layout_marginTop="15dp">
+		android:layout_marginTop="15dp"
+		android:layout_centerHorizontal="true"
+		android:textColor="#FFFFFF"
+		android:textSize="20dp"
+		android:textStyle="bold"
+		android:background="@drawable/button_rounded_corners">
 	</Button>
 	
 	<socialtour.socialtour.FacebookBtn

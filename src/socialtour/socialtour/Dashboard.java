@@ -32,7 +32,7 @@ public class Dashboard extends Activity
 		sharedPref = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 
 		userTxt = (TextView) findViewById(R.id.txtuser);
-		userTxt.setText("Hi " + sharedPref.getString("userFBname", ""));
+		userTxt.setText("Hi " + sharedPref.getString("userName", ""));
 
 		userPic = (ImageView) findViewById(R.id.imguser);
 		URL img_value = null;

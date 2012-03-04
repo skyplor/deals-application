@@ -273,10 +273,17 @@ public class ConnectDB
 		nameValuePairs.add(new BasicNameValuePair("name", name));
 		nameValuePairs.add(new BasicNameValuePair("userType", userType));
 		Log.d("Class number: ", Integer.toString(classnumber));
-		if (classnumber == SETTINGS)
+		if (classnumber == SETTINGS || classnumber == PRODUCTDETAIL)
 		{
 			Log.d("in ConnectDB, norm/twitter/fb: ", Boolean.toString(norm)+ " " + Boolean.toString(twitter) + " " + Boolean.toString(fb));
-			nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
+			if(classnumber == SETTINGS)
+			{
+				nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
+			}
+			else
+			{
+				nameValuePairs.add(new BasicNameValuePair("connectType", "productdetail"));
+			}
 			if (userType.equals("user_fb") && norm && twitter)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "1"));

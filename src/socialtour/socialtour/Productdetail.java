@@ -38,12 +38,15 @@ import org.json.JSONObject;
 import com.facebook.BaseDialogListener;
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
+//import com.facebook.SessionEvents;
 import com.facebook.android.AsyncFacebookRunner;
+//import com.facebook.android.DialogError;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
-import com.facebook.android.Facebook.DialogListener;
+//import com.facebook.android.Facebook.DialogListener;
 
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Remark;
@@ -75,6 +78,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -96,7 +101,6 @@ public class Productdetail extends Activity implements OnClickListener
 	Bitmap bmImg;
 	ImageView imagedisplay;
 	ImageView btnLike, btnShare, btnRemarks;
-	Button btnShowComments;
 	int productid = 0;
 	String filename;
 	String commentType;
@@ -134,6 +138,7 @@ public class Productdetail extends Activity implements OnClickListener
 	boolean existed = false;
 	TextView latestcomments;
 	TextView alreadylike;
+	Button showmorecomments, showshop;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -150,19 +155,21 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setVisibility(View.VISIBLE);
 		btnRemarks.setVisibility(View.VISIBLE);
 		btnShare.setVisibility(View.VISIBLE);
+		btnShare.getLayoutParams().width = 45;
 
 		btnLike.setImageResource(R.drawable.likepicwhite);
 		btnRemarks.setImageResource(R.drawable.remarkpic);
 		btnShare.setImageResource(R.drawable.share2);
 
-		btnShowComments = (Button) findViewById(R.id.btnshowmorecomments);
-
+		alreadylike = (TextView) findViewById(R.id.lbllikealready);
 		globalVar = ((GlobalVariable) getApplicationContext());
 		facebook = globalVar.getFBState();
 		Bundle bundle = getIntent().getExtras();
 		productid = (Integer) bundle.get("lastproductid");
-
-		alreadylike = (TextView) findViewById(R.id.lbllikealready);
+		showmorecomments = (Button) findViewById(R.id.btnshowmorecomments);
+		showmorecomments.setOnClickListener(this);
+		showshop = (Button) findViewById(R.id.btnshowshop);
+		showshop.setOnClickListener(this);
 
 		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 		String userid = "", usertype = "";
@@ -186,7 +193,6 @@ public class Productdetail extends Activity implements OnClickListener
 		{
 			btnLike.setImageResource(R.drawable.likepicgray);
 			btnLike.setEnabled(false);
-			alreadylike = (TextView) findViewById(R.id.lbllikealready);
 			alreadylike.setVisibility(View.VISIBLE);
 		}
 
@@ -195,16 +201,20 @@ public class Productdetail extends Activity implements OnClickListener
 		latestcomments = (TextView) findViewById(R.id.latestcomments);
 		if (listremarks != null)
 		{
-			latestcomments.setText("'" + listremarks[0].getDesc() + "'\r\n");
-			for (int i = 1; i < 3; i++)
+			latestcomments.setText("'" + listremarks[0].getDesc() + "'");
+			int limit = 3;
+			if (limit > listremarks.length){
+				limit = listremarks.length;
+			}
+			for (int i = 1; i < limit; i++)
 			{
-				latestcomments.setText(latestcomments.getText() + "'" + listremarks[i].getDesc() + "'\r\n");
+				latestcomments.setText(latestcomments.getText() + "\r\n'" + listremarks[i].getDesc() + "'");
 			}
 		}
 		else
 		{
 			latestcomments.setText("No comments currently");
-			btnShowComments.setVisibility(View.GONE);
+			showmorecomments.setVisibility(View.GONE);
 		}
 
 		downloadFile(filename);
@@ -213,7 +223,6 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setOnClickListener(this);
 		btnRemarks.setOnClickListener(this);
 		btnShare.setOnClickListener(this);
-		btnShowComments.setOnClickListener(this);
 	}
 
 	/*
@@ -236,7 +245,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setImageResource(R.drawable.likepicwhite);
 		btnRemarks.setImageResource(R.drawable.remarkpic);
 		btnShare.setImageResource(R.drawable.share2);
-
+		btnShare.getLayoutParams().width = 45;
 		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 		String userid = "", usertype = "";
 		if (!userDetails.getString("userID", "").equals(""))
@@ -260,6 +269,7 @@ public class Productdetail extends Activity implements OnClickListener
 		{
 			btnLike.setImageResource(R.drawable.likepicgray);
 			btnLike.setEnabled(false);
+			alreadylike = (TextView) findViewById(R.id.lbllikealready);
 			alreadylike.setVisibility(View.VISIBLE);
 		}
 
@@ -515,12 +525,13 @@ public class Productdetail extends Activity implements OnClickListener
 					json_data = jArray.getJSONObject(i);
 					listremarks[i] = new Remark();
 					listremarks[i].setId(json_data.getInt("id"));
-					listremarks[i].setProductid(json_data.getInt("productid"));
-					listremarks[i].setUserid(json_data.getInt("userid"));
-					listremarks[i].setDesc(json_data.getString("desc"));
+					listremarks[i].setProductid(json_data.getInt("itemID"));
+					listremarks[i].setUserid(json_data.getInt("userID"));
+					listremarks[i].setUsername(json_data.getString("userName"));
+					listremarks[i].setDesc(json_data.getString("commentText"));
 
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-					listremarks[i].setCreated((Date) formatter.parse(json_data.getString("remark_created")));
+					listremarks[i].setCreated((Date) formatter.parse(json_data.getString("commentDate")));
 				}
 			}
 			catch (JSONException e1)
@@ -635,15 +646,33 @@ public class Productdetail extends Activity implements OnClickListener
 				lbllikes.setText(Integer.toString(numberlikes) + " likes");
 				alreadylike.setVisibility(View.VISIBLE);
 				updateComments("likes", productid, numberlikes, userid);
+				btnLike.setImageResource(R.drawable.likepicgray);
+				btnLike.setEnabled(false);
 			}
 		}
-		else if (v == btnRemarks)
+		else if (v == btnRemarks || v == showmorecomments)
 		{
 			Intent intent = new Intent(getParent(), Remarks.class);
 			intent.putExtra("productid", productid);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 			parentActivity.startChildActivity("Remarks", intent);
 			// do something
+		}
+		else if (v == showshop)
+		{
+			Log.d("In productdetail, shop touched: ", "lbladdress");
+
+			ConnectDB connect = new ConnectDB(lbladdress.getText().toString(), lblshop.getText().toString());
+			List<Shop> shop = connect.getShop();
+			// for (Shop result : shop)
+			// {
+			// Log.d("In productdetail, shop result: ", result.getName());
+			// }
+			globalVar = (GlobalVariable) getApplicationContext();
+			globalVar.setShop(shop);
+			Intent shopIntent = new Intent(getParent(), Shopdetail.class);
+			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			parentActivity.startChildActivity("Shop Detail", shopIntent);
 		}
 		else if (v == btnShare)
 		{
@@ -673,8 +702,8 @@ public class Productdetail extends Activity implements OnClickListener
 
 			// status = "Check out this promotion!\n" + productname + " (" +
 			// Integer.toString(percent) + "% off) @ " + shopname;
-			String alias = productid+"-"+productname.trim().toLowerCase().replace(' ', '-');
-			status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/index.php/site-map/articles/item/"+alias;
+			String alias = productname.trim().toLowerCase().replace(' ', '-');
+			status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
 			fbshare.setOnClickListener(new OnClickListener()
 			{
 
@@ -683,6 +712,7 @@ public class Productdetail extends Activity implements OnClickListener
 				{
 					// TODO Auto-generated method stub
 					gotoFacebookConnect();
+					
 				}
 
 			});
@@ -697,58 +727,7 @@ public class Productdetail extends Activity implements OnClickListener
 					}
 					else
 					{
-						final Dialog twitDialog = new Dialog(getParent());
-
-						twitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-						twitDialog.setContentView(R.layout.twitter_post);
-						// twitDialog.setTitle("Post to Twitter");
-
-						Drawable icon = getResources().getDrawable(R.drawable.twitter_icon);
-
-						TextView mTitle = (TextView) twitDialog.findViewById(R.id.titleDialog);
-
-						mTitle.setText("Twitter");
-						mTitle.setTextColor(Color.WHITE);
-						mTitle.setTypeface(Typeface.DEFAULT_BOLD);
-						mTitle.setBackgroundColor(0xFFbbd7e9);
-						mTitle.setPadding(4 + 2, 4, 4, 4);
-						mTitle.setCompoundDrawablePadding(4 + 2);
-						mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-						twitDialog.setCancelable(true);
-						final EditText statusPost = (EditText) twitDialog.findViewById(R.id.statusText);
-						Log.d("Status: ", status);
-						statusPost.setText(status);
-
-						// set up button
-						Button postbutton = (Button) twitDialog.findViewById(R.id.postBtn);
-						postbutton.setOnClickListener(new OnClickListener()
-						{
-							@Override
-							public void onClick(View v)
-							{
-								String review = statusPost.getText().toString();
-
-								if (review.equals(""))
-									return;
-
-								postReview(review);
-
-								postToTwitter(review);
-								twitDialog.dismiss();
-							}
-						});
-
-						Button cancelbutton = (Button) twitDialog.findViewById(R.id.cancelBtn);
-						cancelbutton.setOnClickListener(new OnClickListener()
-						{
-							@Override
-							public void onClick(View v)
-							{
-								twitDialog.cancel();
-							}
-						});
-
-						twitDialog.show();
+						twitterPostDialog();
 						// String review = reviewEdit.getText().toString();
 						//
 						// if (review.equals(""))
@@ -787,16 +766,72 @@ public class Productdetail extends Activity implements OnClickListener
 		// TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 		// parentActivity.startChildActivity("Shop Detail", shopIntent);
 		// }
-		else if (v == btnShowComments)
-		{
-
-		}
 	}
 
+	private void twitterPostDialog()
+	{
+		final Dialog twitDialog = new Dialog(getParent());
+
+		twitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		twitDialog.setContentView(R.layout.twitter_post);
+		// twitDialog.setTitle("Post to Twitter");
+
+		Drawable icon = getResources().getDrawable(R.drawable.twitter_icon);
+
+		TextView mTitle = (TextView) twitDialog.findViewById(R.id.titleDialog);
+
+		mTitle.setText("Twitter");
+		mTitle.setTextColor(Color.WHITE);
+		mTitle.setTypeface(Typeface.DEFAULT_BOLD);
+		mTitle.setBackgroundColor(0xFFbbd7e9);
+		mTitle.setPadding(4 + 2, 4, 4, 4);
+		mTitle.setCompoundDrawablePadding(4 + 2);
+		mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+		twitDialog.setCancelable(true);
+		final EditText statusPost = (EditText) twitDialog.findViewById(R.id.statusText);
+		Log.d("Status: ", status);
+		statusPost.setText(status);
+
+		// set up button
+		Button postbutton = (Button) twitDialog.findViewById(R.id.postBtn);
+		postbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String review = statusPost.getText().toString();
+
+				if (review.equals(""))
+					return;
+
+				postReview(review);
+
+				postToTwitter(review);
+				twitDialog.dismiss();
+			}
+		});
+
+		Button cancelbutton = (Button) twitDialog.findViewById(R.id.cancelBtn);
+		cancelbutton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				twitDialog.cancel();
+			}
+		});
+
+		twitDialog.show();
+	}
+	
 	protected void gotoFacebookConnect()
 	{
 		// TODO Auto-generated method stub
+
 		fbConnect = new FbConnect(APP_ID, getParent(), getApplicationContext());
+		
+		
+		
 	}
 
 	private void postToWall()
@@ -1241,28 +1276,6 @@ public class Productdetail extends Activity implements OnClickListener
 			editor = sharedPref.edit();
 			globalVar = ((GlobalVariable) getApplicationContext());
 
-			// SharedPreferences prefs=
-			// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
-			// String access_token = prefs.getString("access_token", null);
-			// Long expires = prefs.getLong("access_expires", -1);
-			// String sharedName = prefs.getString("name", "");
-			//
-			//
-			// if (access_token != null && expires != -1)
-			// {
-			// facebook.setAccessToken(access_token);
-			// facebook.setAccessExpires(expires);
-			// }
-
-			// if (!facebook.isSessionValid() || sharedName.equals(""))
-			// {
-			// facebook.authorize(activity, FACEBOOK_PERMISSION, new
-			// LoginDialogListener());
-			// }
-			// else
-			// {
-			// name.setText("Hello " + sharedName + ",");
-			// }
 			facebook = FbState.getFBState();
 
 			// if (!facebook.isSessionValid())
@@ -1392,8 +1405,8 @@ public class Productdetail extends Activity implements OnClickListener
 								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
 								dialog.dismiss();
-								postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
-								// postToWall();
+//								postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
+								postToWall();
 								// Log.d("Facebook session 2: ",
 								// Boolean.toString(facebook.isSessionValid()));
 							}

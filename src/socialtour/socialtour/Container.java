@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -50,11 +51,12 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 //import android.widget.TabHost.OnTabChangeListener;
 
 @SuppressWarnings("deprecation")
-public class Container extends TabActivity implements OnClickListener
+public class Container extends TabActivity
 {
 
 	private static final int CAMERA_PIC_REQUEST = 1337;
@@ -109,7 +111,6 @@ public class Container extends TabActivity implements OnClickListener
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
 		
-		home.setOnClickListener(this);
 		
 		if (APP_ID == null)
 		{
@@ -250,18 +251,26 @@ public class Container extends TabActivity implements OnClickListener
 			spec = tabHost.newTabSpec("search").setIndicator("Search", res.getDrawable(R.drawable.searchbutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			tabHost.addTab(spec);
 			tabHost.setCurrentTab(0);
+			setTabColor(tabHost);
+			tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+	@Override
+				public void onTabChanged(String tabId) {
+					setTabColor(tabHost);
+				}});
+			
 		}
 	}
 	
-	@Override
-	public void onClick(View v)
+	public static void setTabColor(TabHost tabhost) {
+	    for(int i=0;i<tabhost.getTabWidget().getChildCount();i++)
 	{
-		if (v== home){
-			Intent i = getBaseContext().getPackageManager()
-		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
+	    	TextView tv = (TextView) tabhost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+	    	tv.setTextColor(Color.WHITE);
+	        tabhost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg); //unselected
 		}
+	    TextView tv = (TextView) tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).findViewById(android.R.id.title);
+	    tv.setTextColor(Color.BLACK);
+	    //tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).setBackgroundColor(Color.parseColor("#e5e5e5")); // selected
 	}
 
 	private void KillProcess()

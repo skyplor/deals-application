@@ -265,6 +265,7 @@ public class Main extends Activity implements OnClickListener
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
+		nearby.getLayoutParams().width = 45;
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
