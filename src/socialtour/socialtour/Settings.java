@@ -166,13 +166,13 @@ public class Settings extends Activity
 			{
 				fbacc = true;
 				Drawable d = findViewById(R.id.fbBtnAdd).getBackground();
-				PorterDuffColorFilter filter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+				PorterDuffColorFilter filter = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d.setColorFilter(filter);
 				fbBtn.setText("Disconnect");
 				
 				twitacc = true;
 				Drawable d1 = findViewById(R.id.twitBtnAdd).getBackground();
-				PorterDuffColorFilter filter1 = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+				PorterDuffColorFilter filter1 = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d1.setColorFilter(filter1);
 				twitBtn.setText("Disconnect");
 			}
@@ -180,7 +180,7 @@ public class Settings extends Activity
 			{
 				fbacc = true;
 				Drawable d2 = findViewById(R.id.fbBtnAdd).getBackground();
-				PorterDuffColorFilter filter2 = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+				PorterDuffColorFilter filter2 = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d2.setColorFilter(filter2);
 				fbBtn.setText("Disconnect");
 				// fbBtn.setBackgroundColor(Color.MAGENTA);
@@ -194,7 +194,7 @@ public class Settings extends Activity
 			{
 				twitacc = true;
 				Drawable d4 = findViewById(R.id.twitBtnAdd).getBackground();
-				PorterDuffColorFilter filter3 = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+				PorterDuffColorFilter filter3 = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d4.setColorFilter(filter3);
 				twitBtn.setText("Disconnect");
 				// twitBtn.setBackgroundColor(Color.MAGENTA);

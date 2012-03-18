@@ -1,44 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eeeeee"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To logout from all services:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/lgoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout" />
-
-    <TextView
-        android:id="@+id/fBTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Facebook" />
 
     <Button
         android:id="@+id/fbBtnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="80dp"
         android:text="Add Facebook" />
+
+    <TextView
+        android:id="@+id/fBTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/fbBtnAdd"
+        android:layout_alignBottom="@+id/fbBtnAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="24dp"
+        android:text="Facebook"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp"
+        android:layout_marginLeft="24dp"
+        android:layout_toLeftOf="@+id/fbBtnAdd"
+        android:text="Settings"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/twitBtnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/fbBtnAdd"
+        android:layout_below="@+id/fbBtnAdd"
+        android:layout_marginTop="44dp"
+        android:text="Add Twitter" />
+
+    <Button
+        android:id="@+id/lgoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/twitBtnAdd"
+        android:layout_below="@+id/twitBtnAdd"
+        android:layout_marginTop="56dp"
+        android:text="Logout" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/lgoutBtn"
+        android:layout_toLeftOf="@+id/fbBtnAdd"
+        android:layout_marginLeft="24dp"
+        android:text="To logout from all services:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/twitTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Twitter" />
-    
-    <Button
-        android:id="@+id/twitBtnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Twitter" />
+        android:layout_alignBaseline="@+id/twitBtnAdd"
+        android:layout_alignBottom="@+id/twitBtnAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="24dp"
+        android:text="Twitter"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
 
-</LinearLayout>
+</RelativeLayout>
