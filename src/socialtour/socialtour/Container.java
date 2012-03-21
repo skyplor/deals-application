@@ -92,12 +92,14 @@ public class Container extends TabActivity
 
 	//Button logout;
 	public static ImageView btn1,btn2,btn3;
-	public static ImageView home;
+	//public static ImageView home;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
 	public static TabHost tabHost; // The activity TabHost
 	TabSpec spec; // Resusable TabSpec for each tab
-
+	
+	public static ImageView browse,share,search;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -106,7 +108,11 @@ public class Container extends TabActivity
 		btn1= (ImageView) findViewById(R.id.headerLatest);
 		btn2= (ImageView) findViewById(R.id.headerHot);
 		btn3= (ImageView) findViewById(R.id.headerNearby);
-		home = (ImageView) findViewById(R.id.imgHome);
+		//home = (ImageView) findViewById(R.id.imgHome);
+		
+		browse = (ImageView) findViewById(R.id.headerBrowse);
+		share = (ImageView) findViewById(R.id.headerCamera);
+		search = (ImageView) findViewById(R.id.headerSearch);
 		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
@@ -242,18 +248,10 @@ public class Container extends TabActivity
 			spec = tabHost.newTabSpec("browse").setIndicator("Browse", res.getDrawable(R.drawable.browsebutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			tabHost.addTab(spec);
 
-			// Do the same for the other tabs
-			intent = new Intent().setClass(this, TabGroup2Activity.class);
-			spec = tabHost.newTabSpec("share").setIndicator("Share", res.getDrawable(R.drawable.sharebutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			tabHost.addTab(spec);
-
-			intent = new Intent().setClass(this, TabGroup3Activity.class);
-			spec = tabHost.newTabSpec("search").setIndicator("Search", res.getDrawable(R.drawable.searchbutton)).setContent(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			tabHost.addTab(spec);
 			tabHost.setCurrentTab(0);
 			setTabColor(tabHost);
 			tabHost.setOnTabChangedListener(new OnTabChangeListener(){
-	@Override
+				@Override
 				public void onTabChanged(String tabId) {
 					setTabColor(tabHost);
 				}});
@@ -263,16 +261,16 @@ public class Container extends TabActivity
 	
 	public static void setTabColor(TabHost tabhost) {
 	    for(int i=0;i<tabhost.getTabWidget().getChildCount();i++)
-	{
+	    {
 	    	TextView tv = (TextView) tabhost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
 	    	tv.setTextColor(Color.WHITE);
 	        tabhost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg); //unselected
-		}
+	    }
 	    TextView tv = (TextView) tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).findViewById(android.R.id.title);
 	    tv.setTextColor(Color.BLACK);
 	    //tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).setBackgroundColor(Color.parseColor("#e5e5e5")); // selected
 	}
-
+	
 	private void KillProcess()
 	{
 		// TODO Auto-generated method stub
@@ -544,9 +542,6 @@ public class Container extends TabActivity
 							ConnectDB connectCheck;
 							try
 							{
-								Log.d("in Container userName: ", userName);
-								Log.d("in Container userEmail: ", userEmail);
-								Log.d("in Container uid: ", uid);
 								connectCheck = new ConnectDB(userName, userEmail, uid, "", "user_fb", CONTAINER, Container.this);
 								Log.d("username in container: ", connectCheck.getUserName());
 

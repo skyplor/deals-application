@@ -36,6 +36,7 @@ import com.google.android.maps.GeoPoint;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Product;
 import socialtour.socialtour.models.Shop;
+import socialtour.socialtour.models.TestingClass;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -118,6 +119,7 @@ public class Main extends Activity implements OnClickListener
 	Product[] arrPro;
 	Shop[] shop;
 	ImageView latest, nearby, hot;// , logout;
+	ImageView browse, share, search;
 	ListView searchResult;
 	LazyAdapter adapter;
 
@@ -135,6 +137,7 @@ public class Main extends Activity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		TestingClass.setStartTime();
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.browse);
@@ -151,6 +154,12 @@ public class Main extends Activity implements OnClickListener
 		latest = Container.btn1;
 		nearby = Container.btn3;
 		hot = Container.btn2;
+		
+		browse = Container.browse;
+		share = Container.share;
+		search = Container.search;
+		
+		browse.setEnabled(false);
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
 
@@ -208,6 +217,8 @@ public class Main extends Activity implements OnClickListener
 		{
 			init(INIT_NORM);
 		}
+		TestingClass.setEndTime();
+		Log.d("Main Browsing activity", Long.toString(TestingClass.calculateTime()));
 
 		// else
 		// {
@@ -261,11 +272,13 @@ public class Main extends Activity implements OnClickListener
 	public void onResume()
 	{
 		super.onResume();
-
+		
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
-		nearby.getLayoutParams().width = 45;
+		
+		browse.setEnabled(false);
+		hot.getLayoutParams().width = 45;
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
@@ -350,7 +363,7 @@ public class Main extends Activity implements OnClickListener
 				// Intent intent = new Intent(Main.this, Productdetail.class);
 				// intent.putExtra("lastproductid", employeesid[pos]);
 				// startActivity(intent);
-
+				TestingClass.setStartTime();
 				Intent intent = new Intent(getParent(), Productdetail.class);
 				intent.putExtra("lastproductid", arrPro[pos].getId());
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();

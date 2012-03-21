@@ -80,13 +80,13 @@ public class Browseplace extends Activity implements OnClickListener{
         setContentView(R.layout.placeselection);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Container.btn1.setVisibility(ImageView.INVISIBLE);
-        Container.btn2.setVisibility(ImageView.INVISIBLE);
-        Container.btn3.setVisibility(ImageView.VISIBLE);
-        Container.btn3.setImageResource(R.drawable.addplace);
-        Container.btn3.getLayoutParams().width = 65;
+        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn3.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setImageResource(R.drawable.addplace);
+        Container.btn2.getLayoutParams().width = 65;
         //Container.btn3.setImageResource(R.drawable.quitsharing);
-		backtomain = Container.home;
-		addplace = Container.btn3;
+		//backtomain = Container.home;
+		addplace = Container.btn2;
 		//backtomain.setImageResource(R.drawable.quitsharing);
 		//addplace.setImageResource(R.drawable.addplace);
 		//addplace.setVisibility(View.VISIBLE);
@@ -99,7 +99,7 @@ public class Browseplace extends Activity implements OnClickListener{
         search = (Button) findViewById(R.id.searchButton);
         list = (ListView) findViewById(R.id.list);
         
-        backtomain.setOnClickListener(this);
+        //backtomain.setOnClickListener(this);
         addplace.setOnClickListener(this);
         
         Bundle bundle=getIntent().getExtras();
@@ -141,6 +141,8 @@ public class Browseplace extends Activity implements OnClickListener{
             	//doFileUpload();
             	boolean passed = validate(shopname.getText().toString().trim());
             	if (passed){
+            		ImageView searchresults = (ImageView) findViewById(R.id.imgsearchresults);
+            		searchresults.setImageResource(R.drawable.searchresults);
             		getShop(shopname.getText().toString(), false);
             	}else{
             		promptError();
@@ -178,12 +180,12 @@ public class Browseplace extends Activity implements OnClickListener{
 	public void onResume(){
 		super.onResume();
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
-        Container.btn2.setVisibility(ImageView.INVISIBLE);
-        Container.btn3.setVisibility(ImageView.VISIBLE);
-        Container.btn3.setImageResource(R.drawable.addplace);
-		backtomain = Container.home;
-		addplace = Container.btn3;
-		backtomain.setOnClickListener(this);
+        Container.btn2.setVisibility(ImageView.VISIBLE);
+        Container.btn3.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setImageResource(R.drawable.addplace);
+		//backtomain = Container.home;
+		addplace = Container.btn2;
+		//backtomain.setOnClickListener(this);
         addplace.setOnClickListener(this);
 	}
 	
@@ -196,11 +198,12 @@ public class Browseplace extends Activity implements OnClickListener{
 		     	i.putExtra("pic", pic);
 		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
 		     	parentActivity.startChildActivity("Add Place", i);
-		}else if (v==backtomain){
-			confirmationquit();
 		}
+		//else if (v==backtomain){
+		//	confirmationquit();
+		//}
 	}
-    
+	
     public void getShop(String shopname, boolean start){
     	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
     	String path = "";

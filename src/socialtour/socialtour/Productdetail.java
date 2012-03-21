@@ -38,19 +38,17 @@ import org.json.JSONObject;
 import com.facebook.BaseDialogListener;
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
-//import com.facebook.SessionEvents;
 import com.facebook.android.AsyncFacebookRunner;
-//import com.facebook.android.DialogError;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
-import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
-//import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.Facebook.DialogListener;
 
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Remark;
 import socialtour.socialtour.models.Shop;
+import socialtour.socialtour.models.TestingClass;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -156,7 +154,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnRemarks.setVisibility(View.VISIBLE);
 		btnShare.setVisibility(View.VISIBLE);
 		btnShare.getLayoutParams().width = 45;
-
+		
 		btnLike.setImageResource(R.drawable.likepicwhite);
 		btnRemarks.setImageResource(R.drawable.remarkpic);
 		btnShare.setImageResource(R.drawable.share2);
@@ -170,7 +168,7 @@ public class Productdetail extends Activity implements OnClickListener
 		showmorecomments.setOnClickListener(this);
 		showshop = (Button) findViewById(R.id.btnshowshop);
 		showshop.setOnClickListener(this);
-
+		
 		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 		String userid = "", usertype = "";
 		if (!userDetails.getString("userID", "").equals(""))
@@ -223,6 +221,8 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setOnClickListener(this);
 		btnRemarks.setOnClickListener(this);
 		btnShare.setOnClickListener(this);
+		TestingClass.setEndTime();
+		Log.d("Productdetail loaded", Long.toString(TestingClass.calculateTime()));
 	}
 
 	/*
@@ -366,6 +366,7 @@ public class Productdetail extends Activity implements OnClickListener
 
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				createddate = (Date) formatter.parse(json_data.getString("created"));
+				Log.d("DATE", createddate.toString());
 				username = json_data.getString("user_name");
 			}
 		}
@@ -632,6 +633,7 @@ public class Productdetail extends Activity implements OnClickListener
 
 		if (v == btnLike)
 		{
+			TestingClass.setStartTime();
 			boolean existed = checkCount(userid, Integer.toString(productid));
 			if (existed == true)
 			{
@@ -641,13 +643,15 @@ public class Productdetail extends Activity implements OnClickListener
 			else
 			{
 				lbllikes = (TextView) findViewById(R.id.lblLikes);
-				int numberlikes = Integer.parseInt(lbllikes.getText().toString().substring(0, 1));
+				int numberlikes = Integer.parseInt(lbllikes.getText().toString());
 				numberlikes++;
 				lbllikes.setText(Integer.toString(numberlikes) + " likes");
 				alreadylike.setVisibility(View.VISIBLE);
 				updateComments("likes", productid, numberlikes, userid);
 				btnLike.setImageResource(R.drawable.likepicgray);
 				btnLike.setEnabled(false);
+				TestingClass.setEndTime();
+				Log.d("Like a product completed", Long.toString(TestingClass.calculateTime()));
 			}
 		}
 		else if (v == btnRemarks || v == showmorecomments)
@@ -702,8 +706,10 @@ public class Productdetail extends Activity implements OnClickListener
 
 			// status = "Check out this promotion!\n" + productname + " (" +
 			// Integer.toString(percent) + "% off) @ " + shopname;
+			//String alias = productid+"-"+productname.trim().toLowerCase().replace(' ', '-');
+			//status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/index.php/site-map/articles/item/"+alias;
 			String alias = productname.trim().toLowerCase().replace(' ', '-');
-			status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
+		 	status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
 			fbshare.setOnClickListener(new OnClickListener()
 			{
 
@@ -712,7 +718,6 @@ public class Productdetail extends Activity implements OnClickListener
 				{
 					// TODO Auto-generated method stub
 					gotoFacebookConnect();
-					
 				}
 
 			});
@@ -767,9 +772,8 @@ public class Productdetail extends Activity implements OnClickListener
 		// parentActivity.startChildActivity("Shop Detail", shopIntent);
 		// }
 	}
-
-	private void twitterPostDialog()
-	{
+	
+	private  void twitterPostDialog(){
 		final Dialog twitDialog = new Dialog(getParent());
 
 		twitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -823,15 +827,10 @@ public class Productdetail extends Activity implements OnClickListener
 
 		twitDialog.show();
 	}
-	
 	protected void gotoFacebookConnect()
 	{
 		// TODO Auto-generated method stub
-
 		fbConnect = new FbConnect(APP_ID, getParent(), getApplicationContext());
-		
-		
-		
 	}
 
 	private void postToWall()
@@ -1276,6 +1275,28 @@ public class Productdetail extends Activity implements OnClickListener
 			editor = sharedPref.edit();
 			globalVar = ((GlobalVariable) getApplicationContext());
 
+			// SharedPreferences prefs=
+			// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
+			// String access_token = prefs.getString("access_token", null);
+			// Long expires = prefs.getLong("access_expires", -1);
+			// String sharedName = prefs.getString("name", "");
+			//
+			//
+			// if (access_token != null && expires != -1)
+			// {
+			// facebook.setAccessToken(access_token);
+			// facebook.setAccessExpires(expires);
+			// }
+
+			// if (!facebook.isSessionValid() || sharedName.equals(""))
+			// {
+			// facebook.authorize(activity, FACEBOOK_PERMISSION, new
+			// LoginDialogListener());
+			// }
+			// else
+			// {
+			// name.setText("Hello " + sharedName + ",");
+			// }
 			facebook = FbState.getFBState();
 
 			// if (!facebook.isSessionValid())
@@ -1405,8 +1426,8 @@ public class Productdetail extends Activity implements OnClickListener
 								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
 								dialog.dismiss();
-//								postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
-								postToWall();
+								//postWithDialog(getParent(), "https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6.png", status);
+								 postToWall();
 								// Log.d("Facebook session 2: ",
 								// Boolean.toString(facebook.isSessionValid()));
 							}

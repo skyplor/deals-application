@@ -28,6 +28,7 @@ import com.google.android.maps.GeoPoint;
 
 import socialtour.socialtour.models.Product;
 import socialtour.socialtour.models.Shop;
+import socialtour.socialtour.models.TestingClass;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -175,6 +176,7 @@ public class Search extends Activity implements OnClickListener
 		boolean passed = validate(searchStr);
 		if (v == btnSearch)
 		{
+			TestingClass.setStartTime();
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(txtSearch.getWindowToken(), 0);
 			if (searchStr.equals(""))
@@ -204,6 +206,8 @@ public class Search extends Activity implements OnClickListener
 					break;
 				}
 			}
+			TestingClass.setEndTime();
+			Log.d("Search", Long.toString(TestingClass.calculateTime()));
 		}
 		else if (v == mapview)
 		{

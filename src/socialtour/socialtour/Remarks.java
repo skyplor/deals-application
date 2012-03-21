@@ -26,6 +26,7 @@ import com.fedorvlasov.lazylist.RemarksLazyAdapter;
 import com.fedorvlasov.lazylist.SimpleLazyAdapter;
 
 import socialtour.socialtour.models.Remark;
+import socialtour.socialtour.models.TestingClass;
 
 import android.app.Activity;
 import android.content.Context;
@@ -81,14 +82,17 @@ public class Remarks extends Activity implements OnClickListener{
 		listcomments = (TextView) findViewById(R.id.lbllistcomments);
 		
 		importRemarks(productid);
+		if (listremarks !=null){
 		for (int i=0;i<listremarks.length;i++){
 			listcomments.setText(listcomments.getText() + listremarks[i].getUsername() + ": " + listremarks[i].getDesc() + "\r\n");
+		}
 		}
 	}
 	
 	@Override
 	public void onClick(View v){
 		if (v==submitcomments){
+			TestingClass.setStartTime();
 			String remarks = inputComments.getText().toString().trim();
 			insertRemarks(remarks);
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -98,6 +102,8 @@ public class Remarks extends Activity implements OnClickListener{
 			intent.putExtra("lastproductid", productid);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 			parentActivity.startChildActivity("Product Detail", intent);
+			TestingClass.setEndTime();
+			Log.d("Comment a deal completed", Long.toString(TestingClass.calculateTime()));
 		}
 	}
 	
@@ -220,8 +226,10 @@ public class Remarks extends Activity implements OnClickListener{
 
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String response = httpclient.execute(httppost, responseHandler);
-			
-			int numComments = listremarks.length + 1;
+			int numComments = 1;
+			if (listremarks !=null){
+				numComments = listremarks.length + 1;
+			}
 			nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(productid)));
 			nameValuePairs.add(new BasicNameValuePair("remarks", Integer.toString(numComments)));

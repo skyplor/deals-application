@@ -172,7 +172,6 @@ public class ConnectDB
 			// sb.append(line + NL);
 			// }
 			result = in.readLine();
-			Log.d("result in ConnectDB", result);
 			if (!result.equals("null"))
 			{
 				Log.d("HashedPass: ", hashedPass);
@@ -184,16 +183,10 @@ public class ConnectDB
 					{
 						json_data = jArray.getJSONObject(i);
 						userID = json_data.getString("id");
-						userFbTwNmID = json_data.getString("acctid");
 						userName = json_data.getString("name");
 						userEmail = json_data.getString("email");
+						userFbTwNmID = json_data.getString("acctid");
 						hpw = json_data.getString("password");
-						Log.d("connectDB userID: ", userID);
-						Log.d("connectDB userFbTwNmID: ", userFbTwNmID);
-						Log.d("connectDB userName: ", userName);
-						Log.d("connectDB userEmail: ", userEmail);
-						Log.d("connectDB hpw: ", hpw);
-
 					}
 
 				}
@@ -276,6 +269,7 @@ public class ConnectDB
 		if (classnumber == SETTINGS || classnumber == PRODUCTDETAIL)
 		{
 			Log.d("in ConnectDB, norm/twitter/fb: ", Boolean.toString(norm)+ " " + Boolean.toString(twitter) + " " + Boolean.toString(fb));
+			//nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
 			if(classnumber == SETTINGS)
 			{
 				nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
@@ -289,7 +283,7 @@ public class ConnectDB
 				nameValuePairs.add(new BasicNameValuePair("accType", "1"));
 //				nameValuePairs.add(new BasicNameValuePair("userID", sharedpref.getString("userID", "")));
 //				nameValuePairs.add(new BasicNameValuePair("twitID", sharedpref.getString("userDB_TWITID", "")));
-
+				
 			}
 			else if (userType.equals("user_fb") && norm && !twitter)
 			{
@@ -354,6 +348,7 @@ public class ConnectDB
 		{
 			nameValuePairs.add(new BasicNameValuePair("email", emailorScnName));
 			nameValuePairs.add(new BasicNameValuePair("fbID", fbtwitID));
+
 		}
 
 		else if (userType.equals("user_twit"))
@@ -365,7 +360,6 @@ public class ConnectDB
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
-			Log.d("in ConnectDB, before insertUser.php","Hello");
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
 			for (NameValuePair nvp : nameValuePairs)
 			{
@@ -412,16 +406,13 @@ public class ConnectDB
 						userID = json_data.getString("id");
 						userName = json_data.getString("name");
 						userFbTwNmID = json_data.getString("acctid");
-						Log.d("ConnectDB userFbTwNmID", userFbTwNmID);
-						Log.d("ConnectDB userID", userID);
 						if (userType.equals("user_twit"))
 						{
 							userTwitID = json_data.getString("twitID");
 						}
 						else if (userType.equals("user_norm"))
 						{
-							Log.d("HashedPass in ConnectDB: ", hashedPass);
-							Log.d("userEmail in ConnectDB: ", userEmail);
+							Log.d("HashedPass: ", hashedPass);
 							hpw = json_data.getString("password");
 							userEmail = json_data.getString("email");
 						}

@@ -72,7 +72,7 @@
             android:layout_height="25dp"
             android:layout_marginTop="5dp"
             android:layout_alignLeft="@+id/imgProduct"
-            android:src="@drawable/likepicbrown"
+            android:src="@drawable/likepic"
             android:layout_marginRight="5dip"
             android:layout_below="@+id/latestcomments" >
         </ImageView>
@@ -266,7 +266,7 @@
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="300dp"
-            android:layout_height="360dp"
+            android:layout_height="300dp"
             android:layout_below="@+id/lblUploadedby"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"

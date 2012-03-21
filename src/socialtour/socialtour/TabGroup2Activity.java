@@ -34,7 +34,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class TabGroup2Activity extends TabGroupActivity implements OnClickListener{
+public class TabGroup2Activity extends Activity implements OnClickListener{
 	private static final int CAMERA_PIC_REQUEST = 1337;
 	private static final int GALLERY_REQUEST = 1500;
 	private static final int CROP_FROM_CAMERA = 1999;
@@ -44,7 +44,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 	private String type;
 	Uri outputFileUri;
 	Button btnShare;
-	ImageView home;
+	//ImageView home;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +52,8 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
         Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
-        home = Container.home;
-        home.setOnClickListener(this);
+        //home = Container.home;
+        //home.setOnClickListener(this);
         //Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
         //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
         //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
@@ -79,7 +79,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
-        Container.home.setOnClickListener(this);
+        //Container.home.setOnClickListener(this);
 		//Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
         //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);
         //Container.btn3.setImageResource(R.drawable.latestbuttondynamic);
@@ -97,12 +97,13 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     		//Intent i = new Intent("socialtour.socialtour.STARTCAMERA");
     		//startChildActivity("Start Camera", i);
     		imageOptions();
-    	}else if (v==home){
-    		Intent i = getBaseContext().getPackageManager()
-  		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-               i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-               startActivity(i);
     	}
+    	//else if (v==home){
+    	//	Intent i = getBaseContext().getPackageManager()
+  		//             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+        //       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //       startActivity(i);
+    	//}
     }
     
     @Override
@@ -113,30 +114,14 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     	case CAMERA_PIC_REQUEST:
     		type="camera";
     		activateCrop("camera");
-    		//doCrop();
-    		/*
-			String realpath = _path + "/cameraFile.jpg";
-			
-			File picFile = new File(realpath);
-			Uri newUri = Uri.fromFile(picFile);
-			Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
-    		i.putExtra("pic", newUri);
-	     	//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	     	startChildActivity("Browse Place", i);*/
+
     		break;
     		
     	case GALLERY_REQUEST:
     		outputFileUri = data.getData();
     		type = "gallery";
     		activateCrop("gallery");
-			//final Bundle extras = data.getExtras();
-            //if (extras != null) {
-            //		File tempFile = getTempFile("gallery");
-            	    // new logic to get the photo from a URI
-            //		if (data.getAction() != null) {
-            //			processPhotoUpdate(tempFile);
-            //		}                  
-            //}
+
             break;
             
     	case CROP_FROM_CAMERA:
@@ -144,8 +129,6 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     		Bundle extras2 = data.getExtras();
 	        if (extras2 != null) {	        	
 				photo = extras2.getParcelable("data");
-				//testingimage.setImageBitmap(photo);
-	            
 				String newfilepath = postProcessing(photo);
 				if (type.equals("camera")){
 				try{
@@ -157,20 +140,15 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 					exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longDir);
 					exif.saveAttributes();
 				}catch(IOException e){
-					
+					e.fillInStackTrace();
 				}
 				}
 				File picFile2 = new File(newfilepath);
 				Uri newUri2 = Uri.fromFile(picFile2);
-				
-				//Intent i = new Intent("FYP2.FYP2.BROWSEPLACE");
-				//i.putExtra("picfile", picFile);
-				//startActivity(i);
-				
-				Intent i2 = new Intent(this, Browseplace.class);
+				Intent i2 = new Intent(getParent(), Browseplace.class);
         		i2.putExtra("pic", newUri2);
-		     	//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-		     	startChildActivity("Browse Place", i2);
+        		TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+   		     	parentActivity.startChildActivity("Add Product", i2);
 	        }
     		break;
     	}
@@ -225,7 +203,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     private void imageOptions(){
 		String[] addPhoto = new String[]
 		{ "Camera", "Gallery" };
-		AlertDialog.Builder dialog = new AlertDialog.Builder(TabGroup2Activity.this);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(getParent());
 		dialog.setTitle("Choose picture from");
 
 		dialog.setItems(addPhoto, new DialogInterface.OnClickListener()
@@ -263,28 +241,15 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     
     protected void startGallery(){
     	try {
-            // Launch picker to choose photo for selected contact
+            // Launch picker to choose photo for selected image
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
             intent.setType("image/*");
-            //intent.putExtra("crop", "true");
-            //intent.putExtra("aspectX", aspectX);
-            //intent.putExtra("aspectY", aspectY);
-            //intent.putExtra("outputX", outputX);	
-            //intent.putExtra("outputY", outputY);
-            //intent.putExtra("scale", scale);
-            //intent.putExtra("return-data", true);
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile("gallery")));
-            //intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-            //intent.putExtra("noFaceDetection",!faceDetection); // lol, negative boolean noFaceDetection
-            //if (circleCrop) {
-            //	intent.putExtra("circleCrop", true);
-            //}
-            
-            startActivityForResult(intent, GALLERY_REQUEST);
+            getParent().startActivityForResult(intent, GALLERY_REQUEST);
         } catch (ActivityNotFoundException e) {
-            //Toast.makeText(thiz, "Im in", Toast.LENGTH_LONG).show();
+            e.fillInStackTrace();
         }
     }
+    
     /*
     protected void startCameraActivity()
     {
@@ -327,34 +292,23 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     {
 
     	_path=Environment.getExternalStorageDirectory().getPath();
-    	//Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    	//  File file = new File(_path, "test.jpg");
-    	//  Uri outputFileUri = Uri.fromFile(file);
-    	//  intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-    	//  startActivityForResult(intent, 0);
     	String currentFile = "cameraFile.jpg";
-    	//String currentDateTimeString = DateFormat.getDateInstance().format(new Date()) + ".jpg";
-    	//Log.i("MakeMachine", "startCameraActivity()" );
     	File file = new File( _path, currentFile);
-    	
     	try {
             if(file.exists() == false) {
                 file.createNewFile();
             }
-
-        } catch (IOException e) {
+        }catch (IOException e) {
+        	e.printStackTrace();
         }
     	
         outputFileUri = Uri.fromFile(file);
         
-        
     	Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-    	//intent.setType("image/*");
-    	//intent.putExtra("crop", "true");
     	intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
     	try{
     	intent.putExtra("return-data", true);
-    	startActivityForResult( intent, CAMERA_PIC_REQUEST);
+    	getParent().startActivityForResult( intent, CAMERA_PIC_REQUEST);
     	}catch (ActivityNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -364,7 +318,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 		final String finalsource = source;
 		String[] addPhoto = new String[]
 		{ "Yes", "No" };
-		AlertDialog.Builder dialog = new AlertDialog.Builder(TabGroup2Activity.this);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(getParent());
 		dialog.setTitle("Crop your image?");
 
 		dialog.setItems(addPhoto, new DialogInterface.OnClickListener()
@@ -374,8 +328,7 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 			{
 				dialog.dismiss();
 				if (id == 0)
-				{
-					
+				{	
 					doCrop();
 				}
 				if (id == 1)
@@ -394,24 +347,15 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
 							exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longDir);
 							exif.saveAttributes();
 						}catch(IOException e){
-							
+							e.fillInStackTrace();
 						}
 					}
 					File picFile = new File(realpath);
 					Uri newUri = Uri.parse("file://"+realpath);
-					
 					Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 	        		i.putExtra("pic", newUri);
-			     	//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-			     	startChildActivity("Browse Place", i);
-			     	
-			     	
-			     	
-					//more than 400kb
-					//Intent i = new Intent("FYP2.FYP2.BROWSEPLACE");
-	        		//i.putExtra("picfile", picFile);
-	        		//startActivity(i);
-	        		
+			     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+	   		     	parentActivity.startChildActivity("Add Product", i);
 				}
 			}
 		});
@@ -441,13 +385,11 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     	seconds = seconds * 60;
     	int intSeconds = (int)seconds;
     	latString =  degrees + "/1," + intMinutes + "/1," + intSeconds + "/1";
-    	
     	if (latitude < 0){
     		latDir = "S";
     	}else{
     		latDir = "N";
     	}
-    	
     	//longitude
     	int degrees2 = (int)longitude;
     	double minutes2 = longitude - degrees2;
@@ -457,7 +399,6 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     	seconds2 = seconds2 * 60;
     	int intSeconds2 = (int)seconds2;
     	longString =  degrees2 + "/1," + intMinutes2 + "/1," + intSeconds2 + "/1";
-    	
     	if (longitude < 0){
     		longDir = "W";
     	}else{
@@ -498,78 +439,31 @@ public class TabGroup2Activity extends TabGroupActivity implements OnClickListen
     }
     
     private void doCrop() {
-		final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
-    	
     	Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setType("image/*");
-        
         List<ResolveInfo> list = getPackageManager().queryIntentActivities( intent, 0 );
-        
         int size = list.size();
-        
         if (size == 0) {	        
         	Toast.makeText(this, "Can not find image crop app", Toast.LENGTH_SHORT).show();
-        	
             return;
         } else {
         	intent.setData(outputFileUri);
-        	//intent.putExtra("crop", "true");
-            intent.putExtra("outputX", 160);
-            intent.putExtra("outputY", 160);
+            intent.putExtra("outputX", 640);
+            intent.putExtra("outputY", 640);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
             intent.putExtra("return-data", true);
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile("camera")));
-            //intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         	if (size == 1) {
-        		Intent i 		= new Intent(intent);
+        		Intent i = new Intent(intent);
 	        	ResolveInfo res	= list.get(0);
-	        	
-	        	i.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-	        	
+	        	i.setComponent(new ComponentName(res.activityInfo.packageName, 
+	        			res.activityInfo.name));
 	        	startActivityForResult(i, CROP_FROM_CAMERA);
         	} 
-        	/*else {
-		        for (ResolveInfo res : list) {
-		        	final CropOption co = new CropOption();
-		        	
-		        	co.title 	= getPackageManager().getApplicationLabel(res.activityInfo.applicationInfo);
-		        	co.icon		= getPackageManager().getApplicationIcon(res.activityInfo.applicationInfo);
-		        	co.appIntent= new Intent(intent);
-		        	
-		        	co.appIntent.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-		        	
-		            cropOptions.add(co);
-		        }
-	        
-		        CropOptionAdapter adapter = new CropOptionAdapter(getApplicationContext(), cropOptions);
-		        
-		        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		        builder.setTitle("Choose Crop App");
-		        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-		            public void onClick( DialogInterface dialog, int item ) {
-		                startActivityForResult( cropOptions.get(item).appIntent, CROP_FROM_CAMERA);
-		            }
-		        });
-	        
-		        builder.setOnCancelListener( new DialogInterface.OnCancelListener() {
-		            @Override
-		            public void onCancel( DialogInterface dialog ) {
-		               
-		                if (outputFileUri != null ) {
-		                    getContentResolver().delete(outputFileUri, null, null );
-		                    outputFileUri = null;
-		                }
-		            }
-		        } );
-		        
-		        AlertDialog alert = builder.create();
-		        
-		        alert.show();
-        	}*/
         }
 	}
+    
     /*
     @Override
     public void onBackPressed() {

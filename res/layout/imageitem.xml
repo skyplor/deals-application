@@ -15,7 +15,7 @@
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_alignLeft="@+id/image2"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/user" >
         </ImageView>
 
@@ -25,9 +25,9 @@
             android:layout_height="20dp"
             android:layout_toRightOf="@+id/imgUser"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="2dp"
-            android:text="Mingen Lee"
+            android:text="TextView"
             android:textColor="#302217"
             android:textSize="15dp"
             android:textStyle="bold" >
@@ -38,7 +38,7 @@
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_alignRight="@+id/image2"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/comment" >
         </ImageView>
         
@@ -51,7 +51,7 @@
                 android:textStyle="bold"
                 android:textColor="#302217"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/imgComments"
                 android:gravity="center_vertical|right" >
@@ -61,7 +61,7 @@
             android:id="@+id/imgLikes"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/lblmaincomments"
             android:src="@drawable/likepicbrown"
             android:layout_marginRight="5dip" >
@@ -77,23 +77,11 @@
                 android:textColor="#302217"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imgLikes"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="5dp"
                 android:gravity="center_vertical|right" >
             </TextView>
         
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="160dp"
-            android:layout_height="20dp"
-            android:layout_alignLeft="@+id/image2"
-            android:layout_below="@+id/image2"
-            android:text="23 Feb 2011"
-            android:textColor="#989898"
-            android:textSize="15dp"
-            android:textStyle="bold" >
-        </TextView>
-
         <TextView
             android:id="@+id/txtHownear"
             android:layout_width="wrap_content"
@@ -114,7 +102,7 @@
             android:layout_alignLeft="@+id/imgshoplogo"
             android:text="$10.00"
             android:textColor="#283860"
-            android:textSize="33dp"
+            android:textSize="23dp"
             android:textStyle="bold" >
         </TextView>
 
@@ -124,17 +112,17 @@
             android:layout_height="20dp"
             android:layout_alignLeft="@+id/imgshoplogo"
             android:layout_below="@+id/productprice"
-            android:text="Ang Mo Kio Hub"
+            android:text="TextView"
             android:textColor="#302217"
-            android:textSize="15dp"
+            android:textSize="12dp"
             android:textStyle="bold" />
 		
         <ImageView
             android:id="@+id/imgshoplogo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignLeft="@+id/image2"
-            android:layout_below="@+id/txtDate"
+            android:layout_below="@+id/image2"
             android:src="@drawable/shopicon" >
         </ImageView>
         
@@ -143,22 +131,23 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/imgshoplogo"
-            android:layout_below="@+id/txtDate"
+            android:layout_below="@+id/image2"
             android:layout_toLeftOf="@+id/typeBadge"
             android:text="TextView"
             android:textColor="#302217"
-            android:textSize="23dp"
+            android:textSize="20dp"
             android:textStyle="bold" >
         </TextView>
 
         <ImageView
             android:id="@+id/typeBadge"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_below="@+id/image2"
             android:layout_alignRight="@+id/image2"
+            android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/badge" >
         </ImageView>
 
@@ -168,18 +157,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/image2"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginRight="27dp"
+            android:layout_marginTop="21dp"
             android:text="30%"
             android:textColor="#283860"
-            android:textSize="30dp"
+            android:textSize="25dp"
             android:textStyle="bold" >
         </TextView>
 
         <ImageView
             android:id="@+id/image2"
             android:layout_width="300dp"
-            android:layout_height="360dp"
+            android:layout_height="300dp"
             android:layout_below="@+id/txtOwner"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"

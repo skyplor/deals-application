@@ -32,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import socialtour.socialtour.models.TestingClass;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
@@ -65,7 +67,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	private RadioGroup radGrp;
 	boolean isPercent = true;
 	Uri imageUri;
-	ImageView backtomain;
+	//ImageView backtomain;
 	String percentageStr = "";
 	String disStr = "";
 	String oriStr = "";
@@ -81,9 +83,9 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		backtomain = Container.home;
+		//backtomain = Container.home;
 
-		backtomain.setOnClickListener(this);
+		//backtomain.setOnClickListener(this);
 		txtInput = (TextView) findViewById(R.id.txtInput);
 		txtInput2 = (EditText) findViewById(R.id.txtPrice);
 		txtSecondInput = (EditText) findViewById(R.id.txtPrice2);
@@ -104,8 +106,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		backtomain = Container.home;
-		backtomain.setOnClickListener(this);
+		//backtomain = Container.home;
+		//backtomain.setOnClickListener(this);
 	}
 
 	@Override
@@ -134,6 +136,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		boolean proceed = true;
 		if (v == btnSubmitdeal)
 		{
+			TestingClass.setStartTime();
 			String oldname = txtNameInput2.getText().toString().trim() + ".jpg";
 			String name = "";
 			if (oldname.contains(" "))
@@ -288,6 +291,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 					int lastid = Integer.parseInt(response);
 					Log.d("in InputPrice, lastid: ", Integer.toString(lastid));
 					doFileUpload(name, lastid);
+					TestingClass.setEndTime();
+					Log.d("Sharing a deal completed", Long.toString(TestingClass.calculateTime()));
 					acknowledge(lastid);
 					/*
 					 * Intent i = new
@@ -302,10 +307,10 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				}
 			}
 		}
-		else if (v == backtomain)
-		{
-			confirmationquit();
-		}
+		//else if (v == backtomain)
+		//{
+		//	confirmationquit();
+		//}
 	}
 
 	private String paramJsonEncode()

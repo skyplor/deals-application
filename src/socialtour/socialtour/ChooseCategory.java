@@ -26,7 +26,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
         //Container.btn3.setImageResource(R.drawable.quitsharing);
-		backtomain = Container.home;
+		//backtomain = Container.home;
 		
 		cat1 = (ImageView)findViewById(R.id.category1);
 		cat2 = (ImageView)findViewById(R.id.category2);
@@ -47,7 +47,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		cat7.setOnClickListener(this);
 		cat8.setOnClickListener(this);
 		cat9.setOnClickListener(this);
-		backtomain.setOnClickListener(this);
+		//backtomain.setOnClickListener(this);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
@@ -58,8 +58,8 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
         //Container.btn3.setImageResource(R.drawable.quitsharing);
-		backtomain = Container.home;
-		backtomain.setOnClickListener(this);
+		//backtomain = Container.home;
+		//backtomain.setOnClickListener(this);
 	}
 	
 	@Override
@@ -146,9 +146,10 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		builder.show();
 		//AlertDialog alert = builder.create();
 		//alert.show();
-		}else if (v==backtomain){
-				confirmationquit();
 		}
+		//else if (v==backtomain){
+		//		confirmationquit();
+		//}
 	}
 	
     private void confirmationquit(){

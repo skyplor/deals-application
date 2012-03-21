@@ -79,8 +79,8 @@ public class Shopdetail extends MapActivity
 		globalVar = ((GlobalVariable) getApplicationContext());
 
 		Container.btn1.setVisibility(View.GONE);
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
 		
 		Bundle bundle = getIntent().getExtras();
 		String name = "", address = "";
@@ -152,8 +152,8 @@ public class Shopdetail extends MapActivity
 	{
 		super.onResume();
 		Container.btn1.setVisibility(View.GONE);
-		Container.btn1.setVisibility(View.GONE);
-		Container.btn1.setVisibility(View.GONE);
+		Container.btn2.setVisibility(View.GONE);
+		Container.btn3.setVisibility(View.GONE);
 		
 	}
 

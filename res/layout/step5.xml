@@ -40,7 +40,8 @@
                 android:background="@drawable/edittext_rounded_corners"
                 android:layout_below="@+id/txtNameInput"
                 android:layout_centerHorizontal="true"
-                android:singleLine="true">
+                android:singleLine="true"
+                android:gravity="center">
             </EditText>
 
         <RelativeLayout
@@ -97,7 +98,8 @@
                 android:inputType="numberDecimal" 
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/txtInput2"
-                android:singleLine="true">
+                android:singleLine="true"
+                android:gravity="center">
             </EditText>
 
             <TextView
@@ -110,7 +112,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dip"
                 android:layout_below="@+id/txtPrice"
-                android:singleLine="true">
+                android:gravity="center">
             </TextView>
 
             <EditText
@@ -120,7 +122,9 @@
                 android:background="@drawable/edittext_rounded_corners"
                 android:inputType="numberDecimal"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txtInput">
+                android:layout_below="@+id/txtInput"
+                android:singleLine="true"
+                android:gravity="center">
             </EditText>
             
             <ImageView
@@ -135,12 +139,15 @@
 
             <Button
                 android:id="@+id/submitdealbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
                 android:text="Submit Deal"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dip"
-                android:layout_below="@+id/txtPrice2">
+                android:layout_below="@+id/txtPrice2"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:background="@drawable/button_rounded_corners">
             </Button>
     </RelativeLayout>
 
