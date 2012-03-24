@@ -118,8 +118,8 @@ public class Main extends Activity implements OnClickListener
 
 	Product[] arrPro;
 	Shop[] shop;
-	ImageView latest, nearby, hot;// , logout;
-	ImageView browse, share, search;
+	ImageView latest, nearby, hot, map;// , logout;
+	ImageView browse, share, search, settings;
 	ListView searchResult;
 	LazyAdapter adapter;
 
@@ -154,10 +154,12 @@ public class Main extends Activity implements OnClickListener
 		latest = Container.btn1;
 		nearby = Container.btn3;
 		hot = Container.btn2;
+		map = Container.map;
 		
 		browse = Container.browse;
 		share = Container.share;
 		search = Container.search;
+		settings = Container.settings;
 		
 		browse.setEnabled(false);
 		// logout = (Button) findViewById(R.id.logoutBtn);
@@ -166,6 +168,7 @@ public class Main extends Activity implements OnClickListener
 		latest.setOnClickListener(this);
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
+		map.setOnClickListener(this);
 		currentState = 1;
 		latest.setEnabled(false);
 
@@ -300,9 +303,13 @@ public class Main extends Activity implements OnClickListener
 			latest.setEnabled(true);
 			hot.setEnabled(true);
 		}
+		share.setEnabled(true);
+		search.setEnabled(true);
+		settings.setEnabled(true);
 		latest.setOnClickListener(this);
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
+		map.setOnClickListener(this);
 	}
 
 	@Override
@@ -426,6 +433,7 @@ public class Main extends Activity implements OnClickListener
 			latest.setEnabled(false);
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
+			//map.setEnabled(true);
 		}
 		else if (v == nearby)
 		{
@@ -436,6 +444,7 @@ public class Main extends Activity implements OnClickListener
 				nearby.setEnabled(false);
 				latest.setEnabled(true);
 				hot.setEnabled(true);
+				//map.setEnabled(true);
 			}
 			else
 			{
@@ -469,6 +478,16 @@ public class Main extends Activity implements OnClickListener
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
+			//map.setEnabled(true);
+		} else if (v == map){
+			Intent intent = new Intent(getParent(), MapResult.class);
+			intent.putExtra("main", true);
+			TabGroupActivity parentActivity = (TabGroupActivity)getParent();
+		    parentActivity.startChildActivity("Map", intent);
+		    hot.setEnabled(true);
+			nearby.setEnabled(true);
+			latest.setEnabled(true);
+			map.setEnabled(false);
 		}
 	}
 
@@ -495,7 +514,11 @@ public class Main extends Activity implements OnClickListener
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		if (mode.equals("Latest"))
 		{
+			String lat = Double.toString(point.getLatitudeE6() / 1E6);
+			String lng = Double.toString(point.getLongitudeE6() / 1E6);
 			nameValuePairs.add(new BasicNameValuePair("latest", "1"));
+			nameValuePairs.add(new BasicNameValuePair("lat", lat));
+			nameValuePairs.add(new BasicNameValuePair("lng", lng));
 		}
 		else if (mode.equals("Nearby"))
 		{
@@ -510,7 +533,11 @@ public class Main extends Activity implements OnClickListener
 		}
 		else if (mode.equals("Hot"))
 		{
+			String lat = Double.toString(point.getLatitudeE6() / 1E6);
+			String lng = Double.toString(point.getLongitudeE6() / 1E6);
 			nameValuePairs.add(new BasicNameValuePair("hot", "1"));
+			nameValuePairs.add(new BasicNameValuePair("lat", lat));
+			nameValuePairs.add(new BasicNameValuePair("lng", lng));
 		}
 		try
 		{
@@ -571,9 +598,9 @@ public class Main extends Activity implements OnClickListener
 
 				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
 				JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
-				int discountPercent = (int) jextraObjPercent.getDouble("value");
+				String discountPercent = jextraObjPercent.getString("value");
 				JSONObject jextraObjPrice = jextraArr.getJSONObject(4);
-				Double discountPrice = jextraObjPrice.getDouble("value");
+				String discountPrice = jextraObjPrice.getString("value");
 
 				arrPro[i].setDprice(discountPrice);
 				arrPro[i].setId(json_data.getInt("prod_id"));
@@ -587,10 +614,7 @@ public class Main extends Activity implements OnClickListener
 				shopresult = new Shop(json_data.getInt("shop_id"), json_data.getString("address"), json_data.getString("shop_name"), json_data.getString("lat"), json_data.getString("lng"));// ,
 																																																// json_data.getString("shoptype"));
 				shoplist.add(shopresult);
-				if (mode.equals("Nearby"))
-				{
-					shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
-				}
+				shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
 				// employees[i] = ct_name;
 				// employeesid[i] = ct_id;
 			}

@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LocalActivityManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class TabGroup1Activity extends TabGroupActivity implements OnClickListener{
-    ImageView browse, share, search;
+    ImageView browse, share, search, settings;
     private static final int CAMERA_PIC_REQUEST = 1337;
 	private static final int GALLERY_REQUEST = 1500;
 	private static final int CROP_FROM_CAMERA = 1999;
@@ -40,10 +42,11 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
         browse = Container.browse;
         share = Container.share;
         search = Container.search;
-        
+        settings = Container.settings;
         browse.setOnClickListener(this);
         share.setOnClickListener(this);
         search.setOnClickListener(this);
+        settings.setOnClickListener(this);
         Intent i = new Intent("socialtour.socialtour.MAIN");
         startChildActivity("Main", i);
     }
@@ -58,6 +61,7 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     		browse.setEnabled(true);
     		share.setEnabled(false);
     		search.setEnabled(true);
+    		settings.setEnabled(true);
     		Intent i = new Intent(this, TabGroup2Activity.class);
     		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     		startChildActivity("Share", i);
@@ -65,9 +69,18 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     		browse.setEnabled(true);
     		share.setEnabled(true);
     		search.setEnabled(false);
+    		settings.setEnabled(true);
     		Intent i = new Intent("socialtour.socialtour.SEARCH");
     		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     		startChildActivity("Search", i);
+    	}else if (v==settings){
+    		browse.setEnabled(true);
+    		share.setEnabled(true);
+    		search.setEnabled(true);
+    		settings.setEnabled(false);
+    		Intent i = new Intent(this, Settings.class);
+    		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		startChildActivity("Settings", i);
     	}
     }
     
@@ -253,8 +266,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
             return;
         } else {
         	intent.setData(outputFileUri);
-            intent.putExtra("outputX", 640);
-            intent.putExtra("outputY", 640);
+            intent.putExtra("outputX", 320);
+            intent.putExtra("outputY", 320);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);

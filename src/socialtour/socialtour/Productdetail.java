@@ -118,9 +118,8 @@ public class Productdetail extends Activity implements OnClickListener
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
 	private static final int PRODUCTDETAIL = 3;
-
-	int likes = 0, remarks = 0, percent = 0;
-	double dprice = 0, oprice = 0;
+	String percent = "", dprice = "", oprice = "";
+	int likes = 0, remarks = 0;
 	String category = "", subcategory = "", productname = "", shopname = "", brand = "", address = "", username = "";
 	Date createddate;
 	private String fnameS;
@@ -336,7 +335,7 @@ public class Productdetail extends Activity implements OnClickListener
 					JSONObject jextraObj = jextraArr.getJSONObject(j);
 					if (j == 0)
 					{
-						oprice = jextraObj.getDouble("value");
+						oprice = jextraObj.getString("value");
 					}
 					else if (j == 1)
 					{
@@ -348,11 +347,11 @@ public class Productdetail extends Activity implements OnClickListener
 					}
 					else if (j == 3)
 					{
-						percent = (int) jextraObj.getDouble("value");
+						percent = jextraObj.getString("value");
 					}
 					else if (j == 4)
 					{
-						dprice = jextraObj.getDouble("value");
+						dprice = jextraObj.getString("value");
 					}
 				}
 				// percent = json_data.getInt("percentdiscount");
@@ -404,15 +403,15 @@ public class Productdetail extends Activity implements OnClickListener
 		lblproduct.setText(productname2);
 		lblshop.setText(shopname);
 		lbladdress.setText(address);
-		lblpercent.setText(Integer.toString(percent) + "%");
-		double oriprice = oprice * 1000;
-		long tempprice2 = Math.round(oriprice);
-		double finalprice2 = tempprice2 / 1000;
-		lblbeforeprice.setText("Original Price: $" + Double.toString(finalprice2) + "0");
-		double price = dprice * 1000;
-		long tempprice = Math.round(price);
-		double finalprice = tempprice / 1000;
-		lblprice.setText("Discounted Price: $" + Double.toString(finalprice) + "0");
+		lblpercent.setText(percent);
+		//double oriprice = oprice * 1000;
+		//long tempprice2 = Math.round(oriprice);
+		//double finalprice2 = tempprice2 / 1000;
+		lblbeforeprice.setText("Original Price: " + oprice);
+		//double price = dprice * 1000;
+		//long tempprice = Math.round(price);
+		//double finalprice = tempprice / 1000;
+		lblprice.setText("Discounted Price: " + dprice);
 		lblusername.setText(username);
 		java.util.Date prodDate = createddate;
 		DateFormat df2 = new SimpleDateFormat("dd MMM yyyy");
@@ -709,7 +708,7 @@ public class Productdetail extends Activity implements OnClickListener
 			//String alias = productid+"-"+productname.trim().toLowerCase().replace(' ', '-');
 			//status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/index.php/site-map/articles/item/"+alias;
 			String alias = productname.trim().toLowerCase().replace(' ', '-');
-		 	status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
+		 	status = "Check out this promotion! " + productname + " (" + percent + " off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
 			fbshare.setOnClickListener(new OnClickListener()
 			{
 

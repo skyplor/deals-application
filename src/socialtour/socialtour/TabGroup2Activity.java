@@ -448,8 +448,8 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
             return;
         } else {
         	intent.setData(outputFileUri);
-            intent.putExtra("outputX", 640);
-            intent.putExtra("outputY", 640);
+            intent.putExtra("outputX", 320);
+            intent.putExtra("outputY", 320);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
@@ -464,6 +464,10 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
         }
 	}
     
+    @Override
+    public void onBackPressed() {
+    	Container.share.setEnabled(true);
+    }
     /*
     @Override
     public void onBackPressed() {

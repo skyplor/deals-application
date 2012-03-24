@@ -17,9 +17,9 @@ public class Product {
 	private String category;
 	private String subcategory;
 	private String brand;
-	private double dprice;
-	private double oprice;
-	private int percentdiscount;
+	private String dprice;
+	private String oprice;
+	private String percentdiscount;
 	private Date created;
 	private int likes;
 	private int remarks;
@@ -72,22 +72,22 @@ public class Product {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	public double getDprice() {
+	public String getDprice() {
 		return dprice;
 	}
-	public void setDprice(double dprice) {
+	public void setDprice(String dprice) {
 		this.dprice = dprice;
 	}
-	public double getOprice() {
+	public String getOprice() {
 		return oprice;
 	}
-	public void setOprice(double oprice) {
+	public void setOprice(String oprice) {
 		this.oprice = oprice;
 	}
-	public int getPercentdiscount() {
+	public String getPercentdiscount() {
 		return percentdiscount;
 	}
-	public void setPercentdiscount(int percentdiscount) {
+	public void setPercentdiscount(String percentdiscount) {
 		this.percentdiscount = percentdiscount;
 	}
 	public Date getCreated() {

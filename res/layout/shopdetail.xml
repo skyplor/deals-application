@@ -38,15 +38,6 @@
 		  android:layout_marginLeft="10dip"
 		  android:textSize="15dip">
 </TextView>
-<ImageView
-    android:layout_height="wrap_content" 
-	android:id="@+id/lblRelatedProducts" 
-	android:layout_width="wrap_content"
-	android:layout_marginTop="20dip"
-	android:src="@drawable/shopopen"
-	android:layout_toRightOf="@+id/shopMap"
-	android:layout_below="@+id/lblDetailshopaddress">
-</ImageView>
 
 <ImageView
     android:id="@+id/lblRelatedProducts"
@@ -58,10 +49,13 @@
     android:src="@drawable/relatedproducts" >
 
 </ImageView>
-<ListView android:id="@+id/listDetailBrowse" 
-		  android:layout_width="fill_parent"
-		  android:layout_height="200dip"
-		  android:layout_alignParentBottom="true"
-		  android:layout_below="@+id/lblRelatedProducts">
+
+<ListView
+    android:id="@+id/listDetailBrowse"
+    android:layout_width="fill_parent"
+    android:layout_height="300dip"
+    android:layout_below="@+id/lblRelatedProducts"
+    android:layout_alignParentBottom="true" >
+
 </ListView>
 </RelativeLayout>

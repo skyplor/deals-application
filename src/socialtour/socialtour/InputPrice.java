@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -143,12 +144,13 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			{
 				name = oldname.replace(" ", "%20");
 			}
-			double dis, ori, percentage;
+			double dis, ori;
+			int percentage;
 			dis = Float.parseFloat(txtInput2.getText().toString());
 			if (isPercent)
 			{
-				percentage = Double.parseDouble(txtSecondInput.getText().toString());
-				ori = (100 / (100 - percentage)) * dis;
+				percentage = Integer.parseInt(txtSecondInput.getText().toString());
+				ori = (100.0 / (100.0 - percentage)) * dis;
 				if (percentage != Math.round(percentage) || (percentage < 0 || percentage > 100))
 				{
 					promptError("Please enter an integer value between 1 to 100 for percentage discount");
@@ -162,14 +164,25 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 					promptError("Discounted price cannot be more than original price");
 					proceed = false;
 				}
-				percentage = (int) Math.round((Math.abs(dis - ori) / ori) * 100);
+				percentage = (int) Math.round((Math.abs(dis - ori) / ori) * 100.0);
 				// calculate percent discount
 			}
 			if (proceed)
 			{
-				percentageStr = Double.toString(percentage);
-				disStr = Double.toString(dis);
-				oriStr = Double.toString(ori);
+				percentageStr = Integer.toString(percentage) + "%";
+				DecimalFormat twoDForm = new DecimalFormat("#.##");
+				dis = Double.valueOf(twoDForm.format(dis));
+				ori = Double.valueOf(twoDForm.format(ori));
+				disStr = "$" + Double.toString(dis);
+				oriStr = "$" + Double.toString(ori);
+				
+				if (disStr.substring(disStr.indexOf(".")+1).length() == 1){
+					disStr = disStr + "0";
+				}
+				
+				if (oriStr.substring(oriStr.indexOf(".")+1).length() == 1){
+					oriStr = oriStr + "0";
+				}
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
 				SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);

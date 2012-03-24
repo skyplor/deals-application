@@ -208,7 +208,7 @@ public class Shopdetail extends MapActivity
 
 				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
 				JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
-				int discountPercent = (int) jextraObjPercent.getDouble("value");
+				String discountPercent = jextraObjPercent.getString("value");
 				arrPro[i].setPercentdiscount(discountPercent);
 			}
 			adapter = new SimpleLazyAdapter(this, arrPro);

@@ -161,6 +161,11 @@ public class Search extends Activity implements OnClickListener
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
 	}
+	
+    @Override
+    public void onBackPressed() {
+    	Container.search.setEnabled(true);
+    }
 
     public boolean validate(String shop){
     	if (shop.length() < 2){
@@ -376,7 +381,7 @@ public class Search extends Activity implements OnClickListener
 					
 					JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
 					JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
-					int discountPercent = (int) jextraObjPercent.getDouble("value");
+					String discountPercent = jextraObjPercent.getString("value");
 					arrPro[i].setPercentdiscount(discountPercent);
 					tempShop[i].setName(json_data.getString("name"));
 					

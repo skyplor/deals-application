@@ -81,7 +81,7 @@ public class SimpleLazyAdapter extends BaseAdapter {
         		desc.setText("");
         	}
         	imageLoader.DisplayImage(Integer.toString(data[position].getId()), activity, image);
-        	percent.setText(data[position].getPercentdiscount() + "% Off");
+        	percent.setText(data[position].getPercentdiscount() + " Off");
         }else{
         	//int drawable = data[position].getIcon();
         	//image.setImageResource(drawable);

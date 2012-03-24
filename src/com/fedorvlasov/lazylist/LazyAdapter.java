@@ -52,15 +52,18 @@ public class LazyAdapter extends BaseAdapter {
         ImageView image=(ImageView)vi.findViewById(R.id.image2);
         TextView percent = (TextView)vi.findViewById(R.id.percentTesting);
         TextView desc = (TextView)vi.findViewById(R.id.txtDescription);
-        TextView username = (TextView)vi.findViewById(R.id.txtOwner);
+        TextView date = (TextView)vi.findViewById(R.id.txtDate);
         TextView productprice = (TextView)vi.findViewById(R.id.productprice);
         TextView noLikes = (TextView)vi.findViewById(R.id.lblmainlikes);
         TextView noRemarks = (TextView)vi.findViewById(R.id.lblmaincomments);
-        double price = data[position].getDprice() * 1000;
-        long tempprice = Math.round(price);
-        double finalprice = tempprice / 1000;
-        productprice.setText("$" + Double.toString(finalprice) + "0");
-        username.setText(data[position].getUser_name());
+        //double price = data[position].getDprice() * 1000;
+        //long tempprice = Math.round(price);
+        //double finalprice = tempprice / 1000;
+        Date prodDate = data[position].getCreated();
+        DateFormat df2 = new SimpleDateFormat("dd MMM yyyy");
+        String finalDate = df2.format(prodDate);
+        date.setText(finalDate);
+        productprice.setText(data[position].getDprice());
         String productname = data[position].getFilename();//.substring(0,data[position].getFilename().lastIndexOf("."));
         text.setText(productname);
         noLikes.setText(Integer.toString(data[position].getLikes()));
@@ -69,10 +72,16 @@ public class LazyAdapter extends BaseAdapter {
         if (shop[position].getDist() !=null){
         	Double currDistance = Double.valueOf(shop[position].getDist());
             long intDistance = Math.round(currDistance);
-            distance.setText("(" + Long.toString(intDistance) + " m away)");
+            if (intDistance > 1000){
+            	long kmDistance = intDistance / 1000;
+            	distance.setText("(" + Long.toString(kmDistance) + " km away)");
+            }else{
+            	distance.setText("(" + Long.toString(intDistance) + " m away)");
+            }
+            
         }
         imageLoader.DisplayImage(Integer.toString(data[position].getId()), activity, image);
-        percent.setText(data[position].getPercentdiscount() + "%");
+        percent.setText(data[position].getPercentdiscount());
         desc.setText(shop[position].getName());
         return vi;
     }

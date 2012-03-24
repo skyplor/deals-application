@@ -140,6 +140,11 @@ public class Settings extends Activity
 			}
 		});
 	}
+	
+    @Override
+    public void onBackPressed() {
+    	Container.settings.setEnabled(true);
+    }
 
 	private Boolean detectNormalLogin()
 	{

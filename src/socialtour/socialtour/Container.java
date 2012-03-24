@@ -91,14 +91,14 @@ public class Container extends TabActivity
 //	private UserParticulars userS;
 
 	//Button logout;
-	public static ImageView btn1,btn2,btn3;
+	public static ImageView btn1,btn2,btn3,map;
 	//public static ImageView home;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
 	public static TabHost tabHost; // The activity TabHost
 	TabSpec spec; // Resusable TabSpec for each tab
 	
-	public static ImageView browse,share,search;
+	public static ImageView browse,share,search,settings;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -108,11 +108,13 @@ public class Container extends TabActivity
 		btn1= (ImageView) findViewById(R.id.headerLatest);
 		btn2= (ImageView) findViewById(R.id.headerHot);
 		btn3= (ImageView) findViewById(R.id.headerNearby);
+		map = (ImageView) findViewById(R.id.headerMap);
 		//home = (ImageView) findViewById(R.id.imgHome);
 		
 		browse = (ImageView) findViewById(R.id.headerBrowse);
 		share = (ImageView) findViewById(R.id.headerCamera);
 		search = (ImageView) findViewById(R.id.headerSearch);
+		settings = (ImageView) findViewById(R.id.headerSettings);
 		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost

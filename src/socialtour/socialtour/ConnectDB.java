@@ -628,7 +628,7 @@ public class ConnectDB
 					arrPro[i].setId(jsonObj.getInt("id"));
 					arrPro[i].setFilename(jsonObj.getString("filename"));
 					arrPro[i].setUrl(jsonObj.getString("url"));
-					arrPro[i].setPercentdiscount(jsonObj.getInt("percentdiscount"));
+					arrPro[i].setPercentdiscount(jsonObj.getString("percentdiscount"));
 					shopArray[i].setName(jsonObj.getString("name"));
 				}
 			}
