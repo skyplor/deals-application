@@ -102,8 +102,8 @@
             android:layout_height="30dp"
             android:src="@drawable/mapbuttondynamic"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="5dp" />
+            <!-- android:visibility="gone"  -->
 
 </RelativeLayout>
     

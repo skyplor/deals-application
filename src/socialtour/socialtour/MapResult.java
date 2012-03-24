@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
 //import android.widget.Toast;
@@ -49,7 +50,7 @@ public class MapResult extends MapActivity
 	// private LocationListener locationListener;
 	private MapView mapView;
 	private MapController mapController;
-	//private Button logout;
+	// private Button logout;
 	private static GlobalVariable globalVar;
 	Handler mHandler = new Handler();
 	List<Overlay> listOfOverlays;
@@ -59,7 +60,7 @@ public class MapResult extends MapActivity
 	Drawable drawableUser;
 	Drawable drawableItem;
 
-//	private Boolean fbBtn;
+	// private Boolean fbBtn;
 	List<Shop> shoplist;
 
 	@Override
@@ -71,14 +72,16 @@ public class MapResult extends MapActivity
 
 		shoplist = new ArrayList<Shop>();
 		Intent intent = getIntent();
-		if(intent.getBooleanExtra("main", false))
+		if (intent.getBooleanExtra("main", false))
 		{
 			shoplist = Main.shoplist;
 		}
-		else if(intent.getBooleanExtra("search", false))
+		else if (intent.getBooleanExtra("search", false))
 		{
-		shoplist = Search.shoplist;
+			shoplist = Search.shoplist;
 		}
+		
+		
 		// shoplist = (ArrayList<Shop>) intent.getSerializableExtra("shoplist");
 
 		// locationManager = (LocationManager)
@@ -90,9 +93,9 @@ public class MapResult extends MapActivity
 		// 0, 0, locationListener);
 
 		mapView = (MapView) findViewById(R.id.mapView);
-		//logout = (Button) findViewById(R.id.logoutButton);
+		// logout = (Button) findViewById(R.id.logoutButton);
 		globalVar = ((GlobalVariable) getApplicationContext());
-//		fbBtn = globalVar.getfbBtn();
+		// fbBtn = globalVar.getfbBtn();
 		// Log.d("FbButton: ", fbBtn.toString());
 		for (int i = 0; i < shoplist.size(); i++)
 		{
@@ -162,7 +165,7 @@ public class MapResult extends MapActivity
 			// Logout logic here...
 			globalVar = ((GlobalVariable) getApplicationContext());
 			globalVar.setName("");
-//			globalVar.setfbBtn(false);
+			// globalVar.setfbBtn(false);
 			globalVar.setHashPw("");
 			globalVar.setEm("");
 
@@ -466,8 +469,8 @@ public class MapResult extends MapActivity
 			myintent.putExtra("shopid", shoplist.get(index).getId());
 			myintent.putExtra("shopname", shoplist.get(index).getName());
 			myintent.putExtra("shopaddress", shoplist.get(index).getAddress());
-			//int icon = shoplist.get(index).getIcon();
-			//myintent.putExtra("icon", icon);
+			// int icon = shoplist.get(index).getIcon();
+			// myintent.putExtra("icon", icon);
 			myintent.putExtra("lat", shoplist.get(index).getLat());
 			myintent.putExtra("long", shoplist.get(index).getLng());
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();

@@ -68,12 +68,14 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	private RadioGroup radGrp;
 	boolean isPercent = true;
 	Uri imageUri;
-	//ImageView backtomain;
+	// ImageView backtomain;
 	String percentageStr = "";
 	String disStr = "";
 	String oriStr = "";
 	String shopName = "";
 	String shopAddress = "";
+	String shopLat = "";
+	String shopLng = "";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -84,9 +86,9 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		//backtomain = Container.home;
+		// backtomain = Container.home;
 
-		//backtomain.setOnClickListener(this);
+		// backtomain.setOnClickListener(this);
 		txtInput = (TextView) findViewById(R.id.txtInput);
 		txtInput2 = (EditText) findViewById(R.id.txtPrice);
 		txtSecondInput = (EditText) findViewById(R.id.txtPrice2);
@@ -107,8 +109,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		//backtomain = Container.home;
-		//backtomain.setOnClickListener(this);
+		// backtomain = Container.home;
+		// backtomain.setOnClickListener(this);
 	}
 
 	@Override
@@ -160,7 +162,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			else
 			{
 				ori = Double.parseDouble(txtSecondInput.getText().toString());
-				if (dis >= ori){
+				if (dis >= ori)
+				{
 					promptError("Discounted price cannot be more than original price");
 					proceed = false;
 				}
@@ -175,12 +178,14 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				ori = Double.valueOf(twoDForm.format(ori));
 				disStr = "$" + Double.toString(dis);
 				oriStr = "$" + Double.toString(ori);
-				
-				if (disStr.substring(disStr.indexOf(".")+1).length() == 1){
+
+				if (disStr.substring(disStr.indexOf(".") + 1).length() == 1)
+				{
 					disStr = disStr + "0";
 				}
-				
-				if (oriStr.substring(oriStr.indexOf(".")+1).length() == 1){
+
+				if (oriStr.substring(oriStr.indexOf(".") + 1).length() == 1)
+				{
 					oriStr = oriStr + "0";
 				}
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -190,21 +195,23 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				if (!userDetails.getString("userID", "").equals(""))
 				{
 					userid = userDetails.getString("userID", "");
-//					usertype = "user_norm";
-//					username = userDetails.getString("userName", "");
+					// usertype = "user_norm";
+					// username = userDetails.getString("userName", "");
 				}
-//				else if (!userDetails.getString("userDB_FBID", "").equals(""))
-//				{
-//					userid = userDetails.getString("userDB_FBID", "");
-//					usertype = "user_fb";
-//					username = userDetails.getString("userFBname", "");
-//				}
-//				else if (!userDetails.getString("userDB_TWITID", "").equals(""))
-//				{
-//					userid = userDetails.getString("userDB_TWITID", "");
-//					usertype = "user_twit";
-//					username = userDetails.getString("userName", "");
-//				}
+				// else if (!userDetails.getString("userDB_FBID",
+				// "").equals(""))
+				// {
+				// userid = userDetails.getString("userDB_FBID", "");
+				// usertype = "user_fb";
+				// username = userDetails.getString("userFBname", "");
+				// }
+				// else if (!userDetails.getString("userDB_TWITID",
+				// "").equals(""))
+				// {
+				// userid = userDetails.getString("userDB_TWITID", "");
+				// usertype = "user_twit";
+				// username = userDetails.getString("userName", "");
+				// }
 
 				// nameValuePairs.add(new BasicNameValuePair("userid", userid));
 				// nameValuePairs.add(new BasicNameValuePair("usertype",
@@ -240,7 +247,9 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				nameValuePairs.add(new BasicNameValuePair("fulltext", ""));
 				shopName = getIntent().getStringExtra("SHOP_NAME");
 				shopAddress = getIntent().getStringExtra("SHOP_ADDRESS");
-				
+				shopLat = getIntent().getStringExtra("SHOPLAT");
+				shopLng = getIntent().getStringExtra("SHOPLNG");
+
 				JSONObject extraObj = new JSONObject();
 				JSONArray extraArray = new JSONArray();
 				for (int i = 0; i < 5; i++)
@@ -248,7 +257,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 					try
 					{
 						extraObj = new JSONObject();
-						extraObj.put("value", chooseExtraFieldValue(i+1));
+						extraObj.put("value", chooseExtraFieldValue(i + 1));
 						extraObj.put("id", Integer.toString(i + 1));
 						extraArray.put(extraObj);
 						Log.d("In input Price, extra fields object: ", extraObj.toString());
@@ -281,9 +290,11 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				nameValuePairs.add(new BasicNameValuePair("featured", "0"));
 				nameValuePairs.add(new BasicNameValuePair("featured_ordering", "0"));
 				nameValuePairs.add(new BasicNameValuePair("hits", "0"));
-//				nameValuePairs.add(new BasicNameValuePair("params","{\"catItemTitle\":\"\",\"catItemTitleLinked\":\"\",\"catItemFeaturedNotice\":\"\",\"catItemAuthor\":\"\",\"catItemDateCreated\":\"\",\"catItemRating\":\"\",\"catItemImage\":\"\",\"catItemIntroText\":\"\",\"catItemExtraFields\":\"\",\"catItemHits\":\"\",\"catItemCategory\":\"\",\"catItemTags\":\"\",\"catItemAttachments\":\"\",\"catItemAttachmentsCounter\":\"\",\"catItemVideo\":\"\",\"catItemVideoWidth\":\"\",\"catItemVideoHeight\":\"\",\"catItemAudioWidth\":\"\",\"catItemAudioHeight\":\"\",\"catItemVideoAutoPlay\":\"\",\"catItemImageGallery\":\"\",\"catItemDateModified\":\"\",\"catItemReadMore\":\"\",\"catItemCommentsAnchor\":\"\",\"catItemK2Plugins\":\"\",\"itemDateCreated\":\"\",\"itemTitle\":\"\",\"itemFeaturedNotice\":\"\",\"itemAuthor\":\"\",\"itemFontResizer\":\"\",\"itemPrintButton\":\"\",\"itemEmailButton\":\"\",\"itemSocialButton\":\"\",\"itemVideoAnchor\":\"\",\"itemImageGalleryAnchor\":\"\",\"itemCommentsAnchor\":\"\",\"itemRating\":\"\",\"itemImage\":\"\",\"itemImgSize\":\"\",\"itemImageMainCaption\":\"\",\"itemImageMainCredits\":\"\",\"itemIntroText\":\"\",\"itemFullText\":\"\",\"itemExtraFields\":\"\",\"itemDateModified\":\"\",\"itemHits\":\"\",\"itemCategory\":\"\",\"itemTags\":\"\",\"itemAttachments\":\"\",\"itemAttachmentsCounter\":\"\",\"itemVideo\":\"\",\"itemVideoWidth\":\"\",\"itemVideoHeight\":\"\",\"itemAudioWidth\":\"\",\"itemAudioHeight\":\"\",\"itemVideoAutoPlay\":\"\",\"itemVideoCaption\":\"\",\"itemVideoCredits\":\"\",\"itemImageGallery\":\"\",\"itemNavigation\":\"\",\"itemComments\":\"\",\"itemTwitterButton\":\"\",\"itemFacebookButton\":\"\",\"itemGooglePlusOneButton\":\"\",\"itemAuthorBlock\":\"\",\"itemAuthorImage\":\"\",\"itemAuthorDescription\":\"\",\"itemAuthorURL\":\"\",\"itemAuthorEmail\":\"\",\"itemAuthorLatest\":\"\",\"itemAuthorLatestLimit\":\"\",\"itemRelated\":\"\",\"itemRelatedLimit\":\"\",\"itemRelatedTitle\":\"\",\"itemRelatedCategory\":\"\",\"itemRelatedImageSize\":\"\",\"itemRelatedIntrotext\":\"\",\"itemRelatedFulltext\":\"\",\"itemRelatedAuthor\":\"\",\"itemRelatedMedia\":\"\",\"itemRelatedImageGallery\":\"\",\"itemK2Plugins\":\"\"}"));
-				nameValuePairs.add(new BasicNameValuePair("params", paramJsonEncode()));
+				// nameValuePairs.add(new
+				// BasicNameValuePair("params","{\"catItemTitle\":\"\",\"catItemTitleLinked\":\"\",\"catItemFeaturedNotice\":\"\",\"catItemAuthor\":\"\",\"catItemDateCreated\":\"\",\"catItemRating\":\"\",\"catItemImage\":\"\",\"catItemIntroText\":\"\",\"catItemExtraFields\":\"\",\"catItemHits\":\"\",\"catItemCategory\":\"\",\"catItemTags\":\"\",\"catItemAttachments\":\"\",\"catItemAttachmentsCounter\":\"\",\"catItemVideo\":\"\",\"catItemVideoWidth\":\"\",\"catItemVideoHeight\":\"\",\"catItemAudioWidth\":\"\",\"catItemAudioHeight\":\"\",\"catItemVideoAutoPlay\":\"\",\"catItemImageGallery\":\"\",\"catItemDateModified\":\"\",\"catItemReadMore\":\"\",\"catItemCommentsAnchor\":\"\",\"catItemK2Plugins\":\"\",\"itemDateCreated\":\"\",\"itemTitle\":\"\",\"itemFeaturedNotice\":\"\",\"itemAuthor\":\"\",\"itemFontResizer\":\"\",\"itemPrintButton\":\"\",\"itemEmailButton\":\"\",\"itemSocialButton\":\"\",\"itemVideoAnchor\":\"\",\"itemImageGalleryAnchor\":\"\",\"itemCommentsAnchor\":\"\",\"itemRating\":\"\",\"itemImage\":\"\",\"itemImgSize\":\"\",\"itemImageMainCaption\":\"\",\"itemImageMainCredits\":\"\",\"itemIntroText\":\"\",\"itemFullText\":\"\",\"itemExtraFields\":\"\",\"itemDateModified\":\"\",\"itemHits\":\"\",\"itemCategory\":\"\",\"itemTags\":\"\",\"itemAttachments\":\"\",\"itemAttachmentsCounter\":\"\",\"itemVideo\":\"\",\"itemVideoWidth\":\"\",\"itemVideoHeight\":\"\",\"itemAudioWidth\":\"\",\"itemAudioHeight\":\"\",\"itemVideoAutoPlay\":\"\",\"itemVideoCaption\":\"\",\"itemVideoCredits\":\"\",\"itemImageGallery\":\"\",\"itemNavigation\":\"\",\"itemComments\":\"\",\"itemTwitterButton\":\"\",\"itemFacebookButton\":\"\",\"itemGooglePlusOneButton\":\"\",\"itemAuthorBlock\":\"\",\"itemAuthorImage\":\"\",\"itemAuthorDescription\":\"\",\"itemAuthorURL\":\"\",\"itemAuthorEmail\":\"\",\"itemAuthorLatest\":\"\",\"itemAuthorLatestLimit\":\"\",\"itemRelated\":\"\",\"itemRelatedLimit\":\"\",\"itemRelatedTitle\":\"\",\"itemRelatedCategory\":\"\",\"itemRelatedImageSize\":\"\",\"itemRelatedIntrotext\":\"\",\"itemRelatedFulltext\":\"\",\"itemRelatedAuthor\":\"\",\"itemRelatedMedia\":\"\",\"itemRelatedImageGallery\":\"\",\"itemK2Plugins\":\"\"}"));
+				nameValuePairs.add(new BasicNameValuePair("params", paramJsonEncode(1)));
 				nameValuePairs.add(new BasicNameValuePair("metadata", "robots=\nauthor="));
+				nameValuePairs.add(new BasicNameValuePair("plugins", paramJsonEncode(2)));
 				nameValuePairs.add(new BasicNameValuePair("language", "*"));
 				// http post
 				try
@@ -320,101 +331,115 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				}
 			}
 		}
-		//else if (v == backtomain)
-		//{
-		//	confirmationquit();
-		//}
+		// else if (v == backtomain)
+		// {
+		// confirmationquit();
+		// }
 	}
 
-	private String paramJsonEncode()
+	private String paramJsonEncode(int type)
 	{
 		// TODO Auto-generated method stub
 		JSONObject paramObject = new JSONObject();
 		try
 		{
-			paramObject.put("itemK2Plugins", "");
-			paramObject.put("itemRelatedImageGallery", "");
-			paramObject.put("itemRelatedMedia", "");
-			paramObject.put("itemRelatedAuthor", "");
-			paramObject.put("itemRelatedFulltext", "");
-			paramObject.put("itemRelatedIntrotext", "");
-			paramObject.put("itemRelatedImageSize", "");
-			paramObject.put("itemRelatedCategory", "");
-			paramObject.put("itemRelatedTitle", "");
-			paramObject.put("itemRelatedLimit", "");
-			paramObject.put("itemRelated", "");
-			paramObject.put("itemAuthorLatestLimit", "");
-			paramObject.put("itemAuthorLatest", "");
-			paramObject.put("itemAuthorEmail", "");
-			paramObject.put("itemAuthorURL", "");
-			paramObject.put("itemAuthorDescription", "");
-			paramObject.put("itemAuthorImage", "");
-			paramObject.put("itemAuthorBlock", "");
-			paramObject.put("itemGooglePlusOneButton", "");
-			paramObject.put("itemFacebookButton", "");
-			paramObject.put("itemTwitterButton", "");
-			paramObject.put("itemComments", "");
-			paramObject.put("itemNavigation", "");
-			paramObject.put("itemImageGallery", "");
-			paramObject.put("itemVideoCredits", "");
-			paramObject.put("itemVideoCaption", "");
-			paramObject.put("itemVideoAutoPlay", "");
-			paramObject.put("itemAudioHeight", "");
-			paramObject.put("itemAudioWidth", "");
-			paramObject.put("itemVideoHeight", "");
-			paramObject.put("itemVideoWidth", "");
-			paramObject.put("itemVideo", "");
-			paramObject.put("itemAttachmentsCounter", "");
-			paramObject.put("itemAttachments", "");
-			paramObject.put("itemTags", "");
-			paramObject.put("itemCategory", "");
-			paramObject.put("itemHits", "");
-			paramObject.put("itemDateModified", "");
-			paramObject.put("itemExtraFields", "");
-			paramObject.put("itemFullText", "");
-			paramObject.put("itemIntroText", "");
-			paramObject.put("itemImageMainCredits", "");
-			paramObject.put("itemImageMainCaption", "");
-			paramObject.put("itemImgSize", "");
-			paramObject.put("itemImage", "");
-			paramObject.put("itemRating", "");
-			paramObject.put("itemCommentsAnchor", "");
-			paramObject.put("itemImageGalleryAnchor", "");
-			paramObject.put("itemVideoAnchor", "");
-			paramObject.put("itemSocialButton", "");
-			paramObject.put("itemEmailButton", "");
-			paramObject.put("itemPrintButton", "");
-			paramObject.put("itemFontResizer", "");
-			paramObject.put("itemAuthor", "");
-			paramObject.put("itemFeaturedNotice", "");
-			paramObject.put("itemTitle", "");
-			paramObject.put("itemDateCreated", "");
-			paramObject.put("catItemK2Plugins", "");
-			paramObject.put("catItemCommentsAnchor", "");
-			paramObject.put("catItemReadMore", "");
-			paramObject.put("catItemDateModified", "");
-			paramObject.put("catItemImageGallery", "");
-			paramObject.put("catItemVideoAutoPlay", "");
-			paramObject.put("catItemAudioHeight", "");
-			paramObject.put("catItemAudioWidth", "");
-			paramObject.put("catItemVideoHeight", "");
-			paramObject.put("catItemVideoWidth", "");
-			paramObject.put("catItemVideo", "");
-			paramObject.put("catItemAttachmentsCounter", "");
-			paramObject.put("catItemAttachments", "");
-			paramObject.put("catItemTags", "");
-			paramObject.put("catItemCategory", "");
-			paramObject.put("catItemHits", "");
-			paramObject.put("catItemExtraFields", "");
-			paramObject.put("catItemIntroText", "");
-			paramObject.put("catItemImage", "");
-			paramObject.put("catItemRating", "");
-			paramObject.put("catItemDateCreated", "");
-			paramObject.put("catItemAuthor", "");
-			paramObject.put("catItemFeaturedNotice", "");
-			paramObject.put("catItemTitleLinked", "");
-			paramObject.put("catItemTitle", "");
+			if (type == 1)
+			{
+				paramObject.put("itemK2Plugins", "");
+				paramObject.put("itemRelatedImageGallery", "");
+				paramObject.put("itemRelatedMedia", "");
+				paramObject.put("itemRelatedAuthor", "");
+				paramObject.put("itemRelatedFulltext", "");
+				paramObject.put("itemRelatedIntrotext", "");
+				paramObject.put("itemRelatedImageSize", "");
+				paramObject.put("itemRelatedCategory", "");
+				paramObject.put("itemRelatedTitle", "");
+				paramObject.put("itemRelatedLimit", "");
+				paramObject.put("itemRelated", "");
+				paramObject.put("itemAuthorLatestLimit", "");
+				paramObject.put("itemAuthorLatest", "");
+				paramObject.put("itemAuthorEmail", "");
+				paramObject.put("itemAuthorURL", "");
+				paramObject.put("itemAuthorDescription", "");
+				paramObject.put("itemAuthorImage", "");
+				paramObject.put("itemAuthorBlock", "");
+				paramObject.put("itemGooglePlusOneButton", "");
+				paramObject.put("itemFacebookButton", "");
+				paramObject.put("itemTwitterButton", "");
+				paramObject.put("itemComments", "");
+				paramObject.put("itemNavigation", "");
+				paramObject.put("itemImageGallery", "");
+				paramObject.put("itemVideoCredits", "");
+				paramObject.put("itemVideoCaption", "");
+				paramObject.put("itemVideoAutoPlay", "");
+				paramObject.put("itemAudioHeight", "");
+				paramObject.put("itemAudioWidth", "");
+				paramObject.put("itemVideoHeight", "");
+				paramObject.put("itemVideoWidth", "");
+				paramObject.put("itemVideo", "");
+				paramObject.put("itemAttachmentsCounter", "");
+				paramObject.put("itemAttachments", "");
+				paramObject.put("itemTags", "");
+				paramObject.put("itemCategory", "");
+				paramObject.put("itemHits", "");
+				paramObject.put("itemDateModified", "");
+				paramObject.put("itemExtraFields", "");
+				paramObject.put("itemFullText", "");
+				paramObject.put("itemIntroText", "");
+				paramObject.put("itemImageMainCredits", "");
+				paramObject.put("itemImageMainCaption", "");
+				paramObject.put("itemImgSize", "");
+				paramObject.put("itemImage", "");
+				paramObject.put("itemRating", "");
+				paramObject.put("itemCommentsAnchor", "");
+				paramObject.put("itemImageGalleryAnchor", "");
+				paramObject.put("itemVideoAnchor", "");
+				paramObject.put("itemSocialButton", "");
+				paramObject.put("itemEmailButton", "");
+				paramObject.put("itemPrintButton", "");
+				paramObject.put("itemFontResizer", "");
+				paramObject.put("itemAuthor", "");
+				paramObject.put("itemFeaturedNotice", "");
+				paramObject.put("itemTitle", "");
+				paramObject.put("itemDateCreated", "");
+				paramObject.put("catItemK2Plugins", "");
+				paramObject.put("catItemCommentsAnchor", "");
+				paramObject.put("catItemReadMore", "");
+				paramObject.put("catItemDateModified", "");
+				paramObject.put("catItemImageGallery", "");
+				paramObject.put("catItemVideoAutoPlay", "");
+				paramObject.put("catItemAudioHeight", "");
+				paramObject.put("catItemAudioWidth", "");
+				paramObject.put("catItemVideoHeight", "");
+				paramObject.put("catItemVideoWidth", "");
+				paramObject.put("catItemVideo", "");
+				paramObject.put("catItemAttachmentsCounter", "");
+				paramObject.put("catItemAttachments", "");
+				paramObject.put("catItemTags", "");
+				paramObject.put("catItemCategory", "");
+				paramObject.put("catItemHits", "");
+				paramObject.put("catItemExtraFields", "");
+				paramObject.put("catItemIntroText", "");
+				paramObject.put("catItemImage", "");
+				paramObject.put("catItemRating", "");
+				paramObject.put("catItemDateCreated", "");
+				paramObject.put("catItemAuthor", "");
+				paramObject.put("catItemFeaturedNotice", "");
+				paramObject.put("catItemTitleLinked", "");
+				paramObject.put("catItemTitle", "");
+			}
+			else if (type == 2)
+			{
+				paramObject.put("k2GmapGmapItemLat", shopLat);
+				paramObject.put("k2GmapGmapItemLon", shopLng);
+				paramObject.put("k2GmapGmapItemzoom", "10");
+				paramObject.put("k2GmapGmapItemWidth", "350");
+				paramObject.put("k2GmapGmapItemHeight", "350");
+				paramObject.put("k2GmapGmapItemIcon", "pansiyon");
+				paramObject.put("k2GmapGmapItemkmz", "");
+			}
 			return paramObject.toString();
+
 		}
 		catch (JSONException e)
 		{
@@ -445,7 +470,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 
 	private void doFileUpload(String productname, int articleID)
 	{
-		Log.d("In inputPrice, doFileupload articleID: ",Integer.toString(articleID));
+		Log.d("In inputPrice, doFileupload articleID: ", Integer.toString(articleID));
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		DataInputStream inStream = null;
@@ -626,8 +651,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				// manager.destroyActivity("share", true);
 				// manager.startActivity("share", new Intent(getParent(),
 				// TabGroup2Activity.class));
-				Intent i = getBaseContext().getPackageManager()
-			             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+				Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
 				// startActivity(i);
@@ -666,7 +690,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		MessageDigest m = MessageDigest.getInstance("MD5");
 		m.reset();
 		byte[] data = pass.getBytes();
-//		m.update(data, 0, data.length);
+		// m.update(data, 0, data.length);
 		m.update(data);
 		BigInteger i = new BigInteger(1, m.digest());
 		String result = String.format("%1$032X", i);

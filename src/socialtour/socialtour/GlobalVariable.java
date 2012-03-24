@@ -23,6 +23,8 @@ public class GlobalVariable extends Application {
 	private Integer searchType = 0;
 	private GeoPoint gPoint;
 	private List<Shop> shop = null;
+	private Boolean mapmode = false;
+	private Integer currentProductType = 0; //1 for latest, 2 for hot, 3 for nearby
 
 	public Facebook getFBState()
 	{
@@ -114,5 +116,25 @@ public class GlobalVariable extends Application {
 	public List<Shop> getShop()
 	{
 		return shop;
+	}
+
+	public Boolean getMapmode()
+	{
+		return mapmode;
+	}
+
+	public void setMapmode(Boolean mapmode)
+	{
+		this.mapmode = mapmode;
+	}
+
+	public Integer getCurrentProductType()
+	{
+		return currentProductType;
+	}
+
+	public void setCurrentProductType(Integer currentProductType)
+	{
+		this.currentProductType = currentProductType;
 	}
 }// End Class

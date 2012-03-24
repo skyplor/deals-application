@@ -674,7 +674,9 @@ public class Addplace extends MapActivity implements OnClickListener
 
 		nameValuePairs.add(new BasicNameValuePair("name", shopname));
 		nameValuePairs.add(new BasicNameValuePair("address", address));
-		nameValuePairs.add(new BasicNameValuePair("lat", Double.toString(globalVar.getGeoPoint().getLatitudeE6() / 1E6)));
+		String lat = Double.toString(globalVar.getGeoPoint().getLatitudeE6() / 1E6);
+		nameValuePairs.add(new BasicNameValuePair("lat", lat));
+		String lng = Double.toString(globalVar.getGeoPoint().getLongitudeE6() / 1E6);
 		nameValuePairs.add(new BasicNameValuePair("long", Double.toString(globalVar.getGeoPoint().getLongitudeE6() / 1E6)));
 		// http post
 		try
@@ -706,6 +708,10 @@ public class Addplace extends MapActivity implements OnClickListener
 			intent.putExtra("SHOP_ID", lastid);
 	        intent.putExtra("SHOP_NAME", shopname);
 	        intent.putExtra("SHOP_ADDRESS", address);
+
+	        Log.d("Shop Lat and Lng: ", lat + " and " + lng);
+	        intent.putExtra("SHOPLAT", lat);
+	        intent.putExtra("SHOPLNG", lng);
 			Bundle bundle = getIntent().getExtras();
 			Uri pic = (Uri) bundle.get("pic");
 			intent.putExtra("pic", pic);

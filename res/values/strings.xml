@@ -14,5 +14,6 @@
     <string name="setBirthdate">Set/Change Birthdate</string>
     <string name="search_label">Search shop</string>
     <string name="search_hint">E.g. Watsons</string>
+    <string name="APIMapKey">0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ</string>
     
 </resources>

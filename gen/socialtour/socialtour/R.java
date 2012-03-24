@@ -464,6 +464,7 @@ public final class R {
         public static final int menu=0x7f070000;
     }
     public static final class string {
+        public static final int APIMapKey=0x7f06000e;
         public static final int Welcome=0x7f060002;
         public static final int app_name=0x7f060001;
         public static final int birthdate=0x7f06000a;

@@ -167,6 +167,9 @@ public class Browseplace extends Activity implements OnClickListener{
 		        intent.putExtra("SHOP_ID", shop[pos].getId());
 		        intent.putExtra("SHOP_NAME", shop[pos].getName());
 		        intent.putExtra("SHOP_ADDRESS", shop[pos].getAddress());
+		        Log.d("Shop Lat and Lng: ", shop[pos].getLat() + " and " + shop[pos].getLng() );
+		        intent.putExtra("SHOPLAT", shop[pos].getLat());
+		        intent.putExtra("SHOPLNG", shop[pos].getLng());
 		        Bundle bundle=getIntent().getExtras();
 		        Uri pic = (Uri) bundle.get("pic");
 		        intent.putExtra("pic", pic);
@@ -257,6 +260,8 @@ public class Browseplace extends Activity implements OnClickListener{
     	             shop[i].setId(json_data.getInt("id"));
     	             shop[i].setName(json_data.getString("name"));
     	             shop[i].setAddress(json_data.getString("address"));
+    	             shop[i].setLat(json_data.getString("lat"));
+    	             shop[i].setLng(json_data.getString("lng"));
     	         }
     	      	adapter=new SimpleLazyAdapter(this, shop);
     	        //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);

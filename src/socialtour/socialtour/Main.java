@@ -32,6 +32,11 @@ import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import com.fedorvlasov.lazylist.LazyAdapter;
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 //import com.google.android.maps.GeoPoint;
 import socialtour.socialtour.TwitterApp.TwDialogListener;
 import socialtour.socialtour.models.Product;
@@ -47,6 +52,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.Drawable;
 //import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
@@ -76,7 +82,7 @@ import android.widget.ListView;
 //import android.widget.TextView;
 import android.widget.Toast;
 
-public class Main extends Activity implements OnClickListener
+public class Main extends MapActivity implements OnClickListener
 {
 
 	private static final String APP_ID = "222592464462347";
@@ -97,9 +103,13 @@ public class Main extends Activity implements OnClickListener
 	private TwitterApp mTwitter;
 	public static LocationManager locationManager;
 	public static GPSLocationListener locationListener;
+
 	public static GeoPoint point = new GeoPoint(1304256, 103832538);
-	private static int currentState; // can be 1 for latest, 2 for hot, 3 for
-										// nearby
+
+	public int currentState; // can be 1 for latest, 2 for hot, 3 for
+								// nearby
+	private boolean mapmode = false;
+
 	Handler mHandler = new Handler();
 	private ProgressDialog mProgress;
 
@@ -133,6 +143,15 @@ public class Main extends Activity implements OnClickListener
 
 	// private EditText lname;
 
+	private MapView mapView;
+	private MapController mapController;
+	List<Overlay> listOfOverlays;
+
+	Markers usermarker;
+	Markers itemmarker;
+	Drawable drawableUser;
+	Drawable drawableItem;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -155,12 +174,12 @@ public class Main extends Activity implements OnClickListener
 		nearby = Container.btn3;
 		hot = Container.btn2;
 		map = Container.map;
-		
+
 		browse = Container.browse;
 		share = Container.share;
 		search = Container.search;
 		settings = Container.settings;
-		
+
 		browse.setEnabled(false);
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
@@ -223,63 +242,17 @@ public class Main extends Activity implements OnClickListener
 		TestingClass.setEndTime();
 		Log.d("Main Browsing activity", Long.toString(TestingClass.calculateTime()));
 
-		// else
-		// {
-		// SharedPreferences userDetails =
-		// getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-		// String Uname = userDetails.getString("emailLogin", "");
-		// String pass = userDetails.getString("pwLogin", "");
-		// Log.d("Uname: ", Uname);
-		// Log.d("Password: ", pass);
-		// if (Uname == "" && pass.equals(""))
-		// {
-		// Intent launchLogin = new Intent(this, LoginPage.class);
-		// startActivity(launchLogin);
-		// }
-		// else
-		// {
-		// ConnectDB connectCheck = new ConnectDB(Uname, pass, 1);
-		// if (connectCheck.inputResult())
-		// {
-		// // name.setText("Hello " + connectCheck.getName() + ",");
-		// init(INIT_NORM);
-		// }
-		// else
-		// {
-		// // do something else
-		// Log.d("Authenticate User: ", "False");
-		// showDialog(DIALOG_ERR_LOGIN);
-		// }
-		// }
-		// }
-
-		// IntentFilter intentFilter = new IntentFilter();
-		// intentFilter.addAction("com.package.ACTION_LOGOUT");
-		// registerReceiver(new BroadcastReceiver()
-		// {
-		//
-		// @Override
-		// public void onReceive(Context context, Intent intent)
-		// {
-		// Log.d("onReceive", "Logout in progress");
-		// // At this point you should start the login activity and finish
-		// // this one
-		// Intent loginIntent = new Intent(SearchShops.this, LoginPage.class);
-		// startActivity(loginIntent);
-		// finish();
-		// }
-		// }, intentFilter);
 	}
 
 	@Override
 	public void onResume()
 	{
 		super.onResume();
-		
+		Log.d("in onResume:", "hi");
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
-		
+
 		browse.setEnabled(false);
 		hot.getLayoutParams().width = 45;
 		latest.setImageResource(R.drawable.latestbuttondynamic);
@@ -287,21 +260,105 @@ public class Main extends Activity implements OnClickListener
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
 		if (currentState == 1)
 		{
-			latest.setEnabled(false);
-			nearby.setEnabled(true);
-			hot.setEnabled(true);
+
+			Log.d("in onResume:", "current State 1");
+			if (globalVar.getMapmode() == true)
+			{
+				getProduct("Latest");
+				currentState = 1;
+				Log.d("in onResume:", "before intent 1");
+				Intent intent = new Intent(getParent(), MapResult.class);
+				intent.putExtra("main", true);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("map", intent);
+				latest.setEnabled(false);
+				nearby.setEnabled(true);
+				hot.setEnabled(true);
+				map.setEnabled(true);
+			}
+			else
+			{
+				latest.setEnabled(false);
+				nearby.setEnabled(true);
+				hot.setEnabled(true);
+			}
 		}
 		else if (currentState == 2)
 		{
-			hot.setEnabled(false);
-			nearby.setEnabled(true);
-			latest.setEnabled(true);
+			Log.d("in onResume:", "current State 2");
+
+			if (globalVar.getMapmode() == true)
+			{
+				getProduct("Hot");
+				currentState = 2;
+				Log.d("in onResume:", "before intent 2");
+				Intent intent = new Intent(getParent(), MapResult.class);
+				intent.putExtra("main", true);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("map", intent);
+				latest.setEnabled(true);
+				nearby.setEnabled(true);
+				hot.setEnabled(false);
+				map.setEnabled(true);
+			}
+			else
+			{
+				hot.setEnabled(false);
+				nearby.setEnabled(true);
+				latest.setEnabled(true);
+			}
+
 		}
 		else if (currentState == 3)
 		{
-			nearby.setEnabled(false);
-			latest.setEnabled(true);
-			hot.setEnabled(true);
+			Log.d("in onResume:", "current State 3");
+			if (CheckEnableGPS())
+			{
+				if (globalVar.getMapmode() == true)
+				{
+					getProduct("Nearby");
+					currentState = 3;
+					Log.d("in onResume:", "before intent 3");
+					Intent intent = new Intent(getParent(), MapResult.class);
+					intent.putExtra("main", true);
+					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+					parentActivity.startChildActivity("map", intent);
+					latest.setEnabled(true);
+					nearby.setEnabled(false);
+					hot.setEnabled(true);
+					map.setEnabled(true);
+				}
+				else
+				{
+					nearby.setEnabled(false);
+					latest.setEnabled(true);
+					hot.setEnabled(true);
+				}
+			}
+			else
+			{
+				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
+				alertDialog.setMessage("Please turn on your GPS");
+				alertDialog.setCancelable(true);
+				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+						startActivity(intent);
+					}
+				});
+				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						latest.performClick();
+					}
+				});
+				alertDialog.show();
+			}
 		}
 		share.setEnabled(true);
 		search.setEnabled(true);
@@ -310,6 +367,85 @@ public class Main extends Activity implements OnClickListener
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 		map.setOnClickListener(this);
+		if (globalVar.getCurrentProductType() == 1)
+		{
+			if (globalVar.getMapmode() == true)
+			{
+				getProduct("Latest");
+				currentState = 1;
+				Log.d("in onResume:", "before intent 1");
+				Intent intent = new Intent(getParent(), MapResult.class);
+				intent.putExtra("main", true);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("map", intent);
+				latest.setEnabled(false);
+				nearby.setEnabled(true);
+				hot.setEnabled(true);
+				map.setEnabled(true);
+			}
+		}
+		else if (globalVar.getCurrentProductType() == 2)
+		{
+			if (globalVar.getMapmode() == true)
+			{
+				getProduct("Hot");
+				currentState = 2;
+				Log.d("in onResume:", "before intent 2");
+				Intent intent = new Intent(getParent(), MapResult.class);
+				intent.putExtra("main", true);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("map", intent);
+				latest.setEnabled(true);
+				nearby.setEnabled(true);
+				hot.setEnabled(false);
+				map.setEnabled(true);
+			}
+		}
+
+		else if (globalVar.getCurrentProductType() == 3)
+		{
+			if (CheckEnableGPS())
+			{
+				if (globalVar.getMapmode() == true)
+				{
+					getProduct("Nearby");
+					currentState = 3;
+					Log.d("in onResume:", "before intent 3");
+					Intent intent = new Intent(getParent(), MapResult.class);
+					intent.putExtra("main", true);
+					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+					parentActivity.startChildActivity("map", intent);
+					latest.setEnabled(true);
+					nearby.setEnabled(false);
+					hot.setEnabled(true);
+					map.setEnabled(true);
+				}
+			}
+			else
+			{
+				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
+				alertDialog.setMessage("Please turn on your GPS");
+				alertDialog.setCancelable(true);
+				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+						startActivity(intent);
+					}
+				});
+				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						latest.performClick();
+					}
+				});
+				alertDialog.show();
+			}
+		}
 	}
 
 	@Override
@@ -428,23 +564,76 @@ public class Main extends Activity implements OnClickListener
 	{
 		if (v == latest)
 		{
+			
+			// if (mapmode == true)
+			// {
+			// getProduct("Latest");
+			// currentState = 1;
+			// Intent intent = new Intent(getParent(), MapResult.class);
+			// intent.putExtra("main", true);
+			// TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			// parentActivity.startChildActivity("map", intent);
+			// latest.setEnabled(false);
+			// nearby.setEnabled(true);
+			// hot.setEnabled(true);
+			// map.setEnabled(true);
+			// }
+			//
+			// else
+			// {
 			getProduct("Latest");
 			currentState = 1;
 			latest.setEnabled(false);
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
-			//map.setEnabled(true);
+			map.setEnabled(true);
+			if(mapmode == true)
+			{
+				switchToMapView();
+			}
+			else
+			{
+				switchToBrowseView();
+			}
+			// }
 		}
 		else if (v == nearby)
 		{
 			if (CheckEnableGPS())
 			{
+
+				// if (mapmode == true)
+				// {
+				// getProduct("Nearby");
+				// currentState = 3;
+				// Intent intent = new Intent(getParent(), MapResult.class);
+				// intent.putExtra("main", true);
+				// TabGroupActivity parentActivity = (TabGroupActivity)
+				// getParent();
+				// parentActivity.startChildActivity("map", intent);
+				// latest.setEnabled(true);
+				// nearby.setEnabled(false);
+				// hot.setEnabled(true);
+				// map.setEnabled(true);
+				// }
+				// else
+				// {
 				getProduct("Nearby");
 				currentState = 3;
 				nearby.setEnabled(false);
 				latest.setEnabled(true);
 				hot.setEnabled(true);
-				//map.setEnabled(true);
+				map.setEnabled(true);
+				
+				if(mapmode == true)
+				{
+					switchToMapView();
+				}
+				else
+				{
+					switchToBrowseView();
+				}
+				// }
 			}
 			else
 			{
@@ -473,22 +662,195 @@ public class Main extends Activity implements OnClickListener
 		}
 		else if (v == hot)
 		{
+
+			// if (mapmode == true)
+			// {
+			// getProduct("Hot");
+			// currentState = 2;
+			// Intent intent = new Intent(getParent(), MapResult.class);
+			// intent.putExtra("main", true);
+			// TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			// parentActivity.startChildActivity("map", intent);
+			// latest.setEnabled(true);
+			// nearby.setEnabled(true);
+			// hot.setEnabled(false);
+			// map.setEnabled(true);
+			// }
+			//
+			// else
+			// {
+
 			getProduct("Hot");
 			currentState = 2;
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
-			//map.setEnabled(true);
-		} else if (v == map){
-			Intent intent = new Intent(getParent(), MapResult.class);
-			intent.putExtra("main", true);
-			TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-		    parentActivity.startChildActivity("Map", intent);
-		    hot.setEnabled(true);
+			map.setEnabled(true);
+			
+			if(mapmode == true)
+			{
+				switchToMapView();				
+			}
+			else
+			{
+				switchToBrowseView();	
+			}
+			// }
+		}
+		else if (v == map)
+		{
+			mapmode = !mapmode;
+
+			hot.setEnabled(true);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
-			map.setEnabled(false);
+			map.setEnabled(true);
+
+			if (mapmode == true)
+			{
+				// if (mapmode == true)
+				// {
+				// mapmode = false;
+				// }
+				// else
+				// {
+				// Intent intent = new Intent(getParent(), MapResult.class);
+				// intent.putExtra("main", true);
+				// TabGroupActivity parentActivity = (TabGroupActivity)
+				// getParent();
+				// parentActivity.startChildActivity("map", intent);
+
+				switchToMapView();
+			}
+			
+			else
+			{
+				switchToBrowseView();
+			}
+			// }
 		}
+	}
+
+	private void switchToMapView()
+	{
+		// TODO Auto-generated method stub
+		if(mapView == null)
+		{
+			mapView = new MapView(this, this.getString(R.string.APIMapKey));
+		}
+		
+//		setContentView(R.layout.mapresult);
+//		mapView = (MapView) findViewById(R.id.mapView);
+		setContentView(mapView);
+		mapView.setBuiltInZoomControls(true);
+		mapController = mapView.getController();
+		mapController.setZoom(13);
+		initStores();
+	}
+
+	private void switchToBrowseView()
+	{
+		// TODO Auto-generated method stub
+		setContentView(R.layout.browse);
+		searchResult = (ListView) findViewById(R.id.listBrowse);
+		if(currentState == 1)
+		{
+			getProduct("Latest");
+			latest.setEnabled(false);
+			nearby.setEnabled(true);
+			hot.setEnabled(true);
+			map.setEnabled(true);
+		}
+		else if (currentState == 2)
+		{
+			getProduct("Hot");
+			hot.setEnabled(false);
+			nearby.setEnabled(true);
+			latest.setEnabled(true);
+			map.setEnabled(true);					
+		}
+		else if (currentState == 3)
+		{
+			if (CheckEnableGPS())
+			{
+				
+					getProduct("Nearby");
+					latest.setEnabled(true);
+					nearby.setEnabled(false);
+					hot.setEnabled(true);
+					map.setEnabled(true);
+			}
+			else
+			{
+				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
+				alertDialog.setMessage("Please turn on your GPS");
+				alertDialog.setCancelable(true);
+				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+						startActivity(intent);
+					}
+				});
+				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// here you can add functions
+						latest.performClick();
+					}
+				});
+				alertDialog.show();
+			}					
+		}
+	}
+
+	private void initStores()
+	{
+		// TODO Auto-generated method stub
+		listOfOverlays = mapView.getOverlays();
+		for (Overlay overlay : listOfOverlays)
+		{
+			if (overlay instanceof BalloonItemizedOverlay<?>)
+			{
+				if (((BalloonItemizedOverlay<?>) overlay).balloonView != null)
+					((BalloonItemizedOverlay<?>) overlay).balloonView.setVisibility(View.GONE);
+			}
+		}
+		listOfOverlays.clear();
+		// drawableUser = getResources().getDrawable(R.drawable.location);
+		// usermarker = new Markers(drawableUser, mapView);
+
+		// if (location != null)
+		// {
+
+		GeoPoint point = new GeoPoint((int) (Double.parseDouble(shoplist.get(0).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(0).getLng()) * 1E6));
+
+		mapController.animateTo(point);
+		mapController.setZoom(13);
+
+		listOfOverlays.clear();
+		searchStores();
+
+		mapView.invalidate();
+	}
+
+	private void searchStores()
+	{
+		// TODO Auto-generated method stub
+		drawableItem = getResources().getDrawable(R.drawable.pushpin);
+		itemmarker = new Markers(drawableItem, mapView);
+		for (int sp = 0; sp < shoplist.size(); sp++)
+		{
+			GeoPoint p = new GeoPoint((int) (Double.parseDouble(shoplist.get(sp).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(sp).getLng()) * 1E6));
+
+			OverlayItem item = new OverlayItem(p, shoplist.get(sp).getName(), shoplist.get(sp).getAddress());
+			itemmarker.addOverlay(item);
+
+		}
+		listOfOverlays.add(itemmarker);
 	}
 
 	private Boolean CheckEnableGPS()
@@ -592,7 +954,7 @@ public class Main extends Activity implements OnClickListener
 				arrPro[i] = new Product();
 				shop[i] = new Shop();
 				arrPro[i].setUser_name(json_data.getString("user_name"));
-				
+
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				arrPro[i].setCreated((Date) formatter.parse(json_data.getString("created")));
 
@@ -757,6 +1119,78 @@ public class Main extends Activity implements OnClickListener
 		{
 			// TODO Auto-generated method stub
 
+		}
+	}
+
+	@Override
+	protected boolean isRouteDisplayed()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public class Markers extends BalloonItemizedOverlay<OverlayItem>
+	{
+
+		private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+
+		public Markers(Drawable defaultMarker, MapView mv)
+		{
+
+			super(boundCenter(defaultMarker), mv, globalVar);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected OverlayItem createItem(int i)
+		{
+			// TODO Auto-generated method stub
+			return mOverlays.get(i);
+		}
+
+		@Override
+		public boolean onTap(GeoPoint p, MapView mapView)
+		{
+			// TODO Auto-generated method stub
+			return super.onTap(p, mapView);
+		}
+
+		@Override
+		public int size()
+		{
+			// TODO Auto-generated method stub
+			return mOverlays.size();
+		}
+
+		public void addOverlay(OverlayItem item)
+		{
+			mOverlays.add(item);
+			// setLastFocusedIndex(-1);
+			populate();
+
+		}
+
+		public void clear()
+		{
+			mOverlays.clear();
+			// setLastFocusedIndex(-1);
+			populate();
+		}
+
+		@Override
+		public boolean onBalloonTap(int index, OverlayItem item)
+		{
+			Intent myintent = new Intent(getParent(), Shopdetail.class);
+			myintent.putExtra("shopid", shoplist.get(index).getId());
+			myintent.putExtra("shopname", shoplist.get(index).getName());
+			myintent.putExtra("shopaddress", shoplist.get(index).getAddress());
+			// int icon = shoplist.get(index).getIcon();
+			// myintent.putExtra("icon", icon);
+			myintent.putExtra("lat", shoplist.get(index).getLat());
+			myintent.putExtra("long", shoplist.get(index).getLng());
+			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+			parentActivity.startChildActivity("Shop Detail", myintent);
+			return (super.onBalloonTap(index, item));
 		}
 	}
 }
