@@ -432,7 +432,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			{
 				paramObject.put("k2GmapGmapItemLat", shopLat);
 				paramObject.put("k2GmapGmapItemLon", shopLng);
-				paramObject.put("k2GmapGmapItemzoom", "10");
+				paramObject.put("k2GmapGmapItemzoom", "13");
 				paramObject.put("k2GmapGmapItemWidth", "350");
 				paramObject.put("k2GmapGmapItemHeight", "350");
 				paramObject.put("k2GmapGmapItemIcon", "pansiyon");
