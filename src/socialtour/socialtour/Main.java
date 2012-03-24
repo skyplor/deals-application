@@ -52,6 +52,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 //import android.content.IntentFilter;
 import android.location.Location;
@@ -78,6 +79,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 //import android.widget.RadioGroup;
 //import android.widget.TextView;
 import android.widget.Toast;
@@ -132,6 +134,7 @@ public class Main extends MapActivity implements OnClickListener
 	ImageView browse, share, search, settings;
 	ListView searchResult;
 	LazyAdapter adapter;
+	RelativeLayout mapHolder;
 
 	Shop shopresult;
 	public static List<Shop> shoplist = new ArrayList<Shop>();
@@ -143,7 +146,7 @@ public class Main extends MapActivity implements OnClickListener
 
 	// private EditText lname;
 
-	private MapView mapView;
+	private static MapView mapView;
 	private MapController mapController;
 	List<Overlay> listOfOverlays;
 
@@ -183,6 +186,8 @@ public class Main extends MapActivity implements OnClickListener
 		browse.setEnabled(false);
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
+
+		mapView = null;
 
 		latest.setOnClickListener(this);
 		nearby.setOnClickListener(this);
@@ -248,7 +253,7 @@ public class Main extends MapActivity implements OnClickListener
 	public void onResume()
 	{
 		super.onResume();
-		Log.d("in onResume:", "hi");
+		
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
@@ -260,80 +265,24 @@ public class Main extends MapActivity implements OnClickListener
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
 		if (currentState == 1)
 		{
-
-			Log.d("in onResume:", "current State 1");
-			if (globalVar.getMapmode() == true)
-			{
-				getProduct("Latest");
-				currentState = 1;
-				Log.d("in onResume:", "before intent 1");
-				Intent intent = new Intent(getParent(), MapResult.class);
-				intent.putExtra("main", true);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("map", intent);
-				latest.setEnabled(false);
-				nearby.setEnabled(true);
-				hot.setEnabled(true);
-				map.setEnabled(true);
-			}
-			else
-			{
-				latest.setEnabled(false);
-				nearby.setEnabled(true);
-				hot.setEnabled(true);
-			}
+			latest.setEnabled(false);
+			nearby.setEnabled(true);
+			hot.setEnabled(true);
 		}
 		else if (currentState == 2)
 		{
-			Log.d("in onResume:", "current State 2");
-
-			if (globalVar.getMapmode() == true)
-			{
-				getProduct("Hot");
-				currentState = 2;
-				Log.d("in onResume:", "before intent 2");
-				Intent intent = new Intent(getParent(), MapResult.class);
-				intent.putExtra("main", true);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("map", intent);
-				latest.setEnabled(true);
-				nearby.setEnabled(true);
-				hot.setEnabled(false);
-				map.setEnabled(true);
-			}
-			else
-			{
-				hot.setEnabled(false);
-				nearby.setEnabled(true);
-				latest.setEnabled(true);
-			}
-
+			hot.setEnabled(false);
+			nearby.setEnabled(true);
+			latest.setEnabled(true);
 		}
 		else if (currentState == 3)
 		{
-			Log.d("in onResume:", "current State 3");
+			
 			if (CheckEnableGPS())
 			{
-				if (globalVar.getMapmode() == true)
-				{
-					getProduct("Nearby");
-					currentState = 3;
-					Log.d("in onResume:", "before intent 3");
-					Intent intent = new Intent(getParent(), MapResult.class);
-					intent.putExtra("main", true);
-					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("map", intent);
-					latest.setEnabled(true);
-					nearby.setEnabled(false);
-					hot.setEnabled(true);
-					map.setEnabled(true);
-				}
-				else
-				{
-					nearby.setEnabled(false);
-					latest.setEnabled(true);
-					hot.setEnabled(true);
-				}
+				nearby.setEnabled(false);
+				latest.setEnabled(true);
+				hot.setEnabled(true);
 			}
 			else
 			{
@@ -367,85 +316,7 @@ public class Main extends MapActivity implements OnClickListener
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 		map.setOnClickListener(this);
-		if (globalVar.getCurrentProductType() == 1)
-		{
-			if (globalVar.getMapmode() == true)
-			{
-				getProduct("Latest");
-				currentState = 1;
-				Log.d("in onResume:", "before intent 1");
-				Intent intent = new Intent(getParent(), MapResult.class);
-				intent.putExtra("main", true);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("map", intent);
-				latest.setEnabled(false);
-				nearby.setEnabled(true);
-				hot.setEnabled(true);
-				map.setEnabled(true);
-			}
-		}
-		else if (globalVar.getCurrentProductType() == 2)
-		{
-			if (globalVar.getMapmode() == true)
-			{
-				getProduct("Hot");
-				currentState = 2;
-				Log.d("in onResume:", "before intent 2");
-				Intent intent = new Intent(getParent(), MapResult.class);
-				intent.putExtra("main", true);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("map", intent);
-				latest.setEnabled(true);
-				nearby.setEnabled(true);
-				hot.setEnabled(false);
-				map.setEnabled(true);
-			}
-		}
-
-		else if (globalVar.getCurrentProductType() == 3)
-		{
-			if (CheckEnableGPS())
-			{
-				if (globalVar.getMapmode() == true)
-				{
-					getProduct("Nearby");
-					currentState = 3;
-					Log.d("in onResume:", "before intent 3");
-					Intent intent = new Intent(getParent(), MapResult.class);
-					intent.putExtra("main", true);
-					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("map", intent);
-					latest.setEnabled(true);
-					nearby.setEnabled(false);
-					hot.setEnabled(true);
-					map.setEnabled(true);
-				}
-			}
-			else
-			{
-				AlertDialog alertDialog = new AlertDialog.Builder(getParent()).create();
-				alertDialog.setMessage("Please turn on your GPS");
-				alertDialog.setCancelable(true);
-				alertDialog.setButton("OK", new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
-					{
-						// here you can add functions
-						Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
-						startActivity(intent);
-					}
-				});
-				alertDialog.setButton2("Cancel", new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
-					{
-						// here you can add functions
-						latest.performClick();
-					}
-				});
-				alertDialog.show();
-			}
-		}
+		
 	}
 
 	@Override
@@ -515,56 +386,12 @@ public class Main extends MapActivity implements OnClickListener
 		});
 	}
 
-	// private void doLogout(int type)
-	// {
-	// if (type == INIT_NORM)
-	// {
-	// // Logout logic here...
-	// globalVar = ((GlobalVariable) getApplicationContext());
-	// globalVar.setName("");
-	// globalVar.setHashPw("");
-	// globalVar.setEm("");
-	//
-	// SharedPreferences login = getSharedPreferences("com.ntu.fypshop",
-	// MODE_PRIVATE);
-	// SharedPreferences.Editor editor = login.edit();
-	// editor.putString("emailLogin", "");
-	// editor.putString("pwLogin", "");
-	// editor.commit();
-	// }
-	// else if (type == INIT_FB)
-	// {
-	// // Go to LoginPage
-	// SharedPreferences login = getSharedPreferences("com.ntu.fypshop",
-	// MODE_PRIVATE);
-	// SharedPreferences.Editor editor = login.edit();
-	// editor.putString("facebookName", "");
-	// editor.commit();
-	// globalVar = ((GlobalVariable) getApplicationContext());
-	// Facebook mFacebook = globalVar.getFBState();
-	// globalVar.setfbBtn(false);
-	// SessionEvents.onLogoutBegin();
-	// AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
-	// asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
-	// }
-	// else
-	// {
-	// mTwitter.resetAccessToken();
-	// globalVar.setTwitBtn(false);
-	// }
-	//
-	// // Return to the login activity
-	// Intent intent = new Intent(this, LoginPage.class);
-	// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	// startActivity(intent);
-	// }
-
 	@Override
 	public void onClick(View v)
 	{
 		if (v == latest)
 		{
-			
+
 			// if (mapmode == true)
 			// {
 			// getProduct("Latest");
@@ -587,7 +414,7 @@ public class Main extends MapActivity implements OnClickListener
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
 			map.setEnabled(true);
-			if(mapmode == true)
+			if (mapmode == true)
 			{
 				switchToMapView();
 			}
@@ -624,8 +451,8 @@ public class Main extends MapActivity implements OnClickListener
 				latest.setEnabled(true);
 				hot.setEnabled(true);
 				map.setEnabled(true);
-				
-				if(mapmode == true)
+
+				if (mapmode == true)
 				{
 					switchToMapView();
 				}
@@ -663,22 +490,6 @@ public class Main extends MapActivity implements OnClickListener
 		else if (v == hot)
 		{
 
-			// if (mapmode == true)
-			// {
-			// getProduct("Hot");
-			// currentState = 2;
-			// Intent intent = new Intent(getParent(), MapResult.class);
-			// intent.putExtra("main", true);
-			// TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			// parentActivity.startChildActivity("map", intent);
-			// latest.setEnabled(true);
-			// nearby.setEnabled(true);
-			// hot.setEnabled(false);
-			// map.setEnabled(true);
-			// }
-			//
-			// else
-			// {
 
 			getProduct("Hot");
 			currentState = 2;
@@ -686,66 +497,77 @@ public class Main extends MapActivity implements OnClickListener
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
 			map.setEnabled(true);
-			
-			if(mapmode == true)
-			{
-				switchToMapView();				
-			}
-			else
-			{
-				switchToBrowseView();	
-			}
-			// }
-		}
-		else if (v == map)
-		{
-			mapmode = !mapmode;
-
-			hot.setEnabled(true);
-			nearby.setEnabled(true);
-			latest.setEnabled(true);
-			map.setEnabled(true);
 
 			if (mapmode == true)
 			{
-				// if (mapmode == true)
-				// {
-				// mapmode = false;
-				// }
-				// else
-				// {
-				// Intent intent = new Intent(getParent(), MapResult.class);
-				// intent.putExtra("main", true);
-				// TabGroupActivity parentActivity = (TabGroupActivity)
-				// getParent();
-				// parentActivity.startChildActivity("map", intent);
-
 				switchToMapView();
 			}
-			
 			else
 			{
 				switchToBrowseView();
 			}
-			// }
+		}
+		else if (v == map)
+		{
+			mapmode = !mapmode;
+			if (currentState == 1)
+			{
+				latest.setEnabled(false);
+				hot.setEnabled(true);
+				nearby.setEnabled(true);
+			}
+			if (currentState == 2)
+			{
+				hot.setEnabled(false);
+				latest.setEnabled(true);
+				nearby.setEnabled(true);
+			}
+			if (currentState == 3)
+			{
+				nearby.setEnabled(false);
+				latest.setEnabled(true);
+				hot.setEnabled(true);
+			}
+
+			if (mapmode == true)
+			{
+
+				switchToMapView();
+			}
+
+			else
+			{
+				switchToBrowseView();
+			}
 		}
 	}
 
 	private void switchToMapView()
 	{
 		// TODO Auto-generated method stub
-		if(mapView == null)
+		if (mapHolder != null)
+		{
+			Log.d("inswitchToMapView: ", "mapHolder is not null");
+			mapHolder.removeView(mapView);
+		}
+
+		setContentView(R.layout.mapbrowse);
+
+		if (mapView == null)
 		{
 			mapView = new MapView(this, this.getString(R.string.APIMapKey));
+
 		}
-		
-//		setContentView(R.layout.mapresult);
-//		mapView = (MapView) findViewById(R.id.mapView);
-		setContentView(mapView);
+
+		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
 		mapController.setZoom(13);
 		initStores();
+		mapHolder = (RelativeLayout) findViewById(R.id.mapbrowseRelative1);
+		mapHolder.addView(mapView);
+		// setContentView(R.layout.mapresult);
+		// mapView = (MapView) findViewById(R.id.mapView);
 	}
 
 	private void switchToBrowseView()
@@ -753,7 +575,7 @@ public class Main extends MapActivity implements OnClickListener
 		// TODO Auto-generated method stub
 		setContentView(R.layout.browse);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
-		if(currentState == 1)
+		if (currentState == 1)
 		{
 			getProduct("Latest");
 			latest.setEnabled(false);
@@ -767,18 +589,18 @@ public class Main extends MapActivity implements OnClickListener
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
-			map.setEnabled(true);					
+			map.setEnabled(true);
 		}
 		else if (currentState == 3)
 		{
 			if (CheckEnableGPS())
 			{
-				
-					getProduct("Nearby");
-					latest.setEnabled(true);
-					nearby.setEnabled(false);
-					hot.setEnabled(true);
-					map.setEnabled(true);
+
+				getProduct("Nearby");
+				latest.setEnabled(true);
+				nearby.setEnabled(false);
+				hot.setEnabled(true);
+				map.setEnabled(true);
 			}
 			else
 			{
@@ -803,7 +625,7 @@ public class Main extends MapActivity implements OnClickListener
 					}
 				});
 				alertDialog.show();
-			}					
+			}
 		}
 	}
 
@@ -1193,4 +1015,32 @@ public class Main extends MapActivity implements OnClickListener
 			return (super.onBalloonTap(index, item));
 		}
 	}
+
+	// @Override
+	// public void onConfigurationChanged(Configuration newConfig)
+	// {
+	// super.onConfigurationChanged(newConfig);
+	//
+	// setupLayout();
+	// }
+	//
+	// private void setupLayout()
+	// {
+	// // TODO Auto-generated method stub
+	// if(mapHolder != null)
+	// {
+	// mapHolder.removeView(mapView);
+	// }
+	//
+	// this.setContentView(R.layout.mapbrowse);
+	//
+	// if(mapView == null)
+	// {
+	// mapView = new MapView(this, this.getString(R.string.APIMapKey));
+	// mapView.setClickable(true);
+	// }
+	//
+	// mapHolder = (RelativeLayout) findViewById(R.id.mapbrowseRelative1);
+	// mapHolder.addView(mapView, 0);
+	// }
 }
