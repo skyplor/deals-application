@@ -26,6 +26,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn1.setVisibility(View.INVISIBLE);
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
+		Container.map.setVisibility(View.INVISIBLE);
         //Container.btn3.setImageResource(R.drawable.quitsharing);
 		//backtomain = Container.home;
 		
@@ -58,6 +59,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn1.setVisibility(View.INVISIBLE);
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
+		Container.map.setVisibility(View.INVISIBLE);
         //Container.btn3.setImageResource(R.drawable.quitsharing);
 		//backtomain = Container.home;
 		//backtomain.setOnClickListener(this);

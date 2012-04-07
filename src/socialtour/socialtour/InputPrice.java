@@ -85,6 +85,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn1.setVisibility(View.INVISIBLE);
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
+		Container.map.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
 		// backtomain = Container.home;
 
@@ -108,6 +109,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn1.setVisibility(View.INVISIBLE);
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
+		Container.map.setVisibility(View.INVISIBLE);
 		// Container.btn3.setImageResource(R.drawable.quitsharing);
 		// backtomain = Container.home;
 		// backtomain.setOnClickListener(this);

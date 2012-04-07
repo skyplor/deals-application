@@ -98,7 +98,7 @@ public class Productdetail extends Activity implements OnClickListener
 	String result = null;
 	Bitmap bmImg;
 	ImageView imagedisplay;
-	ImageView btnLike, btnShare, btnRemarks;
+	ImageView btnLike, btnShare, btnRemarks, map;
 	int productid = 0;
 	String filename;
 	String commentType;
@@ -145,6 +145,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike = Container.btn1;
 		btnRemarks = Container.btn2;
 		btnShare = Container.btn3;
+		map = Container.map;
 
 		btnLike.setEnabled(true);
 		btnRemarks.setEnabled(true);
@@ -152,6 +153,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setVisibility(View.VISIBLE);
 		btnRemarks.setVisibility(View.VISIBLE);
 		btnShare.setVisibility(View.VISIBLE);
+		map.setVisibility(View.INVISIBLE);
 		btnShare.getLayoutParams().width = 45;
 		
 		btnLike.setImageResource(R.drawable.likepicwhite);
@@ -574,7 +576,7 @@ public class Productdetail extends Activity implements OnClickListener
 		{
 			// myFileUrl= new URL("http://172.22.177.204/FYP/FYP/uploads/" +
 			// filename);
-			myFileUrl = new URL(Constants.DOWNLOAD_PATH + "joomla25/media/k2/items/src/" + hashedimagename);
+			myFileUrl = new URL(Constants.DOWNLOAD_PATH + "media/k2/items/src/" + hashedimagename);
 		}
 		catch (MalformedURLException e)
 		{
@@ -708,7 +710,7 @@ public class Productdetail extends Activity implements OnClickListener
 			//String alias = productid+"-"+productname.trim().toLowerCase().replace(' ', '-');
 			//status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/index.php/site-map/articles/item/"+alias;
 			String alias = productname.trim().toLowerCase().replace(' ', '-');
-		 	status = "Check out this promotion! " + productname + " (" + percent + " off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
+		 	status = "Check out this promotion! " + productname + " (" + percent + " off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"everything/all-categories/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
 			fbshare.setOnClickListener(new OnClickListener()
 			{
 

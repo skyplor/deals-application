@@ -98,6 +98,7 @@ public class Addplace extends MapActivity implements OnClickListener
 		Container.btn1.setVisibility(View.GONE);
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
+		Container.map.setVisibility(View.GONE);
 		
 		mapView = (MapView) findViewById(R.id.addShopMap);
 		mapSearchBox = (AutoCompleteTextView) findViewById(R.id.txtShopname);

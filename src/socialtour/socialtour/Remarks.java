@@ -71,6 +71,7 @@ public class Remarks extends Activity implements OnClickListener{
 		Container.btn1.setVisibility(View.GONE);
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
+		Container.map.setVisibility(View.GONE);
 		
 		img = (ImageView) findViewById(R.id.imgComments);
 		//commentListview = (ListView) findViewById(R.id.listComments);

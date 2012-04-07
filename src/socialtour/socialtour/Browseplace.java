@@ -82,6 +82,7 @@ public class Browseplace extends Activity implements OnClickListener{
         Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.VISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+		Container.map.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setImageResource(R.drawable.addplace);
         Container.btn2.getLayoutParams().width = 65;
         //Container.btn3.setImageResource(R.drawable.quitsharing);
@@ -185,6 +186,7 @@ public class Browseplace extends Activity implements OnClickListener{
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.VISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+		Container.map.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setImageResource(R.drawable.addplace);
 		//backtomain = Container.home;
 		addplace = Container.btn2;

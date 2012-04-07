@@ -52,6 +52,7 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
         Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+		Container.map.setVisibility(ImageView.INVISIBLE);
         //home = Container.home;
         //home.setOnClickListener(this);
         //Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
@@ -79,6 +80,7 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
 		Container.btn1.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setVisibility(ImageView.INVISIBLE);
         Container.btn3.setVisibility(ImageView.INVISIBLE);
+		Container.map.setVisibility(ImageView.INVISIBLE);
         //Container.home.setOnClickListener(this);
 		//Container.btn1.setImageResource(R.drawable.hotbuttondynamic);
         //Container.btn2.setImageResource(R.drawable.nearbybuttondynamic);

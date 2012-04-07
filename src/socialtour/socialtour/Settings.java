@@ -190,7 +190,7 @@ public class Settings extends Activity
 				fbBtn.setText("Disconnect");
 				// fbBtn.setBackgroundColor(Color.MAGENTA);
 				twitacc = false;
-				twitBtn.setText("Add Twitter");
+				twitBtn.setText("Connect to Twitter");
 				Drawable d3 = findViewById(R.id.twitBtnAdd).getBackground();
 				findViewById(R.id.twitBtnAdd).invalidateDrawable(d3);
 				d3.clearColorFilter();
@@ -204,7 +204,7 @@ public class Settings extends Activity
 				twitBtn.setText("Disconnect");
 				// twitBtn.setBackgroundColor(Color.MAGENTA);
 				fbacc = false;
-				fbBtn.setText("Add Facebook");
+				fbBtn.setText("Connect to Facebook");
 				Drawable d5 = findViewById(R.id.fbBtnAdd).getBackground();
 				findViewById(R.id.fbBtnAdd).invalidateDrawable(d5);
 				d5.clearColorFilter();

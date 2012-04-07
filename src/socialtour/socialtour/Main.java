@@ -186,6 +186,7 @@ public class Main extends MapActivity implements OnClickListener
 		browse.setEnabled(false);
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
+		
 
 		mapView = null;
 
@@ -193,6 +194,7 @@ public class Main extends MapActivity implements OnClickListener
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 		map.setOnClickListener(this);
+		
 		currentState = 1;
 		latest.setEnabled(false);
 
@@ -253,16 +255,18 @@ public class Main extends MapActivity implements OnClickListener
 	public void onResume()
 	{
 		super.onResume();
-		
+
 		latest.setVisibility(View.VISIBLE);
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
+		map.setVisibility(View.VISIBLE);
 
 		browse.setEnabled(false);
 		hot.getLayoutParams().width = 45;
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
+
 		if (currentState == 1)
 		{
 			latest.setEnabled(false);
@@ -277,7 +281,7 @@ public class Main extends MapActivity implements OnClickListener
 		}
 		else if (currentState == 3)
 		{
-			
+
 			if (CheckEnableGPS())
 			{
 				nearby.setEnabled(false);
@@ -316,7 +320,7 @@ public class Main extends MapActivity implements OnClickListener
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 		map.setOnClickListener(this);
-		
+
 	}
 
 	@Override
@@ -369,21 +373,7 @@ public class Main extends MapActivity implements OnClickListener
 		// }
 		// });
 
-		searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> av, View v, int pos, long id)
-			{
-				// Intent intent = new Intent(Main.this, Productdetail.class);
-				// intent.putExtra("lastproductid", employeesid[pos]);
-				// startActivity(intent);
-				TestingClass.setStartTime();
-				Intent intent = new Intent(getParent(), Productdetail.class);
-				intent.putExtra("lastproductid", arrPro[pos].getId());
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Product Detail", intent);
-			}
-		});
+		
 	}
 
 	@Override
@@ -489,7 +479,6 @@ public class Main extends MapActivity implements OnClickListener
 		}
 		else if (v == hot)
 		{
-
 
 			getProduct("Hot");
 			currentState = 2;
@@ -648,9 +637,12 @@ public class Main extends MapActivity implements OnClickListener
 		// if (location != null)
 		// {
 
-		GeoPoint point = new GeoPoint((int) (Double.parseDouble(shoplist.get(0).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(0).getLng()) * 1E6));
+		if (!shoplist.isEmpty())
+		{
+			GeoPoint point = new GeoPoint((int) (Double.parseDouble(shoplist.get(0).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(0).getLng()) * 1E6));
 
-		mapController.animateTo(point);
+			mapController.animateTo(point);
+		}
 		mapController.setZoom(13);
 
 		listOfOverlays.clear();
@@ -708,7 +700,7 @@ public class Main extends MapActivity implements OnClickListener
 		{
 			String lat = Double.toString(point.getLatitudeE6() / 1E6);
 			String lng = Double.toString(point.getLongitudeE6() / 1E6);
-			String radius = "1000";
+			String radius = "2000";
 			nameValuePairs.add(new BasicNameValuePair("nearby", "1"));
 			nameValuePairs.add(new BasicNameValuePair("lat", lat));
 			nameValuePairs.add(new BasicNameValuePair("lng", lng));
@@ -806,6 +798,23 @@ public class Main extends MapActivity implements OnClickListener
 			// ListAdapter adapter = new ArrayAdapter<String>(this,
 			// android.R.layout.simple_list_item_1, employees);
 			searchResult.setAdapter(adapter);
+			
+			searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener()
+			{
+				@Override
+				public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+				{
+					// Intent intent = new Intent(Main.this, Productdetail.class);
+					// intent.putExtra("lastproductid", employeesid[pos]);
+					// startActivity(intent);
+					TestingClass.setStartTime();
+										
+					Intent intent = new Intent(getParent(), Productdetail.class);
+					intent.putExtra("lastproductid", arrPro[pos].getId());
+					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+					parentActivity.startChildActivity("Product Detail", intent);
+				}
+			});
 		}
 		catch (JSONException e1)
 		{

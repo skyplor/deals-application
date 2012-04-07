@@ -15,7 +15,8 @@
         android:name=".GlobalVariable"
         android:debuggable="true"
         android:icon="@drawable/icon3"
-        android:label="@string/app_name" >
+        android:label="@string/app_name" 
+        android:theme="@style/MyTheme">
         <uses-library android:name="com.google.android.maps" />
 
         <provider

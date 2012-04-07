@@ -86,6 +86,7 @@ public class Search extends Activity implements OnClickListener
 		Container.btn1.setVisibility(View.GONE);
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
+		Container.map.setVisibility(View.GONE);
 		
 		btnSearch = (Button) findViewById(R.id.btnSearch);
 		txtSearch = (EditText) findViewById(R.id.txtSearch);
@@ -160,6 +161,7 @@ public class Search extends Activity implements OnClickListener
 		Container.btn1.setVisibility(View.GONE);
 		Container.btn2.setVisibility(View.GONE);
 		Container.btn3.setVisibility(View.GONE);
+		Container.map.setVisibility(View.GONE);
 	}
 	
     @Override

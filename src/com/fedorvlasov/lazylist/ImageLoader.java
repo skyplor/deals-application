@@ -80,7 +80,7 @@ public class ImageLoader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String url = Constants.DOWNLOAD_PATH + "joomla25/media/k2/items/src/" + hashedimagename;
+		String url = Constants.DOWNLOAD_PATH + "media/k2/items/src/" + hashedimagename;
 		Log.d("in ImageLoader, getBitmap, url: ", url);
         File f=fileCache.getFile(url);
         
