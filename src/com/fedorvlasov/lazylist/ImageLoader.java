@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -17,12 +18,14 @@ import java.util.Stack;
 import java.util.WeakHashMap;
 
 import socialtour.socialtour.Constants;
+import socialtour.socialtour.Main;
 import socialtour.socialtour.R;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -44,8 +47,9 @@ public class ImageLoader {
     {
         imageViews.put(imageView, productid);
         Bitmap bitmap=memoryCache.get(productid);
-        if(bitmap!=null)
+        if(bitmap!=null){
             imageView.setImageBitmap(bitmap);
+        }
         else
         {
             queuePhoto(productid, activity, imageView);
@@ -107,7 +111,35 @@ public class ImageLoader {
            return null;
         }
     }
-
+    
+//    private Bitmap decodeFile(File f){
+//        Bitmap b = null;
+//        try {
+//            //Decode image size
+//            BitmapFactory.Options o = new BitmapFactory.Options();
+//            o.inJustDecodeBounds = true;
+//
+//            FileInputStream fis = new FileInputStream(f);
+//            BitmapFactory.decodeStream(fis, null, o);
+//            fis.close();
+//
+//            int scale = 1;
+//            final int IMAGE_MAX_SIZE=370;
+//            if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+//                scale = (int)Math.pow(2, (int) Math.round(Math.log(IMAGE_MAX_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+//            }
+//
+//            //Decode with inSampleSize
+//            BitmapFactory.Options o2 = new BitmapFactory.Options();
+//            o2.inSampleSize = scale;
+//            fis = new FileInputStream(f);
+//            b = BitmapFactory.decodeStream(fis, null, o2);
+//            fis.close();
+//        } catch (IOException e) {
+//        }
+//        return b;
+//    }
+    
     //decodes image and scales it to reduce memory consumption
     private Bitmap decodeFile(File f){
         try {
@@ -117,7 +149,7 @@ public class ImageLoader {
             BitmapFactory.decodeStream(new FileInputStream(f),null,o);
             
             //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=70;
+            final int REQUIRED_SIZE=80;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
             while(true){
@@ -130,7 +162,11 @@ public class ImageLoader {
             
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize=2;
+            //if (Main.metrics.densityDpi > Main.metrics.DENSITY_HIGH){
+            //	o2.inSampleSize=scale;
+            //}else{
+            	o2.inSampleSize=2;
+            //}
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {}
         return null;
@@ -215,8 +251,9 @@ public class ImageLoader {
         public BitmapDisplayer(Bitmap b, ImageView i){bitmap=b;imageView=i;}
         public void run()
         {
-            if(bitmap!=null)
+            if(bitmap!=null){
                 imageView.setImageBitmap(bitmap);
+            }
             else
                 imageView.setImageBitmap(null);
         }

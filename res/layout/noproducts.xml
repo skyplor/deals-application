@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+   
+    <ImageView
+        android:id="@+id/badlink" 
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/dislikepic" />
+    
+    <TextView
+        android:id="@+id/lblbadlink" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No product deals found."
+        android:textColor="#302217"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/badlink"/>
+    
+</RelativeLayout>

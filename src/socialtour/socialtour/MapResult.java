@@ -474,7 +474,8 @@ public class MapResult extends MapActivity
 			myintent.putExtra("lat", shoplist.get(index).getLat());
 			myintent.putExtra("long", shoplist.get(index).getLng());
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Shop Detail", myintent);
+			parentActivity.startChildActivity("Shop Detail "+ TabGroup1Activity.intentCount, myintent);
+			TabGroup1Activity.intentCount++;
 			return (super.onBalloonTap(index, item));
 		}
 	}

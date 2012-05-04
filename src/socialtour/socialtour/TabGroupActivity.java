@@ -100,6 +100,8 @@ public class TabGroupActivity extends ActivityGroup {
       if ( length > 1) {
           Activity current = getLocalActivityManager().getActivity(mIdList.get(length-1));
           current.finish();
-      }  
+      }else{
+    	  finish();
+      }
   }
 }

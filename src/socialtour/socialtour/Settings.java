@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class Settings extends Activity
 {
@@ -69,6 +70,12 @@ public class Settings extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.settings);
+		
+		Container.btn1.setVisibility(ImageView.INVISIBLE);
+        Container.btn2.setVisibility(ImageView.INVISIBLE);
+        Container.btn3.setVisibility(ImageView.INVISIBLE);
+		Container.map.setVisibility(ImageView.INVISIBLE);
+		
 		// TODO Auto-generated method stub
 		logoutBtn = (Button) findViewById(R.id.lgoutBtn);
 		fbBtn = (Button) findViewById(R.id.fbBtnAdd);

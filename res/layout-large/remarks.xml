@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/productdetailLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/lbllistcomments"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/btnsubmitcomments"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="15dp"
+        android:textSize="15dp"
+        android:textColor="#000000"
+        android:gravity="top|left"
+        android:textStyle="normal"
+        android:layout_centerHorizontal="true">
+    </TextView>
+
+    <EditText
+        android:id="@+id/txtEditremarks"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edittext_rounded_corners"
+        android:inputType="textMultiLine"
+        android:gravity="top|left" >
+    </EditText>
+
+    <Button
+        android:id="@+id/btnsubmitcomments"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtEditremarks"
+        android:layout_marginTop="4dp"
+        android:layout_alignRight="@+id/txtEditremarks"
+        android:background="@drawable/button_rounded_corners"
+        android:text="Comment"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+    
+     <TextView
+        android:id="@+id/lblnocomments"
+        android:layout_width="250dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/btnsubmitcomments"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="25dp"
+        android:text="No comments yet! Be the first to comment"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:textStyle="normal"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible">
+    </TextView>
+
+</RelativeLayout>

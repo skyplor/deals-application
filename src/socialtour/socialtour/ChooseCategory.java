@@ -140,7 +140,8 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		        i.putExtra("subcategory", subcategory);
 				i.putExtra("pic", imageUri);
 				
-				parentActivity.startChildActivity("Step 4", i);
+				parentActivity.startChildActivity("Step 4 " + TabGroup1Activity.intentCount, i);
+				TabGroup1Activity.intentCount++;
 		    }
 		});
 		builder.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener()

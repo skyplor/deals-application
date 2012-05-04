@@ -717,7 +717,8 @@ public class Addplace extends MapActivity implements OnClickListener
 			Uri pic = (Uri) bundle.get("pic");
 			intent.putExtra("pic", pic);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Add Product", intent);			
+			parentActivity.startChildActivity("Add Product " + TabGroup1Activity.intentCount, intent);
+			TabGroup1Activity.intentCount++;
 
 		}
 		catch (Exception e)

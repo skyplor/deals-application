@@ -38,6 +38,7 @@ import socialtour.socialtour.models.TestingClass;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -76,6 +77,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	String shopAddress = "";
 	String shopLat = "";
 	String shopLng = "";
+	ProgressDialog progress;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -141,6 +143,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		boolean proceed = true;
 		if (v == btnSubmitdeal)
 		{
+			runDialog(5);
+			try{
 			TestingClass.setStartTime();
 			String oldname = txtNameInput2.getText().toString().trim() + ".jpg";
 			String name = "";
@@ -157,7 +161,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				ori = (100.0 / (100.0 - percentage)) * dis;
 				if (percentage != Math.round(percentage) || (percentage < 0 || percentage > 100))
 				{
-					promptError("Please enter an integer value between 1 to 100 for percentage discount");
+					promptError("Please enter an integer value between 0 to 100 for percentage discount");
 					proceed = false;
 				}
 			}
@@ -285,6 +289,10 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String formattedDate = sdf.format(now);
 				nameValuePairs.add(new BasicNameValuePair("created", formattedDate));
+				if(userid.startsWith("["))
+				{
+					userid = userid.substring(userid.indexOf("[")+2, userid.indexOf("]")-1);
+				}
 				nameValuePairs.add(new BasicNameValuePair("created_by", userid));
 				nameValuePairs.add(new BasicNameValuePair("publish_up", formattedDate));
 				nameValuePairs.add(new BasicNameValuePair("trash", "0"));
@@ -332,13 +340,32 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 					Log.e("log_tag", "Error in http connection" + e.toString());
 				}
 			}
+		}catch (NumberFormatException e){
+			promptError("Please enter an integer value between 0 to 100 for percentage discount");
 		}
+	}
 		// else if (v == backtomain)
 		// {
 		// confirmationquit();
 		// }
 	}
 
+	private void runDialog(final int seconds)
+	{
+	    	progress = ProgressDialog.show(getParent(), "", "Uploading your deal...");
+
+	    	new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+				                Thread.sleep(seconds * 1000);
+						progress.dismiss();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	    		}
+	    	}).start();
+	}
+	
 	private String paramJsonEncode(int type)
 	{
 		// TODO Auto-generated method stub
@@ -626,10 +653,14 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			public void onClick(DialogInterface dialog, int which)
 			{
 				dialog.dismiss();
-				Intent i = new Intent(getParent(), Productdetail.class);
-				i.putExtra("lastproductid", lastid2);
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Product Detail", i);
+//				Intent i = new Intent(getParent(), Productdetail.class);
+//				i.putExtra("lastproductid", lastid2);
+//				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+//				parentActivity.startChildActivity("Product Detail", i);
+				Intent i = getBaseContext().getPackageManager()
+	 		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+	           i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	           startActivity(i);
 			}
 		});
 		dialog.show();

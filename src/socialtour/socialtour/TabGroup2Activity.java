@@ -42,7 +42,7 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
 	private String latString, longString;
 	private String latDir, longDir;
 	private String type;
-	Uri outputFileUri;
+	public static Uri outputFileUri;
 	Button btnShare;
 	//ImageView home;
     @Override
@@ -115,14 +115,16 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
     	switch (requestCode) {
     	case CAMERA_PIC_REQUEST:
     		type="camera";
-    		activateCrop("camera");
+    		doCrop();
+    		//activateCrop("camera");
 
     		break;
     		
     	case GALLERY_REQUEST:
     		outputFileUri = data.getData();
     		type = "gallery";
-    		activateCrop("gallery");
+    		doCrop();
+    		//activateCrop("gallery");
 
             break;
             
@@ -150,7 +152,8 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
 				Intent i2 = new Intent(getParent(), Browseplace.class);
         		i2.putExtra("pic", newUri2);
         		TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-   		     	parentActivity.startChildActivity("Add Product", i2);
+   		     	parentActivity.startChildActivity("Browse Place "+ TabGroup1Activity.intentCount, i2);
+   		     TabGroup1Activity.intentCount++;
 	        }
     		break;
     	}
@@ -308,7 +311,7 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
         
     	Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
     	intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-    	try{
+    	try{	
     	intent.putExtra("return-data", true);
     	getParent().startActivityForResult( intent, CAMERA_PIC_REQUEST);
     	}catch (ActivityNotFoundException e) {
@@ -357,7 +360,8 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
 					Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 	        		i.putExtra("pic", newUri);
 			     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	parentActivity.startChildActivity("Add Product", i);
+	   		     	parentActivity.startChildActivity("Browse Place " + TabGroup1Activity.intentCount, i);
+	   		     TabGroup1Activity.intentCount++;
 				}
 			}
 		});
@@ -450,8 +454,8 @@ public class TabGroup2Activity extends Activity implements OnClickListener{
             return;
         } else {
         	intent.setData(outputFileUri);
-            intent.putExtra("outputX", 320);
-            intent.putExtra("outputY", 320);
+            intent.putExtra("outputX", 350);
+            intent.putExtra("outputY", 350);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);

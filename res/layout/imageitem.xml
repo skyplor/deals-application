@@ -83,7 +83,7 @@
             android:textStyle="bold"
             android:text="(100m away)"
             android:layout_below="@+id/txtDescription"
-            android:layout_alignLeft="@+id/imageborder" >
+            android:layout_alignLeft="@+id/txtDescription" >
         </TextView>
         
         <TextView
@@ -112,12 +112,21 @@
             android:textSize="35dp"
             android:textStyle="bold" >
         </TextView>
-
+		
+        <ImageView
+            android:id="@+id/imgshoploca"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/imageborder"
+            android:layout_below="@+id/imgshoplogo"
+            android:src="@drawable/shoplocation" >
+        </ImageView>
+        
         <TextView
             android:id="@+id/txtDescription"
-            android:layout_width="180dp"
+            android:layout_width="150dp"
             android:layout_height="20dp"
-            android:layout_alignLeft="@+id/imgshoplogo"
+            android:layout_toRightOf="@+id/imgshoploca"
             android:layout_below="@+id/text"
             android:text="TextView"
             android:textColor="#302217"
@@ -153,7 +162,7 @@
             android:layout_height="310dp"
             android:layout_below="@+id/txtDate"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:padding="2dp"
             android:scaleType="fitXY"
             android:background="@drawable/border3" />
@@ -163,7 +172,7 @@
             android:layout_width="292dp"
             android:layout_height="292dp"
             android:layout_below="@+id/txtDate"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
             android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
             android:background="@drawable/border"/>
@@ -173,10 +182,10 @@
             android:layout_width="120dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="-20dp"
+            android:layout_marginRight="0dp"
             android:layout_marginBottom="0dp"
             android:layout_alignBottom="@+id/imageborder"
-            android:src="@drawable/pricetag" >
+            android:src="@drawable/pricetag2" >
         </ImageView>
         
                 <TextView
@@ -185,11 +194,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/imageborder"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="18dp"
             android:text="30%"
             android:textColor="#FFFFFF"
-            android:textSize="30dp"
+            android:textSize="27dp"
+            android:textStyle="bold" >
+        </TextView>
+        
+                <TextView
+            android:id="@+id/lbloff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/imageborder"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="5dp"
+            android:text="Off"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
             android:textStyle="bold" >
         </TextView>
     </RelativeLayout>

@@ -35,7 +35,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 	private String latString, longString;
 	private String latDir, longDir;
 	private String type;
-	Uri outputFileUri;
+	public static int intentCount = 0;
+	//Uri outputFileUri;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
         search.setOnClickListener(this);
         settings.setOnClickListener(this);
         Intent i = new Intent("socialtour.socialtour.MAIN");
-        startChildActivity("Main", i);
+        startChildActivity("Main " + intentCount, i);
+        TabGroup1Activity.intentCount++;
     }
     @Override
 	public void onClick(View v) {
@@ -64,7 +66,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     		settings.setEnabled(true);
     		Intent i = new Intent(this, TabGroup2Activity.class);
     		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    		startChildActivity("Share", i);
+    		startChildActivity("Share " + intentCount, i);
+    		TabGroup1Activity.intentCount++;
     	}else if (v==search){
     		browse.setEnabled(true);
     		share.setEnabled(true);
@@ -72,7 +75,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     		settings.setEnabled(true);
     		Intent i = new Intent("socialtour.socialtour.SEARCH");
     		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    		startChildActivity("Search", i);
+    		startChildActivity("Search " + intentCount, i);
+    		TabGroup1Activity.intentCount++;
     	}else if (v==settings){
     		browse.setEnabled(true);
     		share.setEnabled(true);
@@ -80,7 +84,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     		settings.setEnabled(false);
     		Intent i = new Intent(this, Settings.class);
     		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    		startChildActivity("Settings", i);
+    		startChildActivity("Settings " + intentCount, i);
+    		TabGroup1Activity.intentCount++;
     	}
     }
     
@@ -91,14 +96,16 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     	switch (requestCode) {
     	case CAMERA_PIC_REQUEST:
     		type="camera";
-    		activateCrop("camera");
+    		doCrop();
+    		//activateCrop("camera");
 
     		break;
     		
     	case GALLERY_REQUEST:
-    		outputFileUri = data.getData();
+    		TabGroup2Activity.outputFileUri = data.getData();
     		type = "gallery";
-    		activateCrop("gallery");
+    		doCrop();
+    		//activateCrop("gallery");
 
             break;
             
@@ -126,7 +133,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 				Intent i2 = new Intent("socialtour.socialtour.BROWSEPLACE");
         		i2.putExtra("pic", newUri2);
         		//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-        		startChildActivity("Browse Place", i2);
+        		startChildActivity("Browse Place " + intentCount, i2);
+        		TabGroup1Activity.intentCount++;
 	        }
     		break;
     	}
@@ -153,9 +161,9 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 				{
 					String realpath = "";
 					if (finalsource.equals("gallery")){
-						realpath = getRealPathFromURI(outputFileUri);
+						realpath = getRealPathFromURI(TabGroup2Activity.outputFileUri);
 					}else{
-						realpath = outputFileUri.getPath();
+						realpath = TabGroup2Activity.outputFileUri.getPath();
 						try{
 							calculateDMS(Main.point.getLatitudeE6() / 1E6, Main.point.getLongitudeE6() / 1E6);
 							ExifInterface exif = new ExifInterface(realpath);
@@ -173,7 +181,8 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 					Intent i = new Intent("socialtour.socialtour.BROWSEPLACE");
 	        		i.putExtra("pic", newUri);
 			     	//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	TabGroup1Activity.this.startChildActivity("Add Product", i);
+	   		     	TabGroup1Activity.this.startChildActivity("Browse Place " + intentCount, i);
+	   		     	TabGroup1Activity.intentCount++;
 				}
 			}
 		});
@@ -249,7 +258,7 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 		  e.printStackTrace();
 		}
 		
-		File f = new File(outputFileUri.getPath());            
+		File f = new File(TabGroup2Activity.outputFileUri.getPath());            
         
         if (f.exists()) f.delete();
         
@@ -265,9 +274,9 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
         	Toast.makeText(this, "Can not find image crop app", Toast.LENGTH_SHORT).show();
             return;
         } else {
-        	intent.setData(outputFileUri);
-            intent.putExtra("outputX", 320);
-            intent.putExtra("outputY", 320);
+        	intent.setData(TabGroup2Activity.outputFileUri);
+            intent.putExtra("outputX", 350);
+            intent.putExtra("outputY", 350);
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);

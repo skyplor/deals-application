@@ -18,6 +18,7 @@ public class Constants {
 	public static final String CONNECTIONSTRING = "http://msm.cais.ntu.edu.sg/Dealsout/FYP/";
 //	public static final String DOWNLOAD_PATH = "http://192.168.0.196/";
 	public static final String DOWNLOAD_PATH = "http://msm.cais.ntu.edu.sg/dealsinterest/";
+	public static final String SHARING_PATH = "http://www.dealsinterest.com/dealsinterest/";
 	private static final int THUMBNAIL_SIZE = 4;
 	
 	public Bitmap getPreview(URI uri) {

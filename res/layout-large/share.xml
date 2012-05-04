@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dip" >
+        <ImageView
+                android:id="@+id/imgsharetitle"
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:src="@drawable/sharetitle"
+                android:layout_centerHorizontal="true"
+                >
+            </ImageView>
+        
+        <ImageView
+                android:id="@+id/imgshareinstructions"
+                android:layout_width="300dp"
+                android:layout_height="230dp"
+                android:src="@drawable/shareinstructions"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/imgsharetitle">
+            </ImageView>
+            
+        <Button
+        android:id="@+id/sharebutton"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:text="Click to start sharing"
+        android:layout_below="@+id/imgshareinstructions"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@drawable/button_rounded_corners">
+    </Button>
+    </RelativeLayout>
+</RelativeLayout>

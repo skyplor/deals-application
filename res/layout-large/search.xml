@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_rounded_corners"
+                android:singleLine="true"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="100dp"
+                android:layout_height="50dip"
+                android:text="Search"
+                android:layout_below="@+id/txtSearch"
+                android:layout_toRightOf="@+id/radSearch"
+                android:background="@drawable/button_rounded_corners"
+                android:layout_marginLeft="5dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+            
+            <Button
+                android:id="@+id/btnMap"
+                android:layout_width="100dp"
+                android:layout_height="50dip"
+                android:enabled="false"
+                android:text="Map"
+                android:layout_below="@+id/txtSearch"
+                android:layout_toRightOf="@+id/btnSearch"
+                android:background="@drawable/button_rounded_corners"
+                android:layout_marginLeft="5dip"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/txtSearch">
+
+                <RadioButton
+                    android:id="@+id/radio0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Product"
+                    android:textColor="#302217"
+                    android:textSize="20dp"
+                    android:textStyle="bold">
+                </RadioButton>
+
+                <RadioButton
+                    android:id="@+id/radio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shop"
+                    android:textColor="#302217"
+                    android:textSize="20dp"
+                    android:textStyle="bold">
+                </RadioButton>
+            </RadioGroup>
+            
+            <ImageView
+            android:id="@+id/imgsearchresults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radSearch"
+            android:src="@drawable/searchresults"
+            android:visibility="invisible">
+        </ImageView>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </ListView>
+
+</LinearLayout>

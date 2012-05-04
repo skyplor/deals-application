@@ -3,6 +3,11 @@
     package="socialtour.socialtour"
     android:versionCode="1"
     android:versionName="1.0" >
+<supports-screens 
+    android:largeScreens="true"
+    android:normalScreens="true"
+    android:smallScreens="true"
+    android:anyDensity="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -12,7 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".GlobalVariable"
+       	android:name=".GlobalVariable"
         android:debuggable="true"
         android:icon="@drawable/icon3"
         android:label="@string/app_name" 
@@ -30,7 +35,7 @@
 
         <activity
             android:name=".SocialTourActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.SOCIALTOURACTIVITY" />
 
@@ -39,7 +44,7 @@
         </activity>
         <activity
             android:name=".Home"
-            android:label="Home" >
+            android:label="Home" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.HOME" />
 
@@ -48,7 +53,7 @@
         </activity>
         <activity
             android:name=".Attraction"
-            android:label="Attraction" >
+            android:label="Attraction" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.ATTRACTION" />
 
@@ -57,7 +62,7 @@
         </activity>
         <activity
             android:name=".Checkin"
-            android:label="Check-in" >
+            android:label="Check-in" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.CHECKIN" />
 
@@ -66,7 +71,7 @@
         </activity>
         <activity
             android:name=".Food"
-            android:label="Food" >
+            android:label="Food" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.FOOD" />
 
@@ -75,7 +80,7 @@
         </activity>
         <activity
             android:name=".Profile"
-            android:label="Profile" >
+            android:label="Profile" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.PROFILE" />
 
@@ -85,7 +90,7 @@
         <activity
             android:name=".Browseplace"
             android:label="Browseplace"
-            android:configChanges="orientation" >
+            android:configChanges="orientation" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.BROWSEPLACE" />
 
@@ -95,7 +100,7 @@
         <activity
             android:name=".Startcamera"
             android:label="Startcamera"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.STARTCAMERA" />
 
@@ -104,7 +109,7 @@
         </activity>
         <activity
             android:name=".Productdetail"
-            android:label="Productdetail" >
+            android:label="Productdetail" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.PRODUCTDETAIL" />
 
@@ -113,7 +118,7 @@
         </activity>
         <activity
             android:name=".Addplace"
-            android:label="Addplace" >
+            android:label="Addplace" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.ADDPLACE" />
 
@@ -131,7 +136,7 @@
         </activity>
         <activity
             android:name=".Main"
-            android:label="Main" >
+            android:label="Main" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.MAIN" />
 
@@ -140,7 +145,7 @@
         </activity>
         <activity
             android:name=".Shopdetail"
-            android:label="Shopdetail" >
+            android:label="Shopdetail" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.SHOPDETAIL" />
 
@@ -150,7 +155,7 @@
         <activity
             android:name=".Registration"
             android:label="Registration"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.REGISTRATION" />
 
@@ -159,7 +164,7 @@
         </activity>
         <activity
             android:name=".MapResult"
-            android:label="MapResult" >
+            android:label="MapResult" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.MAPRESULT" />
 
@@ -169,7 +174,7 @@
             
         <activity
             android:name=".Search"
-            android:label="Search" >
+            android:label="Search" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.SEARCH" />
 
@@ -179,7 +184,7 @@
         <activity
             android:name=".LoginPage"
             android:label="LoginPage"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.LOGINPAGE" />
 
@@ -188,7 +193,7 @@
         </activity>
         <activity
             android:name=".ProductPage"
-            android:label="ProductPage" >
+            android:label="ProductPage" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.PRODUCTPAGE" />
 
@@ -197,7 +202,7 @@
         </activity>
         <activity
             android:name=".ChooseCategory"
-            android:label="ChooseCategory" >
+            android:label="ChooseCategory" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.CHOOSECATEGORY" />
 
@@ -206,7 +211,7 @@
         </activity>
         <activity
             android:name=".InputPrice"
-            android:label="InputPrice" >
+            android:label="InputPrice" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.INPUTPRICE" />
 
@@ -215,23 +220,23 @@
         </activity>
         <activity
             android:name=".Remarks"
-            android:label="Remarks" >
+            android:label="Remarks" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="socialtour.socialtour.REMARKS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="TabGroup1Activity" />
+        <activity android:name="TabGroup1Activity" android:screenOrientation="portrait"/>
         <activity android:name="TabGroup2Activity"
-            	  android:configChanges="orientation" />
-        <activity android:name="TabGroup3Activity" />
+            	  android:configChanges="orientation" android:screenOrientation="portrait"/>
+        <activity android:name="TabGroup3Activity" android:screenOrientation="portrait"/>
         <activity
             android:name=".Container"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="orientation"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

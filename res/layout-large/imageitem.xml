@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#eeeeee" >
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="150dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/imageborder"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="5dp"
+            android:text="TextView"
+            android:textColor="#302217"
+            android:textSize="20dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imgComments"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignRight="@+id/image2"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/comment" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/lblmaincomments"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_toLeftOf="@+id/imgComments"
+            android:gravity="center_vertical|right"
+            android:text="1"
+            android:textColor="#302217"
+            android:textSize="25dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imgLikes"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/lblmaincomments"
+            android:src="@drawable/likepic" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/lblmainlikes"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_toLeftOf="@+id/imgLikes"
+            android:gravity="center_vertical|right"
+            android:text="1"
+            android:textColor="#302217"
+            android:textSize="25dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtHownear"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/txtDescription"
+            android:layout_below="@+id/txtDescription"
+            android:gravity="left|center_vertical"
+            android:text="(100m away)"
+            android:textColor="#302217"
+            android:textSize="15dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/space"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_alignLeft="@+id/imageborder"
+            android:layout_below="@+id/txtHownear"
+            android:gravity="left|center_vertical"
+            android:text=""
+            android:textColor="#302217"
+            android:textSize="12dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/productprice"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txtDescription"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:gravity="right|center"
+            android:text="$10.00"
+            android:textColor="#283860"
+            android:textSize="40dp"
+            android:textStyle="bold" >
+        </TextView>
+		
+        <ImageView
+            android:id="@+id/imgshoploca"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignLeft="@+id/imageborder"
+            android:layout_below="@+id/imgshoplogo"
+            android:src="@drawable/shoplocation" >
+        </ImageView>
+        
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imgshoploca"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="3dp"
+            android:text="TextView"
+            android:textColor="#302217"
+            android:textSize="23dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgshoplogo"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignLeft="@+id/imageborder"
+            android:layout_below="@+id/imageborder"
+            android:src="@drawable/shopicon" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="420dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageborder"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/imgshoplogo"
+            android:text="TextViewasdasdsadsadsa"
+            android:textColor="#302217"
+            android:textSize="25dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imageborder"
+            android:layout_width="310dp"
+            android:layout_height="310dp"
+            android:layout_below="@+id/txtDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/border3"
+            android:padding="2dp"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="292dp"
+            android:layout_height="292dp"
+            android:layout_below="@+id/txtDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/border"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/typeBadge"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_alignBottom="@+id/imageborder"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-2dp"
+            android:layout_marginRight="86dp"
+            android:src="@drawable/pricetag2" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/percentTesting"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageborder"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="100dp"
+            android:gravity="center"
+            android:text="30%"
+            android:textColor="#FFFFFF"
+            android:textSize="33dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/lblOff"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageborder"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="103dp"
+            android:text="Off"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/percentword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/percentTesting"
+            android:text="Off"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:textStyle="bold" >
+        </TextView>
+    </RelativeLayout>
+
+</RelativeLayout>

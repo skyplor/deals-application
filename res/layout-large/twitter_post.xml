@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<TextView
+		android:layout_height="wrap_content"
+		android:id="@+id/titleDialog"
+		android:text="TextView"
+		android:layout_width="match_parent"
+		android:layout_alignLeft="@+id/statusText"
+		android:textColor="#00F">
+	</TextView>
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:background="#FFF">
+		<EditText
+			android:layout_width="250dp"
+			android:inputType="textMultiLine"
+			android:layout_height="100dp"
+			android:id="@+id/statusText"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="0dp">
+		</EditText>
+
+		<Button
+			android:layout_width="70dp"
+			android:id="@+id/postBtn"
+			android:layout_height="40dp"
+			android:text="Post"
+			android:layout_below="@+id/statusText"
+			android:layout_toRightOf="@+id/cancelBtn"
+			android:layout_marginLeft="32dp"
+			android:layout_marginTop="10dp"
+			android:background="@drawable/rounded_button_green"
+			android:textColor="#FFF"
+			android:textStyle="bold">
+		</Button>
+
+		<Button
+			android:layout_height="40dp"
+			android:layout_width="70dp"
+			android:id="@+id/cancelBtn"
+			android:text="Cancel"
+			android:layout_alignBaseline="@+id/postBtn"
+			android:layout_alignBottom="@+id/postBtn"
+			android:layout_alignLeft="@+id/statusText"
+			android:layout_marginLeft="40dp"
+			android:background="@drawable/rounded_button_red"
+			android:textColor="#FFF"
+			android:textStyle="bold">
+		</Button>
+	</RelativeLayout>
+</LinearLayout>

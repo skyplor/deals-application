@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="35dip"
+    android:background="#FFFFFF"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/headerBack1"
+        android:layout_width="50dip"
+        android:layout_height="30dip"
+        android:layout_gravity="center"
+        android:text="Back"
+        android:textSize="8dip"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DealsOut"
+            android:textColor="#000000"
+            android:textSize="10dip"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/headerLatest1"
+            android:layout_width="45dip"
+            android:layout_height="30dip"
+            android:layout_gravity="center"
+            android:text="Latest"
+            android:textSize="8dip" />
+
+        <Button
+            android:id="@+id/headerHot1"
+            android:layout_width="45dip"
+            android:layout_height="30dip"
+            android:layout_gravity="center"
+            android:text="Hot"
+            android:textSize="8dip" />
+
+        <Button
+            android:id="@+id/headerNearby1"
+            android:layout_width="50dip"
+            android:layout_height="30dip"
+            android:layout_gravity="center"
+            android:text="Nearby"
+            android:textSize="8dip" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/headerSubmit1"
+        android:layout_width="50dip"
+        android:layout_height="30dip"
+        android:layout_gravity="center"
+        android:text="Submit"
+        android:textSize="8dip" />
+
+</LinearLayout>

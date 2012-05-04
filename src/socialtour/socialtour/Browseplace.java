@@ -84,7 +84,7 @@ public class Browseplace extends Activity implements OnClickListener{
         Container.btn3.setVisibility(ImageView.INVISIBLE);
 		Container.map.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setImageResource(R.drawable.addplace);
-        Container.btn2.getLayoutParams().width = 65;
+        Container.btn2.getLayoutParams().width = 85;
         //Container.btn3.setImageResource(R.drawable.quitsharing);
 		//backtomain = Container.home;
 		addplace = Container.btn2;
@@ -175,7 +175,8 @@ public class Browseplace extends Activity implements OnClickListener{
 		        Uri pic = (Uri) bundle.get("pic");
 		        intent.putExtra("pic", pic);
    		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-   		     	parentActivity.startChildActivity("Add Product", intent);
+   		     	parentActivity.startChildActivity("Choose Category " + TabGroup1Activity.intentCount, intent);
+   		     	TabGroup1Activity.intentCount++;
 		    }
 		}); 
     }
@@ -202,7 +203,8 @@ public class Browseplace extends Activity implements OnClickListener{
 		     	Uri pic = (Uri) bundle.get("pic");
 		     	i.putExtra("pic", pic);
 		     	TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-		     	parentActivity.startChildActivity("Add Place", i);
+		     	parentActivity.startChildActivity("Add Place " + TabGroup1Activity.intentCount, i);
+		     	TabGroup1Activity.intentCount++;
 		}
 		//else if (v==backtomain){
 		//	confirmationquit();

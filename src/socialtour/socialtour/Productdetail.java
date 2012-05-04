@@ -141,7 +141,6 @@ public class Productdetail extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.productdetail);
-
 		btnLike = Container.btn1;
 		btnRemarks = Container.btn2;
 		btnShare = Container.btn3;
@@ -154,7 +153,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnRemarks.setVisibility(View.VISIBLE);
 		btnShare.setVisibility(View.VISIBLE);
 		map.setVisibility(View.INVISIBLE);
-		btnShare.getLayoutParams().width = 45;
+		//btnShare.getLayoutParams().width = 45;
 		
 		btnLike.setImageResource(R.drawable.likepicwhite);
 		btnRemarks.setImageResource(R.drawable.remarkpic);
@@ -246,7 +245,7 @@ public class Productdetail extends Activity implements OnClickListener
 		btnLike.setImageResource(R.drawable.likepicwhite);
 		btnRemarks.setImageResource(R.drawable.remarkpic);
 		btnShare.setImageResource(R.drawable.share2);
-		btnShare.getLayoutParams().width = 45;
+		//btnShare.getLayoutParams().width = 45;
 		SharedPreferences userDetails = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 		String userid = "", usertype = "";
 		if (!userDetails.getString("userID", "").equals(""))
@@ -447,7 +446,8 @@ public class Productdetail extends Activity implements OnClickListener
 				globalVar.setShop(shop);
 				Intent shopIntent = new Intent(getParent(), Shopdetail.class);
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Shop Detail", shopIntent);
+				parentActivity.startChildActivity("Shop Detail " + TabGroup1Activity.intentCount, shopIntent);
+				TabGroup1Activity.intentCount++;
 			}
 		});
 
@@ -469,7 +469,8 @@ public class Productdetail extends Activity implements OnClickListener
 				globalVar.setShop(shop);
 				Intent shopIntent = new Intent(getParent(), Shopdetail.class);
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Shop Detail", shopIntent);
+				parentActivity.startChildActivity("Shop Detail " + TabGroup1Activity.intentCount, shopIntent);
+				TabGroup1Activity.intentCount++;
 			}
 		});
 		return productname;
@@ -593,7 +594,11 @@ public class Productdetail extends Activity implements OnClickListener
 			byte[] bitmapData2 = new byte[length];
 			InputStream is = conn.getInputStream();
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 2;
+			//if (Main.metrics.densityDpi > Main.metrics.DENSITY_HIGH){
+			//	options.inSampleSize = 4;
+			//}else{
+				options.inSampleSize = 2;
+			//}
 			bmImg = BitmapFactory.decodeStream(is, null, options);
 
 			// bmImg = BitmapFactory.decodeStream(is);
@@ -660,7 +665,8 @@ public class Productdetail extends Activity implements OnClickListener
 			Intent intent = new Intent(getParent(), Remarks.class);
 			intent.putExtra("productid", productid);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Remarks", intent);
+			parentActivity.startChildActivity("Remarks " + TabGroup1Activity.intentCount, intent);
+			TabGroup1Activity.intentCount++;
 			// do something
 		}
 		else if (v == showshop)
@@ -677,7 +683,8 @@ public class Productdetail extends Activity implements OnClickListener
 			globalVar.setShop(shop);
 			Intent shopIntent = new Intent(getParent(), Shopdetail.class);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Shop Detail", shopIntent);
+			parentActivity.startChildActivity("Shop Detail " + TabGroup1Activity.intentCount, shopIntent);
+			TabGroup1Activity.intentCount++;
 		}
 		else if (v == btnShare)
 		{
@@ -710,7 +717,7 @@ public class Productdetail extends Activity implements OnClickListener
 			//String alias = productid+"-"+productname.trim().toLowerCase().replace(' ', '-');
 			//status = "Check out this promotion! " + productname + " (" + Integer.toString(percent) + "% off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"joomla25/index.php/site-map/articles/item/"+alias;
 			String alias = productname.trim().toLowerCase().replace(' ', '-');
-		 	status = "Check out this promotion! " + productname + " (" + percent + " off) @ " + shopname +"\n"+Constants.DOWNLOAD_PATH+"everything/all-categories/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
+		 	status = "Check out this promotion! " + productname + " (" + percent + " off) @ " + shopname +"\n"+Constants.SHARING_PATH+"everything/all-categories/"+category.trim().toLowerCase().replace(' ', '-')+"/"+subcategory.trim().toLowerCase().replace(' ', '-')+"/"+alias+".html";
 			fbshare.setOnClickListener(new OnClickListener()
 			{
 

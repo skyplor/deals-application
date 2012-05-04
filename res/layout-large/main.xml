@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#eeeeee">
+
+<RelativeLayout
+	android:id="@+id/LinearLayout1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="#eeeeee">
+
+	<ImageView
+		android:id="@+id/imageView1"
+		android:src="@drawable/dealshowtitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="40dp">
+	</ImageView>
+
+	<EditText
+		android:layout_width="300dp"
+		android:inputType="textEmailAddress"
+		android:id="@+id/emailTxtBox"
+		android:layout_below="@+id/imageView1"
+		android:layout_toRightOf="@+id/emailTxt"
+		android:layout_marginTop="35dp"
+		android:layout_marginLeft="10dp"
+		android:textSize="20dp"
+		android:layout_height="30dp"
+		android:hint="Please enter your email address"
+		android:background="@drawable/edittext_rounded_corners">
+	</EditText>
+
+	<TextView
+		android:text="@string/email"
+		android:id="@+id/emailTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/imageView1"
+		android:layout_marginLeft="40dp"
+		android:layout_marginTop="40dp"
+		android:textColor="#000000"
+		android:textStyle="bold"
+		android:textSize="20dp">
+	</TextView>
+
+	<EditText
+		android:layout_width="300dp"
+		android:inputType="textPassword"
+		android:id="@+id/pwTxtBox"
+		android:layout_alignLeft="@+id/emailTxtBox"
+		android:textSize="20dp"
+		android:textScaleX="0.7"
+		android:layout_height="30dp"
+		android:layout_marginTop="20dp"
+		android:layout_below="@+id/emailTxtBox"
+		android:background="@drawable/edittext_rounded_corners">
+	</EditText>
+
+	<TextView
+		android:text="@string/password"
+		android:id="@+id/passwordTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/emailTxtBox"
+		android:layout_marginLeft="10dp"
+		android:layout_marginTop="25dp"
+		android:textColor="#000000"
+		android:textStyle="bold"
+		android:textSize="20dp">
+	</TextView>
+
+	<!-- <ImageButton android:src="@drawable/signin_twitter_button" -->
+	<!-- android:layout_width="157dp" android:layout_height="29dp" android:id="@+id/imageButton2" -->
+	<!-- android:layout_below="@+id/passwordTxt" -->
+	<!-- android:layout_centerHorizontal="true" android:layout_marginTop="74dp"> -->
+	<!-- </ImageButton> -->
+
+	<Button
+		android:layout_width="200dp"
+		android:text="Login"
+		android:id="@+id/loginBtn"
+		android:layout_height="38dp"
+		android:layout_below="@+id/pwTxtBox"
+		android:layout_marginTop="30dp"
+		android:layout_centerHorizontal="true"
+		android:textColor="#FFFFFF"
+		android:textSize="20dp"
+		android:textStyle="bold"
+		android:background="@drawable/button_rounded_corners">
+	</Button>
+	
+	<socialtour.socialtour.FacebookBtn
+		android:layout_width="wrap_content"
+		android:id="@+id/fbLoginBtn"
+		android:layout_height="wrap_content"
+		android:src="@drawable/fb_login_button"
+		android:layout_below="@+id/loginBtn"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="15dp"
+		android:background="@null">
+	</socialtour.socialtour.FacebookBtn>
+
+	<ImageButton
+		android:layout_height="wrap_content"
+		android:background="@drawable/twitter_button"
+		android:layout_width="wrap_content"
+		android:id="@+id/twitBtn"
+		android:layout_below="@+id/fbLoginBtn"
+		android:layout_alignLeft="@+id/registerBtn"
+		android:layout_marginTop="10dp">
+	</ImageButton>
+
+	<ImageButton
+		android:layout_height="wrap_content"
+		android:background="@drawable/register_button"
+		android:layout_width="wrap_content"
+		android:id="@+id/registerBtn"
+		android:layout_below="@+id/twitBtn"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dp">
+	</ImageButton>
+
+</RelativeLayout>
+
+</RelativeLayout>

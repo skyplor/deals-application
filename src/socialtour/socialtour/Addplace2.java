@@ -552,7 +552,8 @@ public class Addplace2 extends Activity implements OnClickListener, LocationList
 		     i.putExtra("EMPLOYEE_ID", lastid);
 		     i.putExtra("EMPLOYEE_NAME", shopname);
 	     	 TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	     	 parentActivity.startChildActivity("Add Product", i);
+	     	 parentActivity.startChildActivity("Add Product " + TabGroup1Activity.intentCount++, i);
+	     	TabGroup1Activity.intentCount++;
     	 
     	
     	}catch(Exception e){

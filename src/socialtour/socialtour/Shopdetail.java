@@ -143,7 +143,8 @@ public class Shopdetail extends MapActivity
 				Intent intent = new Intent(getParent(), Productdetail.class);
 				intent.putExtra("lastproductid", arrPro[pos].getId());
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("Product Detail", intent);
+				parentActivity.startChildActivity("Product Detail " + TabGroup1Activity.intentCount, intent);
+				TabGroup1Activity.intentCount++;
 			}
 		});
 	}

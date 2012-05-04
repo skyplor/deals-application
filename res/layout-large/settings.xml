@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/fbBtnAdd"
+        android:layout_width="230dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/button_rounded_corners"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="Connect to Facebook" />
+
+    <TextView
+        android:id="@+id/fBTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/fbBtnAdd"
+        android:layout_alignBottom="@+id/fbBtnAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="24dp"
+        android:text="Facebook"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/twitBtnAdd"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_alignRight="@+id/fbBtnAdd"
+        android:layout_below="@+id/fbBtnAdd"
+        android:layout_marginTop="44dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/button_rounded_corners"
+        android:text="Connect to Twitter" />
+
+    <Button
+        android:id="@+id/lgoutBtn"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_alignRight="@+id/twitBtnAdd"
+        android:layout_below="@+id/twitBtnAdd"
+        android:layout_marginTop="44dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/button_rounded_corners"
+        android:text="Logout" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/lgoutBtn"
+        android:layout_toLeftOf="@+id/fbBtnAdd"
+        android:layout_marginLeft="24dp"
+        android:text="To logout from all services:"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/twitTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/twitBtnAdd"
+        android:layout_alignBottom="@+id/twitBtnAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="24dp"
+        android:text="Twitter"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp"
+        android:layout_centerHorizontal="true"
+        android:text="Settings"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+</RelativeLayout>

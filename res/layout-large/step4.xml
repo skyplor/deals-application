@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <ImageView
+                android:id="@+id/imgstep3"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:src="@drawable/step3"
+                android:layout_alignParentLeft="true">
+            </ImageView>
+    
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="470dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dip" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="0dip">
+
+            <ImageView
+                android:id="@+id/category1"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/men"
+                android:layout_marginTop="10dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category2"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/women"
+                android:layout_marginTop="10dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category3"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/cosmetics"
+                android:layout_marginTop="10dp" >
+            </ImageView>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowWord1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/txtCategory1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Men" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCategory2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Women" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtCategory3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cosmetics"
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/category4"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/digital"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category5"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/household"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category6"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/kids"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowWord2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/txtCategory4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Digital" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtCategory5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Household" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtCategory6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kids" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/category7"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/groceries"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category8"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/entertainment"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/category9"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/others"
+                android:layout_marginTop="5dp" >
+            </ImageView>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowWord3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/txtCategory7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Groceries" 
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtCategory8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entertainment"
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtCategory9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Others"
+                android:layout_gravity="center"
+                android:textColor="#3E3535"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>

@@ -128,7 +128,8 @@ public class Search extends Activity implements OnClickListener
 					intent = new Intent(getParent(), Productdetail.class);
 					intent.putExtra("lastproductid", arrPro[pos].getId());
 					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("Product Detail", intent);
+					parentActivity.startChildActivity("Product Detail " + TabGroup1Activity.intentCount, intent);
+					TabGroup1Activity.intentCount++;
 				}
 				else
 				{
@@ -148,7 +149,8 @@ public class Search extends Activity implements OnClickListener
 					intent.putExtra("lat", arrShop[pos].getLat());
 					intent.putExtra("long", arrShop[pos].getLng());
 					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("Shop Detail", intent);
+					parentActivity.startChildActivity("Shop Detail " + TabGroup1Activity.intentCount, intent);
+					TabGroup1Activity.intentCount++;
 				}
 
 			}
@@ -221,7 +223,8 @@ public class Search extends Activity implements OnClickListener
 			Intent intent = new Intent(getParent(), MapResult.class);
 			intent.putExtra("search", true);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Map Result", intent);
+			parentActivity.startChildActivity("Map Result " + TabGroup1Activity.intentCount, intent);
+			TabGroup1Activity.intentCount++;
 			
 			//Save the results' details into a list of shops
 			//Put into bundles to be passed to the next intent

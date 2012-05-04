@@ -102,7 +102,8 @@ public class Remarks extends Activity implements OnClickListener{
 			Intent intent = new Intent(getParent(), Productdetail.class);
 			intent.putExtra("lastproductid", productid);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Product Detail", intent);
+			parentActivity.startChildActivity("Product Detail " + TabGroup1Activity.intentCount, intent);
+			TabGroup1Activity.intentCount++;
 			TestingClass.setEndTime();
 			Log.d("Comment a deal completed", Long.toString(TestingClass.calculateTime()));
 		}

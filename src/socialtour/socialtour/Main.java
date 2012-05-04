@@ -66,6 +66,7 @@ import android.os.Handler;
 import android.provider.Settings;
 //import android.os.Message;
 //import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +80,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 //import android.widget.RadioGroup;
 //import android.widget.TextView;
 import android.widget.Toast;
@@ -91,7 +94,7 @@ public class Main extends MapActivity implements OnClickListener
 	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
 	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
 	// FbConnect fbConnect;
-
+	public static DisplayMetrics metrics = new DisplayMetrics();
 	private static GlobalVariable globalVar;
 
 	// private UserParticulars userS;
@@ -135,7 +138,7 @@ public class Main extends MapActivity implements OnClickListener
 	ListView searchResult;
 	LazyAdapter adapter;
 	RelativeLayout mapHolder;
-
+	ProgressDialog progress;
 	Shop shopresult;
 	public static List<Shop> shoplist = new ArrayList<Shop>();
 
@@ -187,7 +190,6 @@ public class Main extends MapActivity implements OnClickListener
 		// logout = (Button) findViewById(R.id.logoutBtn);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
 		
-
 		mapView = null;
 
 		latest.setOnClickListener(this);
@@ -197,7 +199,7 @@ public class Main extends MapActivity implements OnClickListener
 		
 		currentState = 1;
 		latest.setEnabled(false);
-
+		
 		globalVar = ((GlobalVariable) getApplicationContext());
 		// fbBtn = globalVar.getfbBtn();
 		twitBtn = globalVar.getTwitBtn();
@@ -260,9 +262,16 @@ public class Main extends MapActivity implements OnClickListener
 		hot.setVisibility(View.VISIBLE);
 		nearby.setVisibility(View.VISIBLE);
 		map.setVisibility(View.VISIBLE);
-
+		map.setImageResource(R.drawable.pin);
 		browse.setEnabled(false);
-		hot.getLayoutParams().width = 45;
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		int type = metrics.densityDpi;
+		if (type > metrics.DENSITY_HIGH){
+			hot.getLayoutParams().width = 90;
+		}else{
+			hot.getLayoutParams().width = 65;
+		}
+		
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
@@ -353,7 +362,8 @@ public class Main extends MapActivity implements OnClickListener
 			Intent intent3 = new Intent(getParent(), socialtour.socialtour.MapResult.class);
 			intent3.putExtra("main", true);
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Map Result", intent3);
+			parentActivity.startChildActivity("Map Result" + TabGroup1Activity.intentCount, intent3);
+			TabGroup1Activity.intentCount++;
 			break;
 		}
 		return true;
@@ -398,18 +408,22 @@ public class Main extends MapActivity implements OnClickListener
 			//
 			// else
 			// {
+			//lblbadlink.setVisibility(View.GONE);
+			//badlink.setVisibility(View.GONE);
 			getProduct("Latest");
 			currentState = 1;
 			latest.setEnabled(false);
 			nearby.setEnabled(true);
 			hot.setEnabled(true);
-			map.setEnabled(true);
+			//map.setEnabled(true);
 			if (mapmode == true)
 			{
+				map.setImageResource(R.drawable.pin2);
 				switchToMapView();
 			}
 			else
 			{
+				map.setImageResource(R.drawable.pin);
 				switchToBrowseView();
 			}
 			// }
@@ -435,19 +449,24 @@ public class Main extends MapActivity implements OnClickListener
 				// }
 				// else
 				// {
+				runDialog(2);
+				//lblbadlink.setVisibility(View.GONE);
+				//badlink.setVisibility(View.GONE);
 				getProduct("Nearby");
 				currentState = 3;
 				nearby.setEnabled(false);
 				latest.setEnabled(true);
 				hot.setEnabled(true);
-				map.setEnabled(true);
+				//map.setEnabled(true);
 
 				if (mapmode == true)
 				{
+					map.setImageResource(R.drawable.pin2);
 					switchToMapView();
 				}
 				else
 				{
+					map.setImageResource(R.drawable.pin);
 					switchToBrowseView();
 				}
 				// }
@@ -479,20 +498,24 @@ public class Main extends MapActivity implements OnClickListener
 		}
 		else if (v == hot)
 		{
-
+			runDialog(2);
+			//lblbadlink.setVisibility(View.GONE);
+			//badlink.setVisibility(View.GONE);
 			getProduct("Hot");
 			currentState = 2;
 			hot.setEnabled(false);
 			nearby.setEnabled(true);
 			latest.setEnabled(true);
-			map.setEnabled(true);
+			//map.setEnabled(true);
 
 			if (mapmode == true)
 			{
+				map.setImageResource(R.drawable.pin2);
 				switchToMapView();
 			}
 			else
 			{
+				map.setImageResource(R.drawable.pin);
 				switchToBrowseView();
 			}
 		}
@@ -520,12 +543,13 @@ public class Main extends MapActivity implements OnClickListener
 
 			if (mapmode == true)
 			{
-
+				map.setImageResource(R.drawable.pin2);
 				switchToMapView();
 			}
 
 			else
 			{
+				map.setImageResource(R.drawable.pin);
 				switchToBrowseView();
 			}
 		}
@@ -804,21 +828,26 @@ public class Main extends MapActivity implements OnClickListener
 				@Override
 				public void onItemClick(AdapterView<?> av, View v, int pos, long id)
 				{
+					runDialog(2);
 					// Intent intent = new Intent(Main.this, Productdetail.class);
 					// intent.putExtra("lastproductid", employeesid[pos]);
 					// startActivity(intent);
 					TestingClass.setStartTime();
-										
+					//adapter.imageLoader.clearCache();
+					//searchResult.setAdapter(null);
+					//System.gc();
 					Intent intent = new Intent(getParent(), Productdetail.class);
 					intent.putExtra("lastproductid", arrPro[pos].getId());
 					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("Product Detail", intent);
+					parentActivity.startChildActivity("Product Detail "+ TabGroup1Activity.intentCount, intent);
+					TabGroup1Activity.intentCount++;
 				}
 			});
 		}
 		catch (JSONException e1)
 		{
-			Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_SHORT).show();
+			setContentView(R.layout.noproducts);
+			//Toast.makeText(getBaseContext(), "No products Found", Toast.LENGTH_SHORT).show();
 		}
 		catch (ParseException e1)
 		{
@@ -829,6 +858,22 @@ public class Main extends MapActivity implements OnClickListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void runDialog(final int seconds)
+	{
+	    	progress = ProgressDialog.show(getParent(), "", "Loading Product");
+
+	    	new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+				                Thread.sleep(seconds * 1000);
+						progress.dismiss();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	    		}
+	    	}).start();
 	}
 
 	private final TwDialogListener mTwLoginDialogListener = new TwDialogListener()
@@ -1020,7 +1065,8 @@ public class Main extends MapActivity implements OnClickListener
 			myintent.putExtra("lat", shoplist.get(index).getLat());
 			myintent.putExtra("long", shoplist.get(index).getLng());
 			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Shop Detail", myintent);
+			parentActivity.startChildActivity("Shop Detail " + TabGroup1Activity.intentCount, myintent);
+			TabGroup1Activity.intentCount++;
 			return (super.onBalloonTap(index, item));
 		}
 	}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dashboardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_centerHorizontal="true"
+        android:text="DashBoard"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/dashboardTitle"
+        android:layout_marginTop="29dp"
+        android:layout_marginLeft="24dp"
+        android:text="Hi user"
+        android:textColor="#000000"
+        android:textSize="30px" />
+
+    <TextView
+        android:id="@+id/following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtuser"
+        android:layout_marginTop="94dp"
+        android:layout_marginLeft="24dp"
+        android:text="Following:"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/following"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="24dp"
+        android:text="Followers:"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/recentPosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/followers"
+        android:layout_marginTop="29dp"
+        android:layout_marginLeft="24dp"
+        android:text="Recent Posts:"
+        android:textColor="#000000" />
+
+    <ImageView
+        android:id="@+id/imguser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        android:layout_alignTop="@+id/txtuser"
+        android:src="@drawable/children" />
+
+</RelativeLayout>
