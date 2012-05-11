@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Constants {
-	public static final String FACEBOOK_APPID = "222592464462347";
+	public static final String FACEBOOK_APPID = "Input your Facebook APP ID here";
 	public static final String[] FACEBOOK_PERMISSION = { "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
 //	public static final String UPLOAD_PATH = "C:/wamp/www/FYP/FYP/uploads/";
 	public static final String UPLOAD_PATH = "/home/mingenlee/Dealsout/FYP/FYP/uploads/";

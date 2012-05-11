@@ -2,21 +2,15 @@ package socialtour.socialtour;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-
-import javax.net.ssl.HttpsURLConnection;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -35,39 +29,28 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import socialtour.socialtour.MapResult.Markers;
 import socialtour.socialtour.models.Shop;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Addplace extends MapActivity implements OnClickListener
@@ -119,7 +102,7 @@ public class Addplace extends MapActivity implements OnClickListener
 					Arradapter.clear();
 					try
 					{
-						URL googlePlaces = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Singapore+"+URLEncoder.encode(s.toString(),"UTF-8")+"&location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyAxAq7cT-RTcHdT7ccVc1LQCK85J133hsg");
+						URL googlePlaces = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Singapore+"+URLEncoder.encode(s.toString(),"UTF-8")+"&location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyDPM56RkK22FTlNFV-0AMK8PLejw31j1KQ");
 						URLConnection tc = googlePlaces.openConnection();
 						Log.d("Gotta go:", URLEncoder.encode(s.toString()));
 						BufferedReader in = new BufferedReader(new InputStreamReader(tc.getInputStream()));
@@ -213,8 +196,6 @@ public class Addplace extends MapActivity implements OnClickListener
 					listOfOverlays.add(lockScrollOverlay);
 					mapController.animateTo(startingPoint);
 				}
-				// new
-				// SearchClicked(mapSearchBox.getText().toString());//.execute();
 			}
 		});
 		mapSearchBox.setOnClickListener(new View.OnClickListener()
@@ -245,163 +226,22 @@ public class Addplace extends MapActivity implements OnClickListener
 			}
 
 		});
-
-		// mapSearchBox.setOnEditorActionListener(new
-		// TextView.OnEditorActionListener()
-		// {
-		// public boolean onEditorAction(TextView v, int actionId, KeyEvent
-		// event)
-		// {
-		// if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId ==
-		// EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO ||
-		// event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() ==
-		// KeyEvent.KEYCODE_ENTER)
-		// {
-		//
-		// // hide virtual keyboard
-		// InputMethodManager imm = (InputMethodManager)
-		// getSystemService(Context.INPUT_METHOD_SERVICE);
-		// imm.hideSoftInputFromWindow(mapSearchBox.getWindowToken(), 0);
-		//
-		// new SearchClicked(mapSearchBox.getText().toString()).execute();
-		// mapSearchBox.setText("", TextView.BufferType.EDITABLE);
-		// return true;
-		// }
-		// return false;
-		// }
-		// });
 	}
-
-	private class SearchClicked
-	{// extends AsyncTask<Void, Void, Boolean> {
-		private String toSearch;
-		private Address address;
-
-		public SearchClicked(String toSearch)
-		{
-			this.toSearch = toSearch;
-			// doSearch();
-		}
-
-		// protected Boolean doSearch()
-		// {
-		// try
-		// {
-		// Geocoder geocoder = new Geocoder(Addplace.this, Locale.ENGLISH);
-		// List<Address> results = geocoder.getFromLocationName(toSearch, 20);
-		// Drawable drawableItem =
-		// getResources().getDrawable(R.drawable.pushpin);
-		// Markers itemmarker = new Markers(drawableItem, mapView);
-		//
-		// if (results.size() == 0)
-		// {
-		// return false;
-		// }
-		//
-		// for (int i = 0; i < results.size(); i++)
-		// {
-		// address = results.get(i);
-		//
-		// // Now do something with this GeoPoint:
-		// GeoPoint p = new GeoPoint((int) (address.getLatitude() * 1E6), (int)
-		// (address.getLongitude() * 1E6));
-		// OverlayItem item = new OverlayItem(p, "", "");
-		// // item.setMarker(getResources().getDrawable(R.drawable.pushpin));
-		// itemmarker.addOverlay(item);
-		// }
-		//
-		// }
-		// catch (Exception e)
-		// {
-		// Log.e("", "Something went wrong: ", e);
-		// Toast.makeText(Addplace.this,
-		// "Oops Google Maps Service is not available at this moment.",
-		// Toast.LENGTH_SHORT);
-		// return false;
-		// }
-		// return true;
-		// }
-
-		// @Override
-		// protected Boolean doInBackground(Void... voids)
-		// {
-		//
-		// try
-		// {
-		// Geocoder geocoder = new Geocoder(Addplace.this, Locale.ENGLISH);
-		// List<Address> results = geocoder.getFromLocationName(toSearch, 20);
-		// Drawable drawableItem =
-		// getResources().getDrawable(R.drawable.pushpin);
-		// Markers itemmarker = new Markers(drawableItem, mapView);
-		//
-		// if (results.size() == 0)
-		// {
-		// return false;
-		// }
-		//
-		// for (int i = 0; i < results.size(); i++)
-		// {
-		// address = results.get(i);
-		//
-		// // Now do something with this GeoPoint:
-		// GeoPoint p = new GeoPoint((int) (address.getLatitude() * 1E6), (int)
-		// (address.getLongitude() * 1E6));
-		// OverlayItem item = new OverlayItem(p, "", "");
-		// // item.setMarker(getResources().getDrawable(R.drawable.pushpin));
-		// itemmarker.addOverlay(item);
-		// }
-		//
-		// }
-		// catch (Exception e)
-		// {
-		// Log.e("", "Something went wrong: ", e);
-		// Toast.makeText(Addplace.this,
-		// "Oops Google Maps Service is not available at this moment.",
-		// Toast.LENGTH_SHORT);
-		// return false;
-		// }
-		// return true;
-		// }
-	}
-
+	
 	private Boolean doSearch(String shopSearch, String addrSearch)
 	{
-		// String addressSearch;
 		Drawable drawableItem = getResources().getDrawable(R.drawable.pushpin);
-		// Double lowerLeftLat = 1.253715;
-		// Double lowerLeftLng = 103.613434;
-		// Double upperRigLat = 1.482302;
-		// Double upperRigLng = 104.003448;
 		OverlayItem item = null;
-		// String addr;
 
 		try
 		{
 			listOfOverlays = mapView.getOverlays();
 			listOfOverlays.clear();
 			Markers itemmarker = new Markers(drawableItem, mapView);
-			// Geocoder geocoder = new Geocoder(Addplace.this, Locale.ENGLISH);
 
 			String formatSearch = shopSearch.replace(' ', '+') + "+" + addrSearch.replace(' ', '+');
 
 			String stringUrl = "https://maps.googleapis.com/maps/api/place/search/json?location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyAxAq7cT-RTcHdT7ccVc1LQCK85J133hsg&keyword='" + formatSearch + "'";
-
-			// InputStream is = new URL(stringUrl).openStream();
-			// try {
-			// BufferedReader rd = new BufferedReader(new InputStreamReader(is,
-			// Charset.forName("UTF-8")));
-			// StringBuilder sb = new StringBuilder();
-			// int cp;
-			// while ((cp = rd.read()) != -1) {
-			// sb.append((char) cp);
-			// }
-			//
-			// String jsonOutput = sb.toString();
-			//
-			// Log.d("jsonOutput", jsonOutput);
-			// } finally {
-			// is.close();
-			// }
 
 			URL url = new URL(stringUrl);
 
@@ -451,48 +291,20 @@ public class Addplace extends MapActivity implements OnClickListener
 					Shop shopResult = new Shop(address, name, lat, lng);
 					shoplist.add(shopResult);
 				}
-
-				// List<Address> results = geocoder.getFromLocationName(toSearch
-				// + " Singapore", 100, lowerLeftLat, lowerLeftLng,
-				// upperRigLat, upperRigLng);
-
-				// for (int l = 0; l < results.size(); l++) {
-				// Log.d("Results: ", results.get(l).toString());
-				// }
-				// addrList = new ArrayList<String>();
 				addrMap = new HashMap<GeoPoint, List<String>>();
-				// if (results.size() == 0) {
-				// return false;
-				// }
 
-				// else {
 				startingPoint = new GeoPoint((int) (Double.parseDouble(shoplist.get(0).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(0).getLng()) * 1E6));
 				for (int i = 0; i < shoplist.size(); i++)
 				{
-					// addressSearch = shoplist.get(i).getAddress();
-					// addr = "";
 					shopDetail = new ArrayList<String>();
-					// String geopoint = shoplist.get(i).getLat() + " " +
-					// shoplist.get(i).getLng();
-					// Now do something with this GeoPoint:
 					GeoPoint p = new GeoPoint((int) (Double.parseDouble(shoplist.get(i).getLat()) * 1E6), (int) (Double.parseDouble(shoplist.get(i).getLng()) * 1E6));
-					// if (addressSearch.getMaxAddressLineIndex() == -1) {
-					// } else {
-					// for (int j = 1; j <=
-					// addressSearch.getMaxAddressLineIndex() - 1; j++)
-					// {
-					// addr += addressSearch.getAddressLine(j) + " ";
-					// }
-					// addr +=
-					// addressSearch.getAddressLine(addressSearch.getMaxAddressLineIndex());
+					
 					shopDetail.add(0, shoplist.get(i).getName());
 					shopDetail.add(1, shoplist.get(i).getAddress());
-					// shopDetail[0] = addressSearch.getAddressLine(0);
-					// shopDetail[1] = addr;
+					
 					setAddress(p, shopDetail);
 					item = new OverlayItem(p, shoplist.get(i).getName(), shoplist.get(i).getAddress());
 					itemmarker.addOverlay(item);
-					// }
 				}
 				if (itemmarker != null)
 				{
@@ -505,48 +317,10 @@ public class Addplace extends MapActivity implements OnClickListener
 		catch (Exception e)
 		{
 			Log.e("", "Something went wrong: ", e);
-			// Toast.makeText(Addplace.this,
-			// "Oops Google Maps Service is not available at this moment.",
-			// Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		return true;
 	}
-
-	// public String ConvertPointToLocation(GeoPoint point)
-	// {
-	// String addressresult = "";
-	// Geocoder geoCoder = new Geocoder(Addplace.this, Locale.getDefault());
-	// try
-	// {
-	// List<Address> addresses = geoCoder.getFromLocation(point.getLatitudeE6()
-	// / 1E6, point.getLongitudeE6() / 1E6, 1);
-	//
-	// if (addresses.size() > 0)
-	// {
-	// Log.d("In if: ", "Hello");
-	// for (int index = 0; index < addresses.get(0).getMaxAddressLineIndex();
-	// index++)
-	// {
-	// addressresult += addresses.get(0).getAddressLine(index) + " ";
-	// }
-	// }
-	// // else
-	// // {
-	// // address = "Latitude: " + (point.getLatitudeE6() / 1E6) +
-	// // "\n Longtitude: " + (point.getLongitudeE6() / 1E6);
-	// // }
-	// }
-	// catch (IOException e)
-	// {
-	// e.printStackTrace();
-	// Log.d("address = 0: ", Double.toString(point.getLatitudeE6() / 1E6));
-	// address = "Latitude: " + (point.getLatitudeE6() / 1E6) + "\nLongtitude: "
-	// + (point.getLongitudeE6() / 1E6);
-	// }
-	//
-	// return addressresult;
-	// }
 
 	@Override
 	protected boolean isRouteDisplayed()
@@ -564,7 +338,6 @@ public class Addplace extends MapActivity implements OnClickListener
 		{
 			super(boundCenter(defaultMarker), mv, globalVar);
 
-			// this.addressP = addressListPassed;
 			// TODO Auto-generated constructor stub
 		}
 
@@ -583,8 +356,6 @@ public class Addplace extends MapActivity implements OnClickListener
 
 			for (GeoPoint key : addrMap.keySet())
 			{
-				// Log.d("key/value: ", key + "/" + addrMap.get(key).get(0) +
-				// " " + addrMap.get(key).get(1));
 				for (String strings : addrMap.get(key))
 				{
 					Log.d("List of addresses: ", strings + ", ");
@@ -603,7 +374,6 @@ public class Addplace extends MapActivity implements OnClickListener
 		public void addOverlay(OverlayItem item)
 		{
 			mOverlays.add(item);
-			// setLastFocusedIndex(-1);
 			populate();
 
 		}
@@ -611,15 +381,12 @@ public class Addplace extends MapActivity implements OnClickListener
 		public void clear()
 		{
 			mOverlays.clear();
-			// setLastFocusedIndex(-1);
 			populate();
 		}
 
 		@Override
 		public boolean onBalloonTap(int index, OverlayItem item)
 		{
-			// Intent myintent = new Intent(Addplace.this, ShopPage.class);
-			// startActivity(myintent);
 			Log.d("Global Variable", globalVar.getGeoPoint().toString());
 			address = getAddress(globalVar.getGeoPoint()).get(1);
 			Log.d("Address: ", address);
@@ -683,27 +450,14 @@ public class Addplace extends MapActivity implements OnClickListener
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
-			// HttpPost httppost = new
-			// HttpPost("http://172.22.177.204/FYP/insert.php");
 
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertshop.php");
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String response = httpclient.execute(httppost, responseHandler);
-			// HttpResponse response = httpclient.execute(httppost);
-
-			// HttpEntity entity = response.getEntity();
-			// is = entity.getContent();
 			int lastid = Integer.parseInt(response);
 			acknowledge();
-			/*
-			 * Intent i = new Intent("socialtour.socialtour.ATTRACTION"); Bundle
-			 * bundle=getIntent().getExtras(); Uri pic = (Uri)
-			 * bundle.get("pic"); i.putExtra("pic", pic);
-			 * i.putExtra("EMPLOYEE_ID", lastid); i.putExtra("EMPLOYEE_NAME",
-			 * shopname); startActivity(i);
-			 */
 
 			Intent intent = new Intent(getParent(), ChooseCategory.class);
 			intent.putExtra("SHOP_ID", lastid);

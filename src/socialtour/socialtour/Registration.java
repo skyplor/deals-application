@@ -22,19 +22,6 @@ public class Registration extends Activity
 	private static final int DIALOG_ERR_REG = 0;
 	private static final int EMAIL_ERR_REG = 1;
 	private static final int PW_ERR_REG = 2;
-	// private int mYear;
-	// private int mMonth;
-	// private int mDay;
-
-	// private static GlobalVariable applicationcontext;
-	// private UserParticulars userS;
-	// private String nameS;
-	// private String emailS;
-
-	// static final int DATE_DIALOG_ID = 0;
-	// private TextView bday;
-	// private Button btn;
-	// private EditText fname;
 
 	private Button regBtn;
 	private EditText name;
@@ -53,12 +40,6 @@ public class Registration extends Activity
 
 		setContentView(R.layout.register);
 
-		// SessionStore.restore(facebook, getApplicationContext());
-
-		// fbConnect.login();
-		// facebook = new Facebook(APP_ID);
-		// mAsyncRunner = new AsyncFacebookRunner(facebook);
-		// fbConnect.init(this, facebook, FACEBOOK_PERMISSION);
 
 		name = (EditText) findViewById(R.id.nameTxtBox);
 		email = (EditText) findViewById(R.id.emailTxtBox);
@@ -67,40 +48,6 @@ public class Registration extends Activity
 		regBtn = (Button) findViewById(R.id.regBtn);
 		Log.d("in registration, oncreate", "true");
 		reginit();
-		// Calendar cal = Calendar.getInstance();
-		// mYear = cal.get(Calendar.YEAR);
-		// mMonth = cal.get(Calendar.MONTH);
-		// mDay = cal.get(Calendar.DAY_OF_MONTH);
-		// DatePicker dp = (DatePicker) this.findViewById(R.id.bdatePick);
-		// dp.init(mYear, mMonth, mDay, null);
-		// Bundle data = getIntent().getExtras();
-		// if (data != null)
-		// {
-		// user = data.getParcelable("data");
-		// fname.setText(user.getfName());
-		// lname.setText(user.getlName());
-		// email.setText(user.getEmail());
-		// if (user.getGender().equals("male"))
-		// {
-		// male.setChecked(true);
-		// female.setChecked(false);
-		// }
-		// else if (user.getGender().equals("female"))
-		// {
-		// female.setChecked(true);
-		// male.setChecked(false);
-		// }
-		// bday.setText("Your Birthdate is: " + user.getBday()[0] + "/" +
-		// user.getBday()[1] + "/" + user.getBday()[2]);
-		// }
-		// btn.setOnClickListener(new OnClickListener()
-		// {
-		// public void onClick(View v)
-		// {
-		//
-		// showDialog(DATE_DIALOG_ID);
-		// }
-		// });
 	}
 
 	@Override
@@ -129,7 +76,6 @@ public class Registration extends Activity
 						{
 							GlobalVariable globalVar = ((GlobalVariable) getApplicationContext());
 							globalVar.setName(name.getText().toString());
-							// globalVar.setfbBtn(false);
 							globalVar.setHashPw(connect.getPassword());
 							globalVar.setEm(email.getText().toString());
 
@@ -177,7 +123,6 @@ public class Registration extends Activity
 	{
 		if (emailAddress == null || emailAddress == "")
 			return false;
-		// boolean result = true;
 		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 		Matcher matcher;
 		matcher = pattern.matcher(emailAddress);
@@ -192,35 +137,6 @@ public class Registration extends Activity
 		}
 		else return false;
 	}
-
-	// final OnDateSetListener odsl = new OnDateSetListener()
-	// {
-	// public void onDateSet(DatePicker view, int year, int month, int
-	// dayOfMonth)
-	// {
-	// bday.setText("Your Birthdate is: " + dayOfMonth + "/" + (month+1) + "/" +
-	// year);
-	// }
-	// };
-
-	// @Override
-	// protected Dialog onCreateDialog(int id)
-	// {
-	// switch (id)
-	// {
-	// case DATE_DIALOG_ID:
-	// if (bdayInt[0] == 0 || bdayInt[1] == 0 || bdayInt[2] == 0)
-	// {
-	// return new DatePickerDialog(this, odsl, mYear, mMonth, mDay);
-	// }
-	// else
-	// {
-	// return new DatePickerDialog(this, odsl, bdayInt[2], bdayInt[1] - 1,
-	// bdayInt[0]);
-	// }
-	// }
-	// return null;
-	// }
 
 	protected AlertDialog onCreateDialog(int id)
 	{

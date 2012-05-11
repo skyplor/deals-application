@@ -24,10 +24,6 @@
         android:theme="@style/MyTheme">
         <uses-library android:name="com.google.android.maps" />
 
-        <provider
-            android:name=".SuggestUrlProvider"
-            android:authorities="socialtour.socialtour.SuggestUrlProvider"
-            android:syncable="false" />
         <!-- Points to searchable activity so the whole app can invoke search. -->
         <meta-data
             android:name="android.app.default_searchable"

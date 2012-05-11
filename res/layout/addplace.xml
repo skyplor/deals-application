@@ -120,7 +120,7 @@
                         android:layout_width="320dip"
                         android:layout_height="280dip"
                         android:layout_marginTop="10dip"
-                        android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ"
+                        android:apiKey="INSERT GOOGLE MAPS API KEY HERE"
                         android:clickable="true"
                         android:enabled="true" >
                     </com.google.android.maps.MapView>

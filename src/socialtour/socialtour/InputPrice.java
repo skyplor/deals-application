@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -19,13 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -37,7 +34,6 @@ import socialtour.socialtour.models.TestingClass;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,19 +41,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 public class InputPrice extends Activity implements OnClickListener, RadioGroup.OnCheckedChangeListener
@@ -69,7 +60,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	private RadioGroup radGrp;
 	boolean isPercent = true;
 	Uri imageUri;
-	// ImageView backtomain;
 	String percentageStr = "";
 	String disStr = "";
 	String oriStr = "";
@@ -88,10 +78,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		Container.map.setVisibility(View.INVISIBLE);
-		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		// backtomain = Container.home;
-
-		// backtomain.setOnClickListener(this);
+		
 		txtInput = (TextView) findViewById(R.id.txtInput);
 		txtInput2 = (EditText) findViewById(R.id.txtPrice);
 		txtSecondInput = (EditText) findViewById(R.id.txtPrice2);
@@ -112,9 +99,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		Container.map.setVisibility(View.INVISIBLE);
-		// Container.btn3.setImageResource(R.drawable.quitsharing);
-		// backtomain = Container.home;
-		// backtomain.setOnClickListener(this);
 	}
 
 	@Override
@@ -201,48 +185,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				if (!userDetails.getString("userID", "").equals(""))
 				{
 					userid = userDetails.getString("userID", "");
-					// usertype = "user_norm";
-					// username = userDetails.getString("userName", "");
 				}
-				// else if (!userDetails.getString("userDB_FBID",
-				// "").equals(""))
-				// {
-				// userid = userDetails.getString("userDB_FBID", "");
-				// usertype = "user_fb";
-				// username = userDetails.getString("userFBname", "");
-				// }
-				// else if (!userDetails.getString("userDB_TWITID",
-				// "").equals(""))
-				// {
-				// userid = userDetails.getString("userDB_TWITID", "");
-				// usertype = "user_twit";
-				// username = userDetails.getString("userName", "");
-				// }
-
-				// nameValuePairs.add(new BasicNameValuePair("userid", userid));
-				// nameValuePairs.add(new BasicNameValuePair("usertype",
-				// usertype));
-				// nameValuePairs.add(new BasicNameValuePair("filename",
-				// txtNameInput2.getText().toString() + ".jpg"));
-				// nameValuePairs.add(new BasicNameValuePair("username",
-				// username));
-				// nameValuePairs.add(new BasicNameValuePair("sourcepath",
-				// Constants.UPLOAD_PATH));
-				// nameValuePairs.add(new BasicNameValuePair("url",
-				// Constants.CONNECTIONSTRING + "FYP/uploads/" + name));
-				// nameValuePairs.add(new BasicNameValuePair("type", "JPG"));
-				// int placeid = getIntent().getIntExtra("EMPLOYEE_ID", 0);
-				// nameValuePairs.add(new BasicNameValuePair("place_id",
-				// Integer.toString(placeid)));
-				// nameValuePairs.add(new BasicNameValuePair("dprice", disStr));
-				// nameValuePairs.add(new BasicNameValuePair("category",
-				// getIntent().getStringExtra("category")));
-				// nameValuePairs.add(new BasicNameValuePair("subcategory",
-				// getIntent().getStringExtra("subcategory")));
-				// nameValuePairs.add(new BasicNameValuePair("percentdiscount",
-				// percentageStr));
-				// nameValuePairs.add(new BasicNameValuePair("oprice", oriStr));
-
+				
 				nameValuePairs.add(new BasicNameValuePair("title", txtNameInput2.getText().toString()));
 				String alias = txtNameInput2.getText().toString().trim().toLowerCase().replace(" ", "-");
 				nameValuePairs.add(new BasicNameValuePair("alias", alias));
@@ -275,13 +219,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 					}
 				}
 
-				// nameValuePairs.add(new BasicNameValuePair("extra_fields",
-				// "[{\"id\":\"1\",\"value\":\"" + oriStr +
-				// "\"},{\"id\":\"2\",\"value\":\"" + shopName +
-				// "\"},{\"id\":\"3\",\"value\":\"" + shopAddress +
-				// "\"},{\"id\":\"4\",\"value\":\"" + percentageStr +
-				// "\"},{\"id\":\"5\",\"value\":\""
-				// + disStr + "\"}]"));
 				nameValuePairs.add(new BasicNameValuePair("shop_id", Integer.toString(getIntent().getExtras().getInt(("SHOP_ID")))));
 				nameValuePairs.add(new BasicNameValuePair("extra_fields", extraArray.toString()));
 				nameValuePairs.add(new BasicNameValuePair("extra_fields_search", oriStr + " " + shopName + " " + shopAddress + " " + percentageStr + " " + disStr));
@@ -300,8 +237,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				nameValuePairs.add(new BasicNameValuePair("featured", "0"));
 				nameValuePairs.add(new BasicNameValuePair("featured_ordering", "0"));
 				nameValuePairs.add(new BasicNameValuePair("hits", "0"));
-				// nameValuePairs.add(new
-				// BasicNameValuePair("params","{\"catItemTitle\":\"\",\"catItemTitleLinked\":\"\",\"catItemFeaturedNotice\":\"\",\"catItemAuthor\":\"\",\"catItemDateCreated\":\"\",\"catItemRating\":\"\",\"catItemImage\":\"\",\"catItemIntroText\":\"\",\"catItemExtraFields\":\"\",\"catItemHits\":\"\",\"catItemCategory\":\"\",\"catItemTags\":\"\",\"catItemAttachments\":\"\",\"catItemAttachmentsCounter\":\"\",\"catItemVideo\":\"\",\"catItemVideoWidth\":\"\",\"catItemVideoHeight\":\"\",\"catItemAudioWidth\":\"\",\"catItemAudioHeight\":\"\",\"catItemVideoAutoPlay\":\"\",\"catItemImageGallery\":\"\",\"catItemDateModified\":\"\",\"catItemReadMore\":\"\",\"catItemCommentsAnchor\":\"\",\"catItemK2Plugins\":\"\",\"itemDateCreated\":\"\",\"itemTitle\":\"\",\"itemFeaturedNotice\":\"\",\"itemAuthor\":\"\",\"itemFontResizer\":\"\",\"itemPrintButton\":\"\",\"itemEmailButton\":\"\",\"itemSocialButton\":\"\",\"itemVideoAnchor\":\"\",\"itemImageGalleryAnchor\":\"\",\"itemCommentsAnchor\":\"\",\"itemRating\":\"\",\"itemImage\":\"\",\"itemImgSize\":\"\",\"itemImageMainCaption\":\"\",\"itemImageMainCredits\":\"\",\"itemIntroText\":\"\",\"itemFullText\":\"\",\"itemExtraFields\":\"\",\"itemDateModified\":\"\",\"itemHits\":\"\",\"itemCategory\":\"\",\"itemTags\":\"\",\"itemAttachments\":\"\",\"itemAttachmentsCounter\":\"\",\"itemVideo\":\"\",\"itemVideoWidth\":\"\",\"itemVideoHeight\":\"\",\"itemAudioWidth\":\"\",\"itemAudioHeight\":\"\",\"itemVideoAutoPlay\":\"\",\"itemVideoCaption\":\"\",\"itemVideoCredits\":\"\",\"itemImageGallery\":\"\",\"itemNavigation\":\"\",\"itemComments\":\"\",\"itemTwitterButton\":\"\",\"itemFacebookButton\":\"\",\"itemGooglePlusOneButton\":\"\",\"itemAuthorBlock\":\"\",\"itemAuthorImage\":\"\",\"itemAuthorDescription\":\"\",\"itemAuthorURL\":\"\",\"itemAuthorEmail\":\"\",\"itemAuthorLatest\":\"\",\"itemAuthorLatestLimit\":\"\",\"itemRelated\":\"\",\"itemRelatedLimit\":\"\",\"itemRelatedTitle\":\"\",\"itemRelatedCategory\":\"\",\"itemRelatedImageSize\":\"\",\"itemRelatedIntrotext\":\"\",\"itemRelatedFulltext\":\"\",\"itemRelatedAuthor\":\"\",\"itemRelatedMedia\":\"\",\"itemRelatedImageGallery\":\"\",\"itemK2Plugins\":\"\"}"));
 				nameValuePairs.add(new BasicNameValuePair("params", paramJsonEncode(1)));
 				nameValuePairs.add(new BasicNameValuePair("metadata", "robots=\nauthor="));
 				nameValuePairs.add(new BasicNameValuePair("plugins", paramJsonEncode(2)));
@@ -310,29 +245,18 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				try
 				{
 					HttpClient httpclient = new DefaultHttpClient();
-					// HttpPost httppost = new
-					// HttpPost("http://172.22.177.204/FYP/insert.php");
 
 					HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insert.php");
 					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 					ResponseHandler<String> responseHandler = new BasicResponseHandler();
 					String response = httpclient.execute(httppost, responseHandler);
-					// HttpResponse response = httpclient.execute(httppost);
-
-					// HttpEntity entity = response.getEntity();
-					// is = entity.getContent();
 					int lastid = Integer.parseInt(response);
 					Log.d("in InputPrice, lastid: ", Integer.toString(lastid));
 					doFileUpload(name, lastid);
 					TestingClass.setEndTime();
 					Log.d("Sharing a deal completed", Long.toString(TestingClass.calculateTime()));
 					acknowledge(lastid);
-					/*
-					 * Intent i = new
-					 * Intent("socialtour.socialtour.PRODUCTDETAIL");
-					 * i.putExtra("lastproductid", lastid); startActivity(i);
-					 */
 
 				}
 				catch (Exception e)
@@ -344,10 +268,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			promptError("Please enter an integer value between 0 to 100 for percentage discount");
 		}
 	}
-		// else if (v == backtomain)
-		// {
-		// confirmationquit();
-		// }
 	}
 
 	private void runDialog(final int seconds)
@@ -503,9 +423,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		DataInputStream inStream = null;
-		// String existingFileName =
-		// Environment.getExternalStorageDirectory().getAbsolutePath() +
-		// "/mypic.png";
 		String lineEnd = "\r\n";
 		String twoHyphens = "--";
 		String boundary = "*****";
@@ -513,7 +430,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		byte[] buffer;
 		int maxBufferSize = 1 * 1024 * 1024;
 		String responseFromServer = "";
-		// String urlString = "http://172.22.177.204/FYP/upload.php";
 		String urlString = Constants.CONNECTIONSTRING + "upload.php";
 		try
 		{
@@ -549,18 +465,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			int lastind = pathinsd.lastIndexOf("/");
 			String directoryname = pathinsd.substring(0, lastind + 1);
 			File currentfile = new File(pathinsd);
-			// boolean passed = currentfile.renameTo(new File(directoryname +
-			// hashedimagename));
-			// if (passed)
-			// {
-			// currentfile = new File(directoryname + hashedimagename);
-			// Log.d("in InputPrice, hasedimagename: ", hashedimagename);
-			// }
-			// else
-			// {
-			// Log.d("in InputPrice, not passed, hasedimagename: ",
-			// hashedimagename);
-			// }
 			FileInputStream fileInputStream = new FileInputStream(currentfile);
 			// open a URL connection to the Servlet
 			URL url = new URL(urlString);
@@ -653,12 +557,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			public void onClick(DialogInterface dialog, int which)
 			{
 				dialog.dismiss();
-//				Intent i = new Intent(getParent(), Productdetail.class);
-//				i.putExtra("lastproductid", lastid2);
-//				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-//				parentActivity.startChildActivity("Product Detail", i);
-				Intent i = getBaseContext().getPackageManager()
-	 		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+				Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage( getBaseContext().getPackageName() );
 	           i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	           startActivity(i);
 			}
@@ -677,17 +576,9 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 			public void onClick(DialogInterface dialog, int which)
 			{
 				dialog.dismiss();
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				// LocalActivityManager manager =
-				// parentActivity.getLocalActivityManager();
-				// manager.destroyActivity("share", true);
-				// manager.startActivity("share", new Intent(getParent(),
-				// TabGroup2Activity.class));
 				Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(i);
-				// startActivity(i);
 
 			}
 		});
@@ -723,7 +614,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 		MessageDigest m = MessageDigest.getInstance("MD5");
 		m.reset();
 		byte[] data = pass.getBytes();
-		// m.update(data, 0, data.length);
 		m.update(data);
 		BigInteger i = new BigInteger(1, m.digest());
 		String result = String.format("%1$032X", i);

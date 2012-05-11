@@ -1,6 +1,6 @@
 package socialtour.socialtour;
 
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,7 +11,6 @@ import socialtour.socialtour.TwitterApp.TwDialogListener;
 
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
-import com.facebook.SessionStore;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -25,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -40,15 +38,16 @@ import android.widget.ImageView;
 public class Settings extends Activity
 {
 
+	protected static final int DISPLAY_DLG = 0;
 	private Button fbBtn, twitBtn, logoutBtn;
 	private GlobalVariable globalVar;
 	private Handler mHandler = new Handler();
 	private Facebook facebook;
 	private TwitterApp mTwitter;
 	private Boolean fbacc = false, twitacc = false;
-	private static final String APP_ID = "222592464462347";
-	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
-	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
+	private static final String APP_ID = "Input your Facebook APP ID here";
+	private static final String twitter_consumer_key = "ujpcXzdHq3DzSpzMtcciQ";
+	private static final String twitter_secret_key = "atr8AHAP1ajzcdIwXjp81Mz0QDBXHmdIZ7RgM1THlKs";
 	private final int LOGOUT = 1, FB = 2, TWIT = 3, SETTINGS = 1;
 
 	FbConnect fbConnect;
@@ -59,8 +58,6 @@ public class Settings extends Activity
 	private String lnameS;
 	private String userName;
 	private String userEmail;
-	// private String genderS;
-	// private String bdayS;
 	private String uid;
 
 	/** Called when the activity is first created. */
@@ -82,9 +79,7 @@ public class Settings extends Activity
 		twitBtn = (Button) findViewById(R.id.twitBtnAdd);
 
 		globalVar = ((GlobalVariable) getApplicationContext());
-		mProgress = new ProgressDialog(this);
-		// fbBtnStat = globalVar.getfbBtn();
-		// twitBtnStat = globalVar.getTwitBtn();
+		mProgress = new ProgressDialog(getParent());		
 		facebook = globalVar.getFBState();
 		if (facebook == null)
 		{
@@ -95,7 +90,7 @@ public class Settings extends Activity
 			Log.d("Facebook state", "not null");
 		}
 
-		mTwitter = new TwitterApp(this, twitter_consumer_key, twitter_secret_key, SETTINGS);
+		mTwitter = new TwitterApp(getParent(), twitter_consumer_key, twitter_secret_key, SETTINGS);
 		mTwitter.setListener(mTwLoginDialogListener);
 		globalVar.setTwitState(mTwitter);
 
@@ -195,7 +190,6 @@ public class Settings extends Activity
 				PorterDuffColorFilter filter2 = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d2.setColorFilter(filter2);
 				fbBtn.setText("Disconnect");
-				// fbBtn.setBackgroundColor(Color.MAGENTA);
 				twitacc = false;
 				twitBtn.setText("Connect to Twitter");
 				Drawable d3 = findViewById(R.id.twitBtnAdd).getBackground();
@@ -209,7 +203,6 @@ public class Settings extends Activity
 				PorterDuffColorFilter filter3 = new PorterDuffColorFilter(0xEAEAEA, PorterDuff.Mode.SRC_ATOP);
 				d4.setColorFilter(filter3);
 				twitBtn.setText("Disconnect");
-				// twitBtn.setBackgroundColor(Color.MAGENTA);
 				fbacc = false;
 				fbBtn.setText("Connect to Facebook");
 				Drawable d5 = findViewById(R.id.fbBtnAdd).getBackground();
@@ -226,12 +219,10 @@ public class Settings extends Activity
 			Drawable d = findViewById(R.id.fbBtnAdd).getBackground();
 			findViewById(R.id.fbBtnAdd).invalidateDrawable(d);
 			d.clearColorFilter();
-			// fbBtn.setBackgroundColor(Color.GRAY);
 			twitBtn.setText("Add Twitter");
 			Drawable d2 = findViewById(R.id.twitBtnAdd).getBackground();
 			findViewById(R.id.twitBtnAdd).invalidateDrawable(d2);
 			d2.clearColorFilter();
-			// twitBtn.setBackgroundColor(Color.GRAY);
 		}
 	}
 
@@ -295,8 +286,7 @@ public class Settings extends Activity
 			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 			SharedPreferences.Editor editor = login.edit();
 			editor.putString("userFBname", null);
-//			editor.putString("userName", null);
-//			editor.putString("userID", null);
+
 			editor.putString("userFBID", null);
 			editor.putString("userDB_FBID", null);
 			editor.putString("emailFB_Login", null);
@@ -304,7 +294,6 @@ public class Settings extends Activity
 			editor.commit();
 
 			Facebook mFacebook = globalVar.getFBState();
-//			globalVar.setfbBtn(false);
 			SessionEvents.onLogoutBegin();
 			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
 			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
@@ -326,12 +315,6 @@ public class Settings extends Activity
 
 	}
 
-	// private void refreshBtn(int type)
-	// {
-	// // TODO Auto-generated method stub
-	//
-	// }
-
 	private final TwDialogListener mTwLoginDialogListener = new TwDialogListener()
 	{
 		@Override
@@ -341,35 +324,18 @@ public class Settings extends Activity
 			username = (username.equals("")) ? "No Name" : username;
 			initButtons();
 			twitacc = true;
-			// SharedPreferences sharedPref =
-			// getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-			// name.setText("Hello " + username + ",");
-			// name.setText("Hello " + sharedPref.getString("user_name", "") +
-			// ",");
-			// mTwitterBtn.setText("  Twitter  (" + username + ")");
-			// mTwitterBtn.setChecked(true);
-			// mTwitterBtn.setTextColor(Color.WHITE);
-
-			// Toast.makeText(TestConnect.this, "Connected to Twitter as " +
-			// username, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
 		public void onError(String value)
 		{
-			// mTwitterBtn.setChecked(false);
-			//
-			// Toast.makeText(TestConnect.this, "Twitter connection failed",
-			// Toast.LENGTH_LONG).show();
+			
 		}
 
 		@Override
 		public void onCancel()
 		{
-			// Return to the activity
-			// Intent intent = new Intent(Settings.this, LoginPage.class);
-			// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// startActivity(intent);
+			
 		}
 	};
 
@@ -407,88 +373,37 @@ public class Settings extends Activity
 		private final String[] FACEBOOK_PERMISSION =
 		{ "user_birthday", "email", "publish_stream", "read_stream", "offline_access" };
 
-		private Context context;
-		private Activity activity;
-		// private Handler mHandler;
+
 		private Facebook facebook;
 		GlobalVariable FbState = ((GlobalVariable) getApplicationContext());
 
 		private SharedPreferences sharedPref;
 		private Editor editor;
 
-		// private SessionListener mSessionListener = new SessionListener();
-
 		public FbConnect(String appId, Activity activity, Context context)
 		{
-
-			this.context = context;
-			// this.mHandler = new Handler();
-			this.activity = activity;
 
 			sharedPref = context.getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
 
 			editor = sharedPref.edit();
 			globalVar = ((GlobalVariable) getApplicationContext());
 
-			// SharedPreferences prefs=
-			// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
-			// String access_token = prefs.getString("access_token", null);
-			// Long expires = prefs.getLong("access_expires", -1);
-			// String sharedName = prefs.getString("name", "");
-			//
-			//
-			// if (access_token != null && expires != -1)
-			// {
-			// facebook.setAccessToken(access_token);
-			// facebook.setAccessExpires(expires);
-			// }
-
-			// if (!facebook.isSessionValid() || sharedName.equals(""))
-			// {
-			// facebook.authorize(activity, FACEBOOK_PERMISSION, new
-			// LoginDialogListener());
-			// }
-			// else
-			// {
-			// name.setText("Hello " + sharedName + ",");
-			// }
 			facebook = FbState.getFBState();
 
-			// if (!facebook.isSessionValid())
-			// {
-			// facebook = new Facebook(APP_ID);
-			// FbState.setFbState(facebook);
 			Log.d("in Settings, FBConnect:", "before login()");
 			login();
-			// }
-			// else
-			// {
-			// SessionStore.restore(facebook, context);
-			// }
-
-			// SessionEvents.addAuthListener(mSessionListener);
-			// SessionEvents.addLogoutListener(mSessionListener);
-
+			
 		}
 
 		public void login()
 		{
-			// GlobalVariable fbBtn = ((GlobalVariable)
-			// getApplicationContext());
-			// Boolean fbButton = fbBtn.getfbBtn();
-			// if (fbButton == true)
-			// {
 			if (!facebook.isSessionValid())
 			{
 				Log.d("in Settings, FBConnect:", "before authorizing");
-				facebook.authorize(activity, FACEBOOK_PERMISSION, new LoginDialogListener());
+				facebook.authorize(getParent(), FACEBOOK_PERMISSION, new LoginDialogListener());
 			}
-			// }
 			else
 			{
-				// globalVar = ((GlobalVariable) getApplicationContext());
-				// name.setText("Hello " + sharedPref.getString("facebookName",
-				// "") + ",");
 				mProgress.dismiss();
 			}
 		}
@@ -522,9 +437,6 @@ public class Settings extends Activity
 			{
 				Log.d("in Settings, FBConnect:", "in onCancel");
 				SessionEvents.onLoginError("Action Canceled");
-				// Intent intent = new Intent(context, LoginPage.class);
-				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				// startActivity(intent);
 			}
 		}
 
@@ -541,8 +453,6 @@ public class Settings extends Activity
 					lnameS = json.getString("last_name");
 					userName = fnameS + " " + lnameS;
 					userEmail = json.getString("email");
-					// genderS = json.getString("gender");
-					// bdayS = json.getString("birthday");
 					uid = json.getString("id");
 
 					editor.putString("userFBname", userName);
@@ -550,8 +460,6 @@ public class Settings extends Activity
 					editor.putBoolean("FacebookLoggedOut", false);
 					editor.commit();
 					Log.d("Facebook", fnameS);
-					// userS = new UserParticulars(fnameS, lnameS, userEmail,
-					// genderS, bdayS);
 
 					// callback should be run in the original thread,
 					// not the background thread
@@ -571,13 +479,9 @@ public class Settings extends Activity
 								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
 
-								// editor.commit();
-								// name.setText("Hello " + nameS + ",");
 								initButtons();
 								fbacc = true;
 								mProgress.dismiss();
-								// Log.d("Facebook session 2: ",
-								// Boolean.toString(facebook.isSessionValid()));
 							}
 							catch (NoSuchAlgorithmException e)
 							{
@@ -589,48 +493,6 @@ public class Settings extends Activity
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							// globalVar = ((GlobalVariable)
-							// getApplicationContext());
-							// globalVar.setName(nameS);
-							catch (IOException e)
-							{
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
-							// String token = facebook.getAccessToken();
-							// long token_expires = facebook.getAccessExpires();
-
-							// SharedPreferences prefs=
-							// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
-							//
-							// prefs.edit().putLong("access_expires",
-							// token_expires).commit();
-							//
-							// prefs.edit().putString("access_token",
-							// token).commit();
-							//
-							// prefs.edit().putString("name", nameS).commit();
-							// fname.setText(fnameS);
-							// lname.setText(lnameS);
-							// email.setText(emailS);
-							// if (genderS.equals("male"))
-							// {
-							// male.setChecked(true);
-							// female.setChecked(false);
-							// }
-							// else if (genderS.equals("female"))
-							// {
-							// female.setChecked(true);
-							// male.setChecked(false);
-							// }
-							//
-							// for (int i = 0; i < 3; i++)
-							// {
-							// bdayInt[i] = getBday(bdayS)[i];
-							// }
-							// bday.setText("Your Birthdate is: " + bdayInt[0]
-							// +"/" + bdayInt[1] + "/" + bdayInt[2]);
 						}
 					});
 				}

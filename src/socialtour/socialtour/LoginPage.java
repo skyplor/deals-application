@@ -28,12 +28,12 @@ import android.widget.*;
 
 public class LoginPage extends Activity {
 
-	private static final String APP_ID = "222592464462347";
+	private static final String APP_ID = "Input your Facebook APP ID here";
 	private TwitterApp mTwitter;
 	private Facebook mFacebook;
 
-	private static final String twitter_consumer_key = "L0UuqLWRkQ0r9LkZvMl0Zw";
-	private static final String twitter_secret_key = "CelQ7Bvl0mLGGKw6iiV3cDcuP0Lh1XAI6x0fCF0Pd4";
+	private static final String twitter_consumer_key = "ujpcXzdHq3DzSpzMtcciQ";
+	private static final String twitter_secret_key = "atr8AHAP1ajzcdIwXjp81Mz0QDBXHmdIZ7RgM1THlKs";
 
 	private FacebookBtn fblogin;
 	private static GlobalVariable globalVar;
@@ -52,12 +52,6 @@ public class LoginPage extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		// if (APP_ID == null)
-		// {
-		// Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " +
-		// "specified before running this example: see Example.java");
-		// }
 
 		// Go to login
 		globalVar = ((GlobalVariable) getApplicationContext());
@@ -78,21 +72,6 @@ public class LoginPage extends Activity {
 		regBtn = (ImageButton) findViewById(R.id.registerBtn);
 		mTwitterBtn = (ImageButton) findViewById(R.id.twitBtn);
 
-		// IntentFilter intentFilter = new IntentFilter();
-		// intentFilter.addAction("com.package.ACTION_LOGOUT");
-		// registerReceiver(new BroadcastReceiver()
-		// {
-		//
-		// @Override
-		// public void onReceive(Context context, Intent intent)
-		// {
-		// Log.d("onReceive", "Logout in progress");
-		// // At this point you should start the login activity and finish
-		// // this one
-		// finish();
-		// }
-		// }, intentFilter);
-
 		loginInit();
 
 		fblogin.init(this, mFacebook, getApplicationContext());
@@ -103,42 +82,12 @@ public class LoginPage extends Activity {
 		mTwitter.setListener(mTwLoginDialogListener);
 		if (mTwitter.hasAccessToken())
 		{
-			// mTwitterBtn.setChecked(true);
 
 			String username = mTwitter.getUsername();
 			username = (username.equals("")) ? "Unknown" : username;
 
-			// mTwitterBtn.setText("  Twitter (" + username + ")");
-			// mTwitterBtn.setTextColor(Color.WHITE);
 		}
-
-		// mAsyncRunner = new AsyncFacebookRunner(mFacebook);
 		regInit();
-
-		// else
-		// {
-		// // Go to Next Activity
-		// globalVar = ((GlobalVariable) getApplicationContext());
-		// globalVar.setfbBtn(false);
-		//
-		// ConnectDB connectCheck = new ConnectDB(Uname, pass, 1);
-		// if (connectCheck.inputResult())
-		// {
-		// globalVar.setName(connectCheck.getName());
-		// Intent intent = new Intent(this, SearchShops.class);
-		// Log.d("GlobalVariable name: ", globalVar.getName());
-		// // startActivityForResult means that Activity1 can expect
-		// // info
-		// // back from Activity2.
-		// startActivityForResult(intent, 0);
-		// }
-		// else
-		// {
-		// // do something else
-		// Log.d("Authenticate User: ", "False");
-		// showDialog(DIALOG_ERR);
-		// }
-		// }
 
 	}
 
@@ -159,18 +108,12 @@ public class LoginPage extends Activity {
 						public void onClick(DialogInterface dialog, int id)
 						{
 							mTwitter.resetAccessToken();
-
-							// mTwitterBtn.setChecked(false);
-							// mTwitterBtn.setText("  Twitter (Not connected)");
-							// mTwitterBtn.setTextColor(Color.GRAY);
 						}
 					}).setNegativeButton("No", new DialogInterface.OnClickListener()
 					{
 						public void onClick(DialogInterface dialog, int id)
 						{
 							dialog.cancel();
-
-							// mTwitterBtn.setChecked(true);
 						}
 					});
 					final AlertDialog alert = builder.create();
@@ -179,14 +122,12 @@ public class LoginPage extends Activity {
 				}
 				else
 				{
-					// mTwitterBtn.setChecked(false);
 					Intent intent = new Intent(v.getContext(), Container.class);
 					globalVar = ((GlobalVariable) getApplicationContext());
 					globalVar.setTwitBtn(true);
 					Log.d("Twitter Btn state: ", globalVar.getTwitBtn().toString());
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivityForResult(intent, 1);
-//					mTwitter.authorize();
 				}
 			}
 		});
@@ -206,7 +147,6 @@ public class LoginPage extends Activity {
 					Log.d("Authenticate User: ", "True");
 					globalVar = ((GlobalVariable) getApplicationContext());
 					globalVar.setName(connectCheck.getUserName());
-//					globalVar.setfbBtn(false);
 					globalVar.setHashPw(connectCheck.getPassword());
 					globalVar.setEm(email.getText().toString());
 
@@ -235,28 +175,7 @@ public class LoginPage extends Activity {
 			}
 		});
 	}
-
-	// public void fbinit(final Activity activity, final Facebook fb, final
-	// String[] permissions)
-	// {
-	// //mAsyncRunner = new AsyncFacebookRunner(mFacebook);
-	// // fblogin.setBackgroundColor(Color.TRANSPARENT);
-	// // fblogin.setAdjustViewBounds(true);
-	// // fblogin.setImageResource(fb.isSessionValid() ?
-	// R.drawable.logout_button : R.drawable.login_button);
-	// // fblogin.drawableStateChanged();
-	//
-	//
-	// fblogin.setOnClickListener(new View.OnClickListener()
-	// {
-	// public void onClick(View v)
-	// {
-	// fblogin = new FacebookConnector(APP_ID, activity,
-	// getApplicationContext(), permissions);
-	// facebookConnector.login();
-	// }
-	// });
-	// }
+	
 	public void fbInit()
 	{
 		fblogin.setOnClickListener(new View.OnClickListener()
@@ -294,8 +213,6 @@ public class LoginPage extends Activity {
 			{
 				Intent intent = new Intent(v.getContext(), Registration.class);
 
-//				globalVar = ((GlobalVariable) getApplicationContext());
-//				globalVar.setfbBtn(false);
 				// startActivityForResult means that Activity1 can expect info
 				// back from Activity2.
 				startActivityForResult(intent, 0);
@@ -310,22 +227,12 @@ public class LoginPage extends Activity {
 		{
 			String username = mTwitter.getUsername();
 			username = (username.equals("")) ? "No Name" : username;
-
-			// mTwitterBtn.setText("  Twitter  (" + username + ")");
-			// mTwitterBtn.setChecked(true);
-			// mTwitterBtn.setTextColor(Color.WHITE);
-
-			// Toast.makeText(TestConnect.this, "Connected to Twitter as " +
-			// username, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
 		public void onError(String value)
 		{
-			// mTwitterBtn.setChecked(false);
-			//
-			// Toast.makeText(TestConnect.this, "Twitter connection failed",
-			// Toast.LENGTH_LONG).show();
+
 		}
 
 		@Override
@@ -336,24 +243,12 @@ public class LoginPage extends Activity {
 		}
 	};
 
-	// @Override
-	// protected void onActivityResult(int requestCode, int resultCode, Intent
-	// data)
-	// {
-	// if (requestCode != 0)
-	// {
-	// this.fblogin.getFacebook().authorizeCallback(requestCode, resultCode,
-	// data);
-	// }
-	// }
-
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
 		globalVar = ((GlobalVariable) getApplicationContext());
 		mFacebook = globalVar.getFBState();
-		// updateLoginStatus();
 		fbInit();
 	}
 
@@ -363,50 +258,7 @@ public class LoginPage extends Activity {
 		moveTaskToBack(true);
 	}
 
-	// protected void onDestroy()
-	// {
-	// unregisterReceiver(null);
-	// }
-
-	// public class LoginRequestListener extends BaseRequestListener {
-	// public void onComplete(String response, final Object state)
-	// {
-	// try
-	// {
-	// // process the response here: executed in background thread
-	// Log.d("Facebook-Example", "Response: " + response.toString());
-	// JSONObject json = Util.parseJson(response);
-	// fname = json.getString("first_name");
-	// lname = json.getString("last_name");
-	// email = json.getString("email");
-	// gender = json.getString("gender");
-	// bday = json.getString("birthday");
-	// Log.d("Facebook", fname);
-	// user = new UserParticulars(fname, lname, email, gender, bday);
-	// // callback should be run in the original thread,
-	// // not the background thread
-	// LoginPage.this.runOnUiThread(new Runnable()
-	// {
-	// public void run()
-	// {
-	// // Intent intent = new Intent(getApplicationContext(),
-	// Registration.class);
-	// // intent.putExtra("data", user);
-	// // startActivityForResult(intent, 1);
-	// }
-	// });
-	// }
-	// catch (JSONException e)
-	// {
-	// Log.w("Facebook-Example", "JSON Error in response");
-	// }
-	// catch (FacebookError e)
-	// {
-	// Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
-	// }
-	// }
-	// }
-
+	
 	public class LogoutRequestListener extends BaseRequestListener {
 		public void onComplete(String response, final Object state)
 		{
@@ -435,10 +287,6 @@ public class LoginPage extends Activity {
 			case DIALOG_ERR_LOGIN:
 				alertDialog.setMessage("Could not authenticate you. Maybe your email/password is incorrect. Please try again.");
 				break;
-
-			// case DIALOG_ERR:
-			// alertDialog.setMessage("Could not authenticate you. Perhaps your details were not saved. Please login again.");
-			// break;
 
 			default:
 				alertDialog = null;

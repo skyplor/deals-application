@@ -11,7 +11,7 @@ import com.google.android.maps.GeoPoint;
 import android.app.Application;
 
 public class GlobalVariable extends Application {
-	private static final String APP_ID = "222592464462347";
+	private static final String APP_ID = "Input your Facebook APP ID here";
 	private Facebook myFbState = new Facebook(APP_ID);
 	
 	private TwitterApp mTwitter;

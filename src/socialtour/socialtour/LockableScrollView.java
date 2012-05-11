@@ -61,8 +61,4 @@ public class LockableScrollView extends ScrollView
 		}
 	}
 
-//	public boolean onInterceptTouchEvent(MotionEvent ev)
-//	{
-//		return mScrollable;
-//	}
 }
