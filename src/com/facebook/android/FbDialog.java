@@ -16,7 +16,7 @@
 
 package com.facebook.android;
 
-import socialtour.socialtour.R;
+import com.ntu.dealsinterest.R;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;

@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.WeakHashMap;
 
-import socialtour.socialtour.Constants;
-import socialtour.socialtour.Main;
-import socialtour.socialtour.R;
+import com.ntu.dealsinterest.Constants;
+import com.ntu.dealsinterest.Main;
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.content.Context;

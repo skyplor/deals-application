@@ -4,9 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import socialtour.socialtour.R;
-import socialtour.socialtour.models.Product;
-import socialtour.socialtour.models.Shop;
+import com.ntu.dealsinterest.R;
+import com.ntu.dealsinterest.models.Product;
+import com.ntu.dealsinterest.models.Shop;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

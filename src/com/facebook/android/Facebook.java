@@ -217,8 +217,8 @@ public class Facebook {
 
 //        intent.setClassName("com.facebook.katana",
 //                "com.facebook.katana.ProxyAuth");
-        intent.setClassName("socialtour.socialtour",
-                "socialtour.socialtour.ProxyAuth");
+        intent.setClassName("com.ntu.dealsinterest",
+                "com.ntu.dealsinterest.ProxyAuth");
         intent.putExtra("client_id", applicationId);
         if (permissions.length > 0) {
             intent.putExtra("scope", TextUtils.join(",", permissions));

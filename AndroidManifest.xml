@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="socialtour.socialtour"
+    package="com.ntu.dealsinterest"
     android:versionCode="1"
     android:versionName="1.0" >
 <supports-screens 
@@ -33,7 +33,7 @@
             android:name=".SocialTourActivity"
             android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.SOCIALTOURACTIVITY" />
+                <action android:name="com.ntu.dealsinterest.SOCIALTOURACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -42,7 +42,7 @@
             android:name=".Home"
             android:label="Home" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.HOME" />
+                <action android:name="com.ntu.dealsinterest.HOME" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -51,7 +51,7 @@
             android:name=".Attraction"
             android:label="Attraction" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.ATTRACTION" />
+                <action android:name="com.ntu.dealsinterest.ATTRACTION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -60,7 +60,7 @@
             android:name=".Checkin"
             android:label="Check-in" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.CHECKIN" />
+                <action android:name="com.ntu.dealsinterest.CHECKIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -69,7 +69,7 @@
             android:name=".Food"
             android:label="Food" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.FOOD" />
+                <action android:name="com.ntu.dealsinterest.FOOD" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -78,7 +78,7 @@
             android:name=".Profile"
             android:label="Profile" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.PROFILE" />
+                <action android:name="com.ntu.dealsinterest.PROFILE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -88,7 +88,7 @@
             android:label="Browseplace"
             android:configChanges="orientation" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.BROWSEPLACE" />
+                <action android:name="com.ntu.dealsinterest.BROWSEPLACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -98,7 +98,7 @@
             android:label="Startcamera"
             android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.STARTCAMERA" />
+                <action android:name="com.ntu.dealsinterest.STARTCAMERA" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -107,7 +107,7 @@
             android:name=".Productdetail"
             android:label="Productdetail" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.PRODUCTDETAIL" />
+                <action android:name="com.ntu.dealsinterest.PRODUCTDETAIL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -116,7 +116,7 @@
             android:name=".Addplace"
             android:label="Addplace" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.ADDPLACE" />
+                <action android:name="com.ntu.dealsinterest.ADDPLACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -134,7 +134,7 @@
             android:name=".Main"
             android:label="Main" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.MAIN" />
+                <action android:name="com.ntu.dealsinterest.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -143,7 +143,7 @@
             android:name=".Shopdetail"
             android:label="Shopdetail" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.SHOPDETAIL" />
+                <action android:name="com.ntu.dealsinterest.SHOPDETAIL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -153,7 +153,7 @@
             android:label="Registration"
             android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.REGISTRATION" />
+                <action android:name="com.ntu.dealsinterest.REGISTRATION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -162,7 +162,7 @@
             android:name=".MapResult"
             android:label="MapResult" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.MAPRESULT" />
+                <action android:name="com.ntu.dealsinterest.MAPRESULT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -172,7 +172,7 @@
             android:name=".Search"
             android:label="Search" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.SEARCH" />
+                <action android:name="com.ntu.dealsinterest.SEARCH" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -182,7 +182,7 @@
             android:label="LoginPage"
             android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.LOGINPAGE" />
+                <action android:name="com.ntu.dealsinterest.LOGINPAGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -191,7 +191,7 @@
             android:name=".ProductPage"
             android:label="ProductPage" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.PRODUCTPAGE" />
+                <action android:name="com.ntu.dealsinterest.PRODUCTPAGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -200,7 +200,7 @@
             android:name=".ChooseCategory"
             android:label="ChooseCategory" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.CHOOSECATEGORY" />
+                <action android:name="com.ntu.dealsinterest.CHOOSECATEGORY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -209,7 +209,7 @@
             android:name=".InputPrice"
             android:label="InputPrice" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.INPUTPRICE" />
+                <action android:name="com.ntu.dealsinterest.INPUTPRICE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -218,15 +218,15 @@
             android:name=".Remarks"
             android:label="Remarks" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="socialtour.socialtour.REMARKS" />
+                <action android:name="com.ntu.dealsinterest.REMARKS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="TabGroup1Activity" android:screenOrientation="portrait"/>
-        <activity android:name="TabGroup2Activity"
+        <activity android:name=".TabGroup1Activity" android:screenOrientation="portrait"/>
+        <activity android:name=".TabGroup2Activity"
             	  android:configChanges="orientation" android:screenOrientation="portrait"/>
-        <activity android:name="TabGroup3Activity" android:screenOrientation="portrait"/>
+        <activity android:name=".TabGroup3Activity" android:screenOrientation="portrait"/>
         <activity
             android:name=".Container"
             android:label="@string/app_name"
@@ -239,8 +239,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Dashboard" />
-        <activity android:name="Settings" />
+        <activity android:name=".Dashboard" />
+        <activity android:name=".Settings" />
         <activity android:name=".CustomWindow" />
     </application>
 

@@ -94,7 +94,7 @@
 		android:background="@drawable/button_rounded_corners">
 	</Button>
 	
-	<socialtour.socialtour.FacebookBtn
+	<com.ntu.dealsinterest.FacebookBtn
 		android:layout_width="wrap_content"
 		android:id="@+id/fbLoginBtn"
 		android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="15dp"
 		android:background="@null">
-	</socialtour.socialtour.FacebookBtn>
+	</com.ntu.dealsinterest.FacebookBtn>
 
 	<ImageButton
 		android:layout_height="wrap_content"

@@ -6,6 +6,6 @@
 	android:searchSettingsDescription="@string/search_settings_description"
 	android:includeInGlobalSearch="true"
 	android:searchSuggestIntentData="item"
-	android:searchSuggestAuthority="socialtour.socialtour.SuggestUrlProvider">
+	android:searchSuggestAuthority="com.ntu.dealsinterest.SuggestUrlProvider">
 
 </searchable>
