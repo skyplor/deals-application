@@ -1,5 +1,8 @@
 package com.ntu.dealsinterest;
 
+import com.ntu.dealsinterest.models.CategoryList;
+
+import com.ntu.dealsinterest.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,14 +10,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.models.CategoryList;
 
 public class ChooseCategory extends Activity implements OnClickListener{
 	private ImageView cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,cat9;
@@ -28,8 +27,6 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		Container.map.setVisibility(View.INVISIBLE);
-        //Container.btn3.setImageResource(R.drawable.quitsharing);
-		//backtomain = Container.home;
 		
 		cat1 = (ImageView)findViewById(R.id.category1);
 		cat2 = (ImageView)findViewById(R.id.category2);
@@ -50,7 +47,6 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		cat7.setOnClickListener(this);
 		cat8.setOnClickListener(this);
 		cat9.setOnClickListener(this);
-		//backtomain.setOnClickListener(this);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
@@ -61,9 +57,6 @@ public class ChooseCategory extends Activity implements OnClickListener{
 		Container.btn2.setVisibility(View.INVISIBLE);
 		Container.btn3.setVisibility(View.INVISIBLE);
 		Container.map.setVisibility(View.INVISIBLE);
-        //Container.btn3.setImageResource(R.drawable.quitsharing);
-		//backtomain = Container.home;
-		//backtomain.setOnClickListener(this);
 	}
 	
 	@Override
@@ -154,33 +147,7 @@ public class ChooseCategory extends Activity implements OnClickListener{
 			}
 		});
 		builder.show();
-		//AlertDialog alert = builder.create();
-		//alert.show();
 		}
-		//else if (v==backtomain){
-		//		confirmationquit();
-		//}
 	}
-	
-    private void confirmationquit(){
-	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
-	        dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
-	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
-	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
-	                dialog.dismiss();
-	                Intent i = getBaseContext().getPackageManager()
-		   		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-		                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		                startActivity(i);
-	                
-	            }});
-	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
-	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
-	                dialog.dismiss();               
-	            }});
-	        dialog.show();
-  }
 	
 }

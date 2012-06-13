@@ -3,10 +3,8 @@ package com.ntu.dealsinterest;
 import java.util.List;
 
 
-import com.facebook.SessionStore;
 import com.facebook.android.Facebook;
 import com.google.android.maps.GeoPoint;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Shop;
 
 import android.app.Application;

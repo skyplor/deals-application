@@ -2,6 +2,8 @@ package com.ntu.dealsinterest;
 
 import java.util.List;
 
+import com.ntu.dealsinterest.R;
+
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +16,6 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
 
 public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends ItemizedOverlay<Item> {
 	private MapView mapView;

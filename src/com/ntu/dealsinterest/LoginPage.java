@@ -5,8 +5,9 @@ import com.facebook.SessionEvents;
 import com.facebook.SessionStore;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.Facebook;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
+
+import com.ntu.dealsinterest.R;
 //import com.facebook.android.Util;
 
 import android.app.Activity;

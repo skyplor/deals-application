@@ -40,12 +40,12 @@ import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
 import com.ntu.dealsinterest.models.Remark;
 import com.ntu.dealsinterest.models.Shop;
 import com.ntu.dealsinterest.models.TestingClass;
 
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

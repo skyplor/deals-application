@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ntu.dealsinterest.R;
 
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
@@ -16,7 +17,6 @@ import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
 
 import android.app.Activity;

@@ -5,6 +5,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ntu.dealsinterest.models.UserParticulars;
+
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,8 +18,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.models.UserParticulars;
 
 public class Registration extends Activity
 {

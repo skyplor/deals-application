@@ -20,7 +20,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.Window;
-import com.ntu.dealsinterest.R;
 
 import java.net.URL;
 

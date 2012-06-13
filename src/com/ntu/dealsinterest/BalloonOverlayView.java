@@ -1,5 +1,6 @@
 package com.ntu.dealsinterest;
 
+import com.ntu.dealsinterest.R;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
 
 public class BalloonOverlayView<Item extends OverlayItem> extends FrameLayout {
 

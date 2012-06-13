@@ -29,8 +29,9 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Shop;
+
+import com.ntu.dealsinterest.R;
 
 import android.app.AlertDialog;
 import android.content.Context;

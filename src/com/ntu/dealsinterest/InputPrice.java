@@ -30,6 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ntu.dealsinterest.models.TestingClass;
+
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,8 +52,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.models.TestingClass;
 
 public class InputPrice extends Activity implements OnClickListener, RadioGroup.OnCheckedChangeListener
 {
@@ -561,34 +562,6 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage( getBaseContext().getPackageName() );
 	           i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	           startActivity(i);
-			}
-		});
-		dialog.show();
-	}
-
-	private void confirmationquit()
-	{
-		AlertDialog.Builder dialog = new AlertDialog.Builder(getParent());
-		dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
-
-		dialog.setPositiveButton("OK", new android.content.DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-				Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
-
-			}
-		});
-		dialog.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
 			}
 		});
 		dialog.show();

@@ -1,7 +1,6 @@
 package com.ntu.dealsinterest;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,44 +18,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fedorvlasov.lazylist.LazyAdapter;
 import com.fedorvlasov.lazylist.SimpleLazyAdapter;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Shop;
 
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class Browseplace extends Activity implements OnClickListener{
         
-        //protected String[] employees;
-        //protected Integer[] employeesid;
 		Shop[] shop;
 		SimpleLazyAdapter adapter;
         JSONArray jArray;
@@ -86,22 +74,9 @@ public class Browseplace extends Activity implements OnClickListener{
 		Container.map.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setImageResource(R.drawable.addplace);
         Container.btn2.getLayoutParams().width = 85;
-        //Container.btn3.setImageResource(R.drawable.quitsharing);
-		//backtomain = Container.home;
 		addplace = Container.btn2;
-		//backtomain.setImageResource(R.drawable.quitsharing);
-		//addplace.setImageResource(R.drawable.addplace);
-		//addplace.setVisibility(View.VISIBLE);
-		//addplace.setImageResource(R.drawable.addplace);
-        
-        //getShop();
-        //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
-        //ListView employeeList = (ListView) findViewById(R.id.list);
-        //employeeList.setAdapter(adapter);
         search = (Button) findViewById(R.id.searchButton);
         list = (ListView) findViewById(R.id.list);
-        
-        //backtomain.setOnClickListener(this);
         addplace.setOnClickListener(this);
         
         Bundle bundle=getIntent().getExtras();
@@ -112,35 +87,15 @@ public class Browseplace extends Activity implements OnClickListener{
         	ExifInterface exif = new ExifInterface(photoUri.getPath());
         	exif.getLatLong(coordinates);
         	
-        	//String lati = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
-        	//String longi = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         	}catch (IOException e){
         		
         	}
         }
-        /*
-        ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(newUri, new String[] {
-        		MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.LATITUDE,
-                MediaStore.Images.ImageColumns.LONGITUDE
-               }, null, null, null);
-        String fname = "";
-              if (c != null) {
-                c.moveToFirst();
-                fname = c.getString(c.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA) );
-                latitude = c.getDouble(c.getColumnIndexOrThrow
-        (MediaStore.Images.ImageColumns.LATITUDE));
-                longitude = c.getDouble(c.getColumnIndexOrThrow
-        (MediaStore.Images.ImageColumns.LONGITUDE));
-              }
-              */
               getShop("",true);
             
 		search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	EditText shopname = (EditText) findViewById(R.id.searchText);
-            	//doFileUpload();
             	boolean passed = validate(shopname.getText().toString().trim());
             	if (passed){
             		ImageView searchresults = (ImageView) findViewById(R.id.imgsearchresults);
@@ -155,15 +110,6 @@ public class Browseplace extends Activity implements OnClickListener{
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
 		    public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-		    	/*
-		    	Intent intent = new Intent("com.ntu.dealsinterest.ATTRACTION");
-		    	//Intent intent = new Intent(this, Attraction.class);
-		        intent.putExtra("EMPLOYEE_ID", shop[pos].getId());
-		        intent.putExtra("EMPLOYEE_NAME", shop[pos].getName());
-		        Bundle bundle=getIntent().getExtras();
-		        Uri pic = (Uri) bundle.get("pic");
-		        intent.putExtra("pic", pic);
-		        startActivity(intent);*/
 		        
 		        Intent intent = new Intent(getParent(), ChooseCategory.class);
 		        intent.putExtra("SHOP_ID", shop[pos].getId());
@@ -190,9 +136,7 @@ public class Browseplace extends Activity implements OnClickListener{
         Container.btn3.setVisibility(ImageView.INVISIBLE);
 		Container.map.setVisibility(ImageView.INVISIBLE);
         Container.btn2.setImageResource(R.drawable.addplace);
-		//backtomain = Container.home;
 		addplace = Container.btn2;
-		//backtomain.setOnClickListener(this);
         addplace.setOnClickListener(this);
 	}
 	
@@ -207,9 +151,6 @@ public class Browseplace extends Activity implements OnClickListener{
 		     	parentActivity.startChildActivity("Add Place " + TabGroup1Activity.intentCount, i);
 		     	TabGroup1Activity.intentCount++;
 		}
-		//else if (v==backtomain){
-		//	confirmationquit();
-		//}
 	}
 	
     public void getShop(String shopname, boolean start){
@@ -249,16 +190,10 @@ public class Browseplace extends Activity implements OnClickListener{
     	        }catch(Exception e){
     	              Log.e("log_tag", "Error converting result "+e.toString());
     	        }
-    	//paring data
-    	int ct_id;
-    	String ct_name;
-    	
     	try{
     	      jArray = new JSONArray(result);
     	      JSONObject json_data=null;
     	      shop = new Shop[jArray.length()];
-    	      //employees = new String[jArray.length()];
-    	      //employeesid = new Integer[jArray.length()];
     	      for(int i=0;i<jArray.length();i++){
     	             json_data = jArray.getJSONObject(i);
     	             shop[i] = new Shop();
@@ -269,7 +204,6 @@ public class Browseplace extends Activity implements OnClickListener{
     	             shop[i].setLng(json_data.getString("lng"));
     	         }
     	      	adapter=new SimpleLazyAdapter(this, shop);
-    	        //ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, employees);
     	        ListView employeeList = (ListView) findViewById(R.id.list);
     	        employeeList.setAdapter(adapter);
     	      }
@@ -298,43 +232,4 @@ public class Browseplace extends Activity implements OnClickListener{
 	            }});
 	        dialog.show();
    }
-    
-    private void confirmationquit(){
-	     AlertDialog.Builder dialog=new AlertDialog.Builder(getParent());
-	        dialog.setTitle("You are in midst of Sharing. Quit Sharing?");
-	        
-	        dialog.setPositiveButton("OK",new android.content.DialogInterface.OnClickListener(){
-	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
-	                dialog.dismiss();
-	                
-	                Intent i = getBaseContext().getPackageManager()
-	   		             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-	                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	                startActivity(i);
-	                
-	                //Intent i = getBaseContext().getPackageManager()
-		   		    //         .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-		            //    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		            //    startActivity(i);
-	                
-	            }});
-	        dialog.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
-	            @Override
-	            public void onClick(DialogInterface dialog, int which) {
-	                dialog.dismiss();               
-	            }});
-	        dialog.show();
-   }
-    
-    /*protected void onListItemClick(ListView parent, View view, int position, long id) {
-        Intent intent = new Intent(this, Attraction.class);
-        intent.putExtra("EMPLOYEE_ID", employeesid[position]);
-        intent.putExtra("EMPLOYEE_NAME", employees[position]);
-        Bundle bundle=getIntent().getExtras();
-        Bitmap pic = (Bitmap) bundle.get("pic");
-        intent.putExtra("pic", pic);
-        startActivity(intent);
-    }*/
-    
 }

@@ -1,5 +1,6 @@
 package com.ntu.dealsinterest;
 
+import com.ntu.dealsinterest.R;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,7 +13,6 @@ import com.facebook.SessionStore;
 import com.facebook.android.Facebook;
 import com.facebook.SessionEvents.AuthListener;
 import com.facebook.SessionEvents.LogoutListener;
-import com.ntu.dealsinterest.R;
 
 public class FacebookBtn extends ImageButton {
 

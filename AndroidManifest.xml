@@ -188,15 +188,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProductPage"
-            android:label="ProductPage" android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="com.ntu.dealsinterest.PRODUCTPAGE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ChooseCategory"
             android:label="ChooseCategory" android:screenOrientation="portrait">
             <intent-filter>

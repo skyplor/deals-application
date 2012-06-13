@@ -9,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.content.Context;
-import com.ntu.dealsinterest.R;
 
 import java.util.ArrayList;
+
+import com.ntu.dealsinterest.R;
 
 /**
  * Adapter for crop option list.

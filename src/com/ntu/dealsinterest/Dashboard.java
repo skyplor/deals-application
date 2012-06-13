@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.ntu.dealsinterest.R;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,8 +13,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.models.UserParticulars;
 
 public class Dashboard extends Activity
 {

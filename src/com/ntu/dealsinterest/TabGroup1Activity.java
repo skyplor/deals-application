@@ -6,11 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.LocalActivityManager;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -25,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.ntu.dealsinterest.R;
 
 public class TabGroup1Activity extends TabGroupActivity implements OnClickListener{
     ImageView browse, share, search, settings;
@@ -37,7 +32,6 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 	private String latDir, longDir;
 	private String type;
 	public static int intentCount = 0;
-	//Uri outputFileUri;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,16 +92,12 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
     	case CAMERA_PIC_REQUEST:
     		type="camera";
     		doCrop();
-    		//activateCrop("camera");
-
     		break;
     		
     	case GALLERY_REQUEST:
     		TabGroup2Activity.outputFileUri = data.getData();
     		type = "gallery";
     		doCrop();
-    		//activateCrop("gallery");
-
             break;
             
     	case CROP_FROM_CAMERA:
@@ -116,7 +106,6 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 	        if (extras2 != null) {	        	
 				photo = extras2.getParcelable("data");
 				String newfilepath = postProcessing(photo);
-				if (type.equals("camera")){
 				try{
 					calculateDMS(Main.point.getLatitudeE6() / 1E6, Main.point.getLongitudeE6() / 1E6);
 					ExifInterface exif = new ExifInterface(newfilepath);
@@ -128,81 +117,17 @@ public class TabGroup1Activity extends TabGroupActivity implements OnClickListen
 				}catch(IOException e){
 					e.fillInStackTrace();
 				}
-				}
 				File picFile2 = new File(newfilepath);
 				Uri newUri2 = Uri.fromFile(picFile2);
 				Intent i2 = new Intent("com.ntu.dealsinterest.BROWSEPLACE");
         		i2.putExtra("pic", newUri2);
-        		//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
         		startChildActivity("Browse Place " + intentCount, i2);
         		TabGroup1Activity.intentCount++;
 	        }
     		break;
     	}
     }
-    
-    private void activateCrop(String source){
-		final String finalsource = source;
-		String[] addPhoto = new String[]
-		{ "Yes", "No" };
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle("Crop your image?");
-
-		dialog.setItems(addPhoto, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int id)
-			{
-				dialog.dismiss();
-				if (id == 0)
-				{	
-					doCrop();
-				}
-				if (id == 1)
-				{
-					String realpath = "";
-					if (finalsource.equals("gallery")){
-						realpath = getRealPathFromURI(TabGroup2Activity.outputFileUri);
-					}else{
-						realpath = TabGroup2Activity.outputFileUri.getPath();
-						try{
-							calculateDMS(Main.point.getLatitudeE6() / 1E6, Main.point.getLongitudeE6() / 1E6);
-							ExifInterface exif = new ExifInterface(realpath);
-							exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latString);
-							exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, latDir);
-							exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longString);
-							exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longDir);
-							exif.saveAttributes();
-						}catch(IOException e){
-							e.fillInStackTrace();
-						}
-					}
-					File picFile = new File(realpath);
-					Uri newUri = Uri.parse("file://"+realpath);
-					Intent i = new Intent("com.ntu.dealsinterest.BROWSEPLACE");
-	        		i.putExtra("pic", newUri);
-			     	//TabGroupActivity parentActivity = (TabGroupActivity)getParent();
-	   		     	TabGroup1Activity.this.startChildActivity("Browse Place " + intentCount, i);
-	   		     	TabGroup1Activity.intentCount++;
-				}
-			}
-		});
-
-		dialog.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				// Intent i = new Intent(this, Container.class);
-				// startActivity(i);
-			}
-		});
-		dialog.show();
-	}
-    
+      
     public void calculateDMS(double latitude, double longitude){
     	//latitude
     	int degrees = (int)latitude;

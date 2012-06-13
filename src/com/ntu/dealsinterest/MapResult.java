@@ -3,6 +3,8 @@ package com.ntu.dealsinterest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ntu.dealsinterest.R;
+
 import com.facebook.BaseRequestListener;
 import com.facebook.SessionEvents;
 import com.google.android.maps.GeoPoint;
@@ -11,7 +13,6 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Shop;
 
 import android.content.Intent;

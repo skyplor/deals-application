@@ -22,12 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fedorvlasov.lazylist.RemarksLazyAdapter;
-import com.fedorvlasov.lazylist.SimpleLazyAdapter;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Remark;
 import com.ntu.dealsinterest.models.TestingClass;
 
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,7 +40,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +56,6 @@ public class Remarks extends Activity implements OnClickListener{
 	StringBuilder sb = null;
 	JSONArray jArray;
 	String result = null;
-	//RemarksLazyAdapter adapter;
 	private Remark[] listremarks = null;
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -114,12 +110,9 @@ public class Remarks extends Activity implements OnClickListener{
 	{
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("productid", Integer.toString(lastinsertedid)));
-		// http post
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
-			// HttpPost httppost = new
-			// HttpPost("http://172.22.177.204/FYP/database.php");
 			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "remarks.php");
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpclient.execute(httppost);
@@ -203,17 +196,7 @@ public class Remarks extends Activity implements OnClickListener{
     	if (!userDetails.getString("userID", "").equals("")){
     		userid = userDetails.getString("userID", "");
     		username = userDetails.getString("userName", "");
-//    		usertype = "user_norm";
     	}
-//    	else if (!userDetails.getString("userDB_FBID", "").equals("")){
-//    		userid = userDetails.getString("userDB_FBID", "");
-//    		usertype = "user_fb";
-//    	}else if (!userDetails.getString("userDB_TWITID", "").equals("")){
-//    		userid = userDetails.getString("userDB_TWITID", "");
-//    		usertype = "user_twit";
-//    	}
-		
-		
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("userid", userid));
 		nameValuePairs.add(new BasicNameValuePair("username", username));

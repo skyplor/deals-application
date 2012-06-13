@@ -21,10 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.facebook.BaseRequestListener;
-import com.facebook.SessionEvents;
-import com.facebook.android.Facebook;
-import com.facebook.android.Util;
 import com.fedorvlasov.lazylist.LazyAdapter;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -32,12 +28,11 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 import com.ntu.dealsinterest.models.TestingClass;
 
+import com.ntu.dealsinterest.R;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -619,9 +614,6 @@ public class Main extends MapActivity implements OnClickListener
 		{
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
-		// paring data
-		int ct_id;
-		String ct_name;
 		shoplist.clear();
 		try
 		{

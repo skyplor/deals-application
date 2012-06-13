@@ -26,20 +26,17 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 
-import android.app.Activity;
+import com.ntu.dealsinterest.R;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ParseException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,13 +131,6 @@ public class Shopdetail extends MapActivity
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int pos, long id)
 			{
-				/*
-				 * Intent intent = new
-				 * Intent("com.ntu.dealsinterest.PRODUCTDETAIL");
-				 * intent.putExtra("lastproductid", arrPro[pos].getId());
-				 * startActivity(intent);
-				 */
-
 				Intent intent = new Intent(getParent(), Productdetail.class);
 				intent.putExtra("lastproductid", arrPro[pos].getId());
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();

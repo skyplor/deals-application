@@ -4,10 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 
+import com.ntu.dealsinterest.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -57,9 +57,6 @@ public class LazyAdapter extends BaseAdapter {
         TextView productprice = (TextView)vi.findViewById(R.id.productprice);
         TextView noLikes = (TextView)vi.findViewById(R.id.lblmainlikes);
         TextView noRemarks = (TextView)vi.findViewById(R.id.lblmaincomments);
-        //double price = data[position].getDprice() * 1000;
-        //long tempprice = Math.round(price);
-        //double finalprice = tempprice / 1000;
         Date prodDate = data[position].getCreated();
         DateFormat df2 = new SimpleDateFormat("dd MMM yyyy");
         String finalDate = df2.format(prodDate);

@@ -132,27 +132,4 @@ public class Product {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	public int getIcon(){
-		if (this.getCategory().equals("Women")){
-			return R.drawable.womensmall;
-		}else if (this.getCategory().equals("Men")){
-			return R.drawable.mensmall;
-		}else if (this.getCategory().equals("Cosmetics")){
-			return R.drawable.cosmeticssmall;
-		}else if (this.getCategory().equals("Digital")){
-			return R.drawable.digitalsmall;
-		}else if (this.getCategory().equals("Household")){
-			return R.drawable.householdsmall;
-		}else if (this.getCategory().equals("Kids")){
-			return R.drawable.kidssmall;
-		}else if (this.getCategory().equals("Entertainment")){
-			return R.drawable.entertainmentsmall;
-		}else if (this.getCategory().equals("Groceries")){
-			return R.drawable.groceriessmall;
-		}else if (this.getCategory().equals("Others")){
-			return R.drawable.otherssmall;
-		}
-		return -1;
-	}
-	
 }

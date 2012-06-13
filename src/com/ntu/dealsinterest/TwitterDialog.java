@@ -1,5 +1,8 @@
 package com.ntu.dealsinterest;
 
+import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
+
+import com.ntu.dealsinterest.R;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -24,8 +27,6 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.ntu.dealsinterest.R;
-import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
 
 public class TwitterDialog extends Dialog {
 

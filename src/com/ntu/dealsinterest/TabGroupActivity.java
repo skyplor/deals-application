@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
-import com.ntu.dealsinterest.R;
 
 /**
  * The purpose of this Activity is to manage the activities in a tab.

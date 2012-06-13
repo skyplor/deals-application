@@ -1,9 +1,9 @@
 package com.fedorvlasov.lazylist;
 
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 
+import com.ntu.dealsinterest.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -84,8 +84,6 @@ public class SimpleLazyAdapter extends BaseAdapter {
         	imageLoader.DisplayImage(Integer.toString(data[position].getId()), activity, image);
         	percent.setText(data[position].getPercentdiscount() + " Off");
         }else{
-        	//int drawable = data[position].getIcon();
-        	//image.setImageResource(drawable);
         	image.setVisibility(View.GONE);
         	percent.setVisibility(View.GONE);
         	text.setText(shop[position].getName());

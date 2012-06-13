@@ -1,10 +1,6 @@
 package com.ntu.dealsinterest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,10 +16,9 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.TwitterApp.TwDialogListener;
-import com.ntu.dealsinterest.models.UserParticulars;
 
+import com.ntu.dealsinterest.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,14 +35,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -59,10 +49,6 @@ import android.widget.TextView;
 @SuppressWarnings("deprecation")
 public class Container extends TabActivity
 {
-
-	private static final int CAMERA_PIC_REQUEST = 1337;
-	private static final int GALLERY_REQUEST = 1500;
-	private static String _path = "";
 	Uri outputFileUri;
 	int currentTab = 0;
 	static final int DIALOG_ERR_LOGIN = 0, INIT_NORM = 0, INIT_FB = 1, INIT_TWIT = 2;
@@ -89,11 +75,7 @@ public class Container extends TabActivity
 	private String genderS;
 	private String bdayS;
 	private String uid;
-//	private UserParticulars userS;
-
-	//Button logout;
 	public static ImageView btn1,btn2,btn3,map;
-	//public static ImageView home;
 	Intent intent; // Reusable Intent for each tab
 	Resources res; // Resource object to get Drawables
 	public static TabHost tabHost; // The activity TabHost
@@ -110,13 +92,11 @@ public class Container extends TabActivity
 		btn2= (ImageView) findViewById(R.id.headerHot);
 		btn3= (ImageView) findViewById(R.id.headerNearby);
 		map = (ImageView) findViewById(R.id.headerMap);
-		//home = (ImageView) findViewById(R.id.imgHome);
 		
 		browse = (ImageView) findViewById(R.id.headerBrowse);
 		share = (ImageView) findViewById(R.id.headerCamera);
 		search = (ImageView) findViewById(R.id.headerSearch);
 		settings = (ImageView) findViewById(R.id.headerSettings);
-		// tabHost = (TabHost) findViewById(R.id.tabhost);
 		res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
 		
@@ -135,7 +115,6 @@ public class Container extends TabActivity
 				{
 					public void onClick(DialogInterface dialog, int which)
 					{
-						// here you can add functions
 						Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
 						startActivity(intent);
 						finish();
@@ -145,7 +124,6 @@ public class Container extends TabActivity
 				{
 					public void onClick(DialogInterface dialog, int which)
 					{
-						// here you can add functions
 						finish();
 					}
 				});
@@ -153,15 +131,6 @@ public class Container extends TabActivity
 		}
 		else
 		{ 
-			//logout = (Button) findViewById(R.id.logoutBtn1);
-
-			/*
-			 * tabHost.setOnTabChangedListener(new OnTabChangeListener(){
-			 * 
-			 * @Override public void onTabChanged(String arg0) {
-			 * 
-			 * } });
-			 */
 
 			globalVar = ((GlobalVariable) getApplicationContext());
 			twitBtn = globalVar.getTwitBtn();
@@ -194,18 +163,13 @@ public class Container extends TabActivity
 				Log.d("in Container, fb:", Boolean.toString(SessionStore.restore(facebook,this)));
 				fbConnect = new FbConnect(APP_ID, this, getApplicationContext());
 				TYPE = INIT_FB;
-				//init(TYPE);
 			}
 
 			else if (twitBtn || mTwitter.hasAccessToken())
 			{
 				TYPE = INIT_TWIT;
-				//init(TYPE);
 				if (mTwitter.hasAccessToken())
 				{
-					// name.setText("Hello " + sharedPref.getString("user_name",
-					// "")
-					// + ",");
 				}
 				else
 				{
@@ -230,14 +194,10 @@ public class Container extends TabActivity
 					ConnectDB connectCheck = new ConnectDB(Uname, pass, 1);
 					if (connectCheck.inputResult())
 					{
-						// name.setText("Hello " + connectCheck.getName() +
-						// ",");
 						TYPE = INIT_NORM;
-						//init(TYPE);
 					}
 					else
 					{
-						// do something else
 						Log.d("Authenticate User: ", "False");
 						showDialog(DIALOG_ERR_LOGIN);
 					}
@@ -271,7 +231,6 @@ public class Container extends TabActivity
 	    }
 	    TextView tv = (TextView) tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).findViewById(android.R.id.title);
 	    tv.setTextColor(Color.BLACK);
-	    //tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab()).setBackgroundColor(Color.parseColor("#e5e5e5")); // selected
 	}
 	
 	private void KillProcess()
@@ -296,86 +255,6 @@ public class Container extends TabActivity
 		}
 		return true;
 	}
-	/*
-	private void init(final int type)
-	{
-
-		logout.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				doLogout(type);
-			}
-		});
-	}*/
-
-//	private void doLogout(int type)
-//	{
-//		if (type == INIT_NORM)
-//		{
-//			// Logout logic here...
-//			globalVar = ((GlobalVariable) getApplicationContext());
-//			globalVar.setName("");
-//			globalVar.setHashPw("");
-//			globalVar.setEm("");
-//
-//			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-//			SharedPreferences.Editor editor = login.edit();
-//			editor.putString("userName", null);
-//			editor.putString("userID", null);
-//			editor.putString("emailLogin", null);
-//			editor.putString("pwLogin", null);
-//			editor.commit();
-//		}
-//		else if (type == INIT_FB)
-//		{
-//			// Go to LoginPage
-//			SharedPreferences login = getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-//			SharedPreferences.Editor editor = login.edit();
-//			editor.putString("userFBname", null);
-//			editor.putString("userName", null);
-//			editor.putString("userID", null);
-//			editor.putString("userFBID", null);
-//			editor.putString("emailLogin", null);
-//			editor.commit();
-//			globalVar = ((GlobalVariable) getApplicationContext());
-//			Facebook mFacebook = globalVar.getFBState();
-////			globalVar.setfbBtn(false);
-//			SessionEvents.onLogoutBegin();
-//			AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFacebook);
-//			asyncRunner.logout(getApplicationContext(), new LogoutRequestListener());
-//		}
-//		else
-//		{
-//			mTwitter.resetAccessToken();
-//			globalVar.setTwitBtn(false);
-//		}
-//
-//		// Return to the login activity
-//		Intent intent = new Intent(this, LoginPage.class);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(intent);
-//	}
-
-	// @Override
-	// protected void onResume()
-	// {
-	// super.onResume();
-	//
-	// setContentView(R.layout.container);
-	//
-	// res = getResources();
-	// tabHost = getTabHost();
-	// init(TYPE);
-	// }
-
-	/*
-	 * @Override protected void onActivityResult(int requestCode, int
-	 * resultCode, Intent data) { super.onActivityResult(requestCode,
-	 * resultCode, data); // if (requestCode != 0) // {
-	 * fbConnect.getFacebook().authorizeCallback(requestCode, resultCode, data);
-	 * // } }
-	 */
 
 	public class FbConnect
 	{
@@ -385,20 +264,16 @@ public class Container extends TabActivity
 
 		private Context context;
 		private Activity activity;
-		// private Handler mHandler;
 		private Facebook facebook;
 		GlobalVariable FbState = ((GlobalVariable) getApplicationContext());
 
 		private SharedPreferences sharedPref;
 		private Editor editor;
 
-		// private SessionListener mSessionListener = new SessionListener();
-
 		public FbConnect(String appId, Activity activity, Context context)
 		{
 
 			this.context = context;
-			// this.mHandler = new Handler();
 			this.activity = activity;
 
 			sharedPref = context.getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
@@ -406,36 +281,9 @@ public class Container extends TabActivity
 			editor = sharedPref.edit();
 			globalVar = ((GlobalVariable) getApplicationContext());
 
-			// SharedPreferences prefs=
-			// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
-			// String access_token = prefs.getString("access_token", null);
-			// Long expires = prefs.getLong("access_expires", -1);
-			// String sharedName = prefs.getString("name", "");
-			//
-			//
-			// if (access_token != null && expires != -1)
-			// {
-			// facebook.setAccessToken(access_token);
-			// facebook.setAccessExpires(expires);
-			// }
-
-			// if (!facebook.isSessionValid() || sharedName.equals(""))
-			// {
-			// facebook.authorize(activity, FACEBOOK_PERMISSION, new
-			// LoginDialogListener());
-			// }
-			// else
-			// {
-			// name.setText("Hello " + sharedName + ",");
-			// }
 			facebook = FbState.getFBState();
 
-			// if (!facebook.isSessionValid())
-			// {
-			// facebook = new Facebook(APP_ID);
-			// FbState.setFbState(facebook);
 			Log.d("In FBConnect, fb session: ", Boolean.toString(facebook.isSessionValid()));
-//			Log.d("In FBConnect, fb button: ", Boolean.toString(fbBtn));
 			if(!facebook.isSessionValid() && fblogout)
 			{
 				Intent launchLogin = new Intent(Container.this, LoginPage.class);
@@ -445,34 +293,16 @@ public class Container extends TabActivity
 			{
 			login();
 			}
-			// }
-			// else
-			// {
-			// SessionStore.restore(facebook, context);
-			// }
-
-			// SessionEvents.addAuthListener(mSessionListener);
-			// SessionEvents.addLogoutListener(mSessionListener);
-
 		}
 
 		public void login()
 		{
-			// GlobalVariable fbBtn = ((GlobalVariable)
-			// getApplicationContext());
-			// Boolean fbButton = fbBtn.getfbBtn();
-			// if (fbButton == true)
-			// {
 			if (!facebook.isSessionValid())
 			{
 				facebook.authorize(activity, FACEBOOK_PERMISSION, new LoginDialogListener());
 			}
-			// }
 			else
 			{
-				// globalVar = ((GlobalVariable) getApplicationContext());
-				// name.setText("Hello " + sharedPref.getString("facebookName",
-				// "") + ",");
 				mProgress.dismiss();
 			}
 		}
@@ -534,10 +364,6 @@ public class Container extends TabActivity
 					editor.putBoolean("FacebookLoggedOut", false);
 					editor.commit();
 					Log.d("Facebook", fnameS);
-//					userS = new UserParticulars(fnameS, lnameS, userEmail, genderS, bdayS);
-
-					// callback should be run in the original thread,
-					// not the background thread
 					mHandler.post(new Runnable()
 					{
 						public void run()
@@ -553,9 +379,6 @@ public class Container extends TabActivity
 								editor.putString("userDB_FBID", connectCheck.getUserFbTwNmID());
 								editor.putString("userID", connectCheck.getUserID());
 								editor.commit();
-
-//								editor.commit();
-								// name.setText("Hello " + nameS + ",");
 								mProgress.dismiss();
 								backupDatabase();
 								Log.d("Facebook session 2: ", Boolean.toString(facebook.isSessionValid()));
@@ -570,48 +393,11 @@ public class Container extends TabActivity
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							// globalVar = ((GlobalVariable)
-							// getApplicationContext());
-							// globalVar.setName(nameS);
 							catch (IOException e)
 							{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-
-							// String token = facebook.getAccessToken();
-							// long token_expires = facebook.getAccessExpires();
-
-							// SharedPreferences prefs=
-							// PreferenceManager.getDefaultSharedPreferences(SearchShops.this);
-							//
-							// prefs.edit().putLong("access_expires",
-							// token_expires).commit();
-							//
-							// prefs.edit().putString("access_token",
-							// token).commit();
-							//
-							// prefs.edit().putString("name", nameS).commit();
-							// fname.setText(fnameS);
-							// lname.setText(lnameS);
-							// email.setText(emailS);
-							// if (genderS.equals("male"))
-							// {
-							// male.setChecked(true);
-							// female.setChecked(false);
-							// }
-							// else if (genderS.equals("female"))
-							// {
-							// female.setChecked(true);
-							// male.setChecked(false);
-							// }
-							//
-							// for (int i = 0; i < 3; i++)
-							// {
-							// bdayInt[i] = getBday(bdayS)[i];
-							// }
-							// bday.setText("Your Birthdate is: " + bdayInt[0]
-							// +"/" + bdayInt[1] + "/" + bdayInt[2]);
 						}
 					});
 				}
@@ -671,27 +457,11 @@ public class Container extends TabActivity
 		{
 			String username = mTwitter.getUsername();
 			username = (username.equals("")) ? "No Name" : username;
-
-			// SharedPreferences sharedPref =
-			// getSharedPreferences("com.ntu.fypshop", MODE_PRIVATE);
-			// name.setText("Hello " + username + ",");
-			// name.setText("Hello " + sharedPref.getString("user_name", "") +
-			// ",");
-			// mTwitterBtn.setText("  Twitter  (" + username + ")");
-			// mTwitterBtn.setChecked(true);
-			// mTwitterBtn.setTextColor(Color.WHITE);
-
-			// Toast.makeText(TestConnect.this, "Connected to Twitter as " +
-			// username, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
 		public void onError(String value)
 		{
-			// mTwitterBtn.setChecked(false);
-			//
-			// Toast.makeText(TestConnect.this, "Twitter connection failed",
-			// Toast.LENGTH_LONG).show();
 		}
 
 		@Override
@@ -708,9 +478,6 @@ public class Container extends TabActivity
 	{
 		public void onComplete(String response, final Object state)
 		{
-
-			// callback should be run in the original thread,
-			// not the background thread
 			mHandler.post(new Runnable()
 			{
 				public void run()
@@ -719,160 +486,6 @@ public class Container extends TabActivity
 				}
 			});
 		}
-	}
-
-	protected void startCameraActivity()
-	{
-		_path = Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
-		// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// File file = new File(_path, "test.jpg");
-		// Uri outputFileUri = Uri.fromFile(file);
-		// intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-		// startActivityForResult(intent, 0);
-
-		// Log.i("MakeMachine", "startCameraActivity()" );
-		File file = new File(_path, "testing.jpg");
-
-		try
-		{
-			if (file.exists() == false)
-			{
-				file.createNewFile();
-			}
-
-		}
-		catch (IOException e)
-		{}
-
-		outputFileUri = Uri.fromFile(file);
-
-		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, outputFileUri);
-
-		// Uri outputFileUri = Uri.fromFile( file );
-
-		// Intent intent = new
-		// Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
-		// intent.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
-
-		startActivityForResult(intent, CAMERA_PIC_REQUEST);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == CAMERA_PIC_REQUEST)
-		{
-			// BitmapFactory.Options options = new BitmapFactory.Options();
-			// options.inSampleSize = 2;
-
-			// Bitmap bitmap = BitmapFactory.decodeFile( _path + "test.jpg",
-			// options );
-			// _image = (ImageView) findViewById(R.id.imageView2);
-			// _image.setImageBitmap(bitmap);
-			// Bundle bundle=data.getExtras();
-			// Bitmap pic = (Bitmap) bundle.get("pic");
-			// Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-			_path = Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
-			File file = new File(_path, "testing.jpg");
-			outputFileUri = Uri.fromFile(file);
-			Bundle bundle = getIntent().getExtras();
-			if (bundle == null)
-			{
-				/*
-				 * Intent i = new Intent("com.ntu.dealsinterest.BROWSEPLACE");
-				 * i.putExtra("pic", outputFileUri); startActivity(i);
-				 */
-
-				Intent i = new Intent(this, TabGroup2Activity.class);
-				i.putExtra("pic", outputFileUri);
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				startActivity(i);
-			}
-			else
-			{
-				/*
-				 * Intent i = new Intent("com.ntu.dealsinterest.ATTRACTION");
-				 * i.putExtra("pic", outputFileUri); i.putExtra("EMPLOYEE_ID",
-				 * getIntent().getIntExtra("EMPLOYEE_NAME",0));
-				 * i.putExtra("EMPLOYEE_NAME",
-				 * getIntent().getStringExtra("EMPLOYEE_NAME"));
-				 * startActivity(i);
-				 */
-
-				Intent i = new Intent(this, Attraction.class);
-				i.putExtra("pic", outputFileUri);
-				i.putExtra("EMPLOYEE_ID", getIntent().getIntExtra("EMPLOYEE_NAME", 0));
-				i.putExtra("EMPLOYEE_NAME", getIntent().getStringExtra("EMPLOYEE_NAME"));
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				startActivity(i);
-			}
-
-			// _image = (ImageView) findViewById(R.id.imageView2);
-			// _image.setImageBitmap(thumbnail);
-		}
-		else if (requestCode == GALLERY_REQUEST)
-		{
-			Bundle bundle = getIntent().getExtras();
-			if (bundle == null)
-			{
-				/*
-				 * Intent i = new Intent("com.ntu.dealsinterest.BROWSEPLACE");
-				 * outputFileUri = data.getData(); i.putExtra("pic",
-				 * outputFileUri); startActivity(i);
-				 */
-				Intent i = new Intent(this, TabGroup2Activity.class);
-				if (data != null)
-				{
-					outputFileUri = data.getData();
-					i.putExtra("pic", outputFileUri);
-				}
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				startActivity(i);
-			}
-			else
-			{
-				/*
-				 * Intent i = new Intent("com.ntu.dealsinterest.ATTRACTION");
-				 * outputFileUri = data.getData(); i.putExtra("pic",
-				 * outputFileUri); i.putExtra("EMPLOYEE_ID",
-				 * getIntent().getIntExtra("EMPLOYEE_NAME",0));
-				 * i.putExtra("EMPLOYEE_NAME",
-				 * getIntent().getStringExtra("EMPLOYEE_NAME"));
-				 * startActivity(i);
-				 */
-
-				Intent i = new Intent(this, Attraction.class);
-				outputFileUri = data.getData();
-				i.putExtra("pic", outputFileUri);
-				i.putExtra("EMPLOYEE_ID", getIntent().getIntExtra("EMPLOYEE_NAME", 0));
-				i.putExtra("EMPLOYEE_NAME", getIntent().getStringExtra("EMPLOYEE_NAME"));
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				startActivity(i);
-			}
-
-		}
-		else
-		{
-			super.onActivityResult(requestCode, resultCode, data);
-			// if (requestCode != 0)
-			// {
-			fbConnect.getFacebook().authorizeCallback(requestCode, resultCode, data);
-			// }
-		}
-		/*
-		 * Log.i( "MakeMachine", "resultCode: " + resultCode ); switch(
-		 * resultCode ) { case 0: Log.i( "MakeMachine", "User cancelled" );
-		 * break;
-		 * 
-		 * case -1: onPhotoTaken(); break; }
-		 */
 	}
 
 	public static void backupDatabase() throws IOException
@@ -901,51 +514,4 @@ public class Container extends TabActivity
 		 * output2.flush(); output2.close(); fis2.close();
 		 */
 	}
-
-	private void openAddPhoto()
-	{
-
-		String[] addPhoto = new String[]
-		{ "Camera", "Gallery" };
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle("Get your picture from");
-
-		dialog.setItems(addPhoto, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int id)
-			{
-				if (id == 0)
-				{
-					startCameraActivity();
-				}
-				if (id == 1)
-				{
-					startGallery();
-				}
-			}
-		});
-
-		dialog.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-				// TabGroupActivity parentActivity =
-				// (TabGroupActivity)getParent();
-				// Intent i = new Intent(this, Container.class);
-				// startActivity(i);
-				tabHost.setCurrentTab(0);
-			}
-		});
-		dialog.show();
-	}
-
-	protected void startGallery()
-	{
-		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(intent, GALLERY_REQUEST);
-	}
-
 }

@@ -19,6 +19,7 @@ import java.util.WeakHashMap;
 
 import com.ntu.dealsinterest.Constants;
 import com.ntu.dealsinterest.Main;
+
 import com.ntu.dealsinterest.R;
 
 import android.app.Activity;

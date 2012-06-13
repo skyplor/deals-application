@@ -19,11 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fedorvlasov.lazylist.SimpleLazyAdapter;
-import com.ntu.dealsinterest.R;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 import com.ntu.dealsinterest.models.TestingClass;
 
+import com.ntu.dealsinterest.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -145,7 +145,7 @@ public class Search extends Activity implements OnClickListener
 			imm.hideSoftInputFromWindow(txtSearch.getWindowToken(), 0);
 			if (searchStr.equals(""))
 			{
-				// alert
+				
 			}
 			else
 			{
@@ -243,9 +243,6 @@ public class Search extends Activity implements OnClickListener
 		{
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
-		// parsing data
-		int ct_id;
-		String ct_name;
 		shoplist.clear();
 		try
 		{
