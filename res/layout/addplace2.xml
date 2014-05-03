@@ -77,7 +77,7 @@ android:orientation="vertical">
                 android:id="@+id/addShopMap"
                 android:layout_width="320dip"
                 android:layout_height="300dip"
-                android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ"
+                android:apiKey="AIzaSyA2GB7QuSLGtQy9kf2-caX9pHgik4fUWzM"
                 android:clickable="true" >
             </WebView>
 

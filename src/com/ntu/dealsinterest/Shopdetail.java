@@ -65,6 +65,8 @@ public class Shopdetail extends MapActivity
 	JSONArray jArray;
 	String result = null;
 
+	private final String TAG = "SHOPDETAIL";
+
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -167,7 +169,7 @@ public class Shopdetail extends MapActivity
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 		// convert response to string
 		try
@@ -185,7 +187,7 @@ public class Shopdetail extends MapActivity
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		try
 		{

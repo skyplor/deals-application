@@ -46,7 +46,7 @@ public class Settings extends Activity
 	private Facebook facebook;
 	private TwitterApp mTwitter;
 	private Boolean fbacc = false, twitacc = false;
-	private static final String APP_ID = "Input your Facebook APP ID here";
+	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "ujpcXzdHq3DzSpzMtcciQ";
 	private static final String twitter_secret_key = "atr8AHAP1ajzcdIwXjp81Mz0QDBXHmdIZ7RgM1THlKs";
 	private final int LOGOUT = 1, FB = 2, TWIT = 3, SETTINGS = 1;

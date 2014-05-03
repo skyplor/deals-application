@@ -60,6 +60,8 @@ public class Browseplace extends Activity implements OnClickListener{
         
         double latitude = 0;
         double longitude = 0;
+
+    	private final String TAG = "BROWSEPLACE";
         
     /** Called when the activity is first created. */
     @Override
@@ -174,7 +176,7 @@ public class Browseplace extends Activity implements OnClickListener{
     	     HttpEntity entity = response.getEntity();
     	     is = entity.getContent();
     	     }catch(Exception e){
-    	         Log.e("log_tag", "Error in http connection"+e.toString());
+    	         Log.e(TAG, "Error in http connection"+e.toString());
     	    }
     	//convert response to string
     	try{
@@ -188,7 +190,7 @@ public class Browseplace extends Activity implements OnClickListener{
     	        is.close();
     	        result=sb.toString();
     	        }catch(Exception e){
-    	              Log.e("log_tag", "Error converting result "+e.toString());
+    	              Log.e(TAG, "Error converting result "+e.toString());
     	        }
     	try{
     	      jArray = new JSONArray(result);

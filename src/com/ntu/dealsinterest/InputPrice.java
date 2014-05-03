@@ -70,6 +70,8 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 	String shopLat = "";
 	String shopLng = "";
 	ProgressDialog progress;
+	
+	private final String TAG = "INPUTPRICE";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -263,7 +265,7 @@ public class InputPrice extends Activity implements OnClickListener, RadioGroup.
 				}
 				catch (Exception e)
 				{
-					Log.e("log_tag", "Error in http connection" + e.toString());
+					Log.e(TAG, "Error in http connection" + e.toString());
 				}
 			}
 		}catch (NumberFormatException e){

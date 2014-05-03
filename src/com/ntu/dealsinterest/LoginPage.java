@@ -30,7 +30,7 @@ import android.widget.*;
 
 public class LoginPage extends Activity {
 
-	private static final String APP_ID = "Input your Facebook APP ID here";
+	private static final String APP_ID = "222592464462347";
 	private TwitterApp mTwitter;
 	private Facebook mFacebook;
 

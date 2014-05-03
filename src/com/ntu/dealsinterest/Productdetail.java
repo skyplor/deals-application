@@ -101,7 +101,7 @@ public class Productdetail extends Activity implements OnClickListener
 	AsyncFacebookRunner asyncRunner;
 
 	private static final String APP_DOWNLOAD_LINK = "https://market.android.com/";
-	private static final String APP_ID = "Input your Facebook APP ID here";
+	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "ujpcXzdHq3DzSpzMtcciQ";
 	private static final String twitter_secret_key = "atr8AHAP1ajzcdIwXjp81Mz0QDBXHmdIZ7RgM1THlKs";
 	private static final int PRODUCTDETAIL = 3;
@@ -121,6 +121,8 @@ public class Productdetail extends Activity implements OnClickListener
 	TextView latestcomments;
 	TextView alreadylike;
 	Button showmorecomments, showshop;
+
+	private final String TAG = "PRODUCTDETAIL";
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -247,7 +249,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 		// convert response to string
 		try
@@ -265,7 +267,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		// parsing data
 
@@ -420,7 +422,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 		// convert response to string
 		try
@@ -438,7 +440,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		// parsing data
 		if (!result.contains("null"))
@@ -981,7 +983,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 	}
 
@@ -1003,7 +1005,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 		// convert response to string
 		try
@@ -1021,7 +1023,7 @@ public class Productdetail extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 
 		if (!result.contains("null"))

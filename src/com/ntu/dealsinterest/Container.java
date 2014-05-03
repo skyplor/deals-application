@@ -53,7 +53,10 @@ public class Container extends TabActivity
 	int currentTab = 0;
 	static final int DIALOG_ERR_LOGIN = 0, INIT_NORM = 0, INIT_FB = 1, INIT_TWIT = 2;
 	static int TYPE = 0;
-	private static final String APP_ID = "Input your Facebook APP ID here";
+
+	private final String TAG = "CONTAINER";
+	
+	private static final String APP_ID = "222592464462347";
 	private static final String twitter_consumer_key = "ujpcXzdHq3DzSpzMtcciQ";
 	private static final String twitter_secret_key = "atr8AHAP1ajzcdIwXjp81Mz0QDBXHmdIZ7RgM1THlKs";
 	private static final int CONTAINER = 4;

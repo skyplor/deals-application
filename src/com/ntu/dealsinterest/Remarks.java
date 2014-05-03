@@ -57,6 +57,8 @@ public class Remarks extends Activity implements OnClickListener{
 	JSONArray jArray;
 	String result = null;
 	private Remark[] listremarks = null;
+
+	private final String TAG = "REMARKS";
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -121,7 +123,7 @@ public class Remarks extends Activity implements OnClickListener{
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 		// convert response to string
 		try
@@ -139,7 +141,7 @@ public class Remarks extends Activity implements OnClickListener{
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		// paring data
 		// int ct_id;
@@ -228,7 +230,7 @@ public class Remarks extends Activity implements OnClickListener{
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 	}
 	

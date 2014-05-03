@@ -75,6 +75,8 @@ public class Addplace extends MapActivity implements OnClickListener
 	HashMap<GeoPoint, List<String>> addrMap;
 	String address = "";
 
+	private final String TAG = "ADDPLACE";
+
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -104,7 +106,7 @@ public class Addplace extends MapActivity implements OnClickListener
 					Arradapter.clear();
 					try
 					{
-						URL googlePlaces = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Singapore+"+URLEncoder.encode(s.toString(),"UTF-8")+"&location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyDPM56RkK22FTlNFV-0AMK8PLejw31j1KQ");
+						URL googlePlaces = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Singapore+"+URLEncoder.encode(s.toString(),"UTF-8")+"&location=1.3667,103.8&radius=50000&sensor=true&key=AIzaSyA9Y2Tl7wpOPaeMxpxIi_cq0Q-kiGrLeKY");
 						URLConnection tc = googlePlaces.openConnection();
 						Log.d("Gotta go:", URLEncoder.encode(s.toString()));
 						BufferedReader in = new BufferedReader(new InputStreamReader(tc.getInputStream()));
@@ -479,7 +481,7 @@ public class Addplace extends MapActivity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
+			Log.e(TAG, "Error in http connection" + e.toString());
 		}
 	}
 

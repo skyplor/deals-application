@@ -34,8 +34,8 @@ import com.fedorvlasov.lazylist.LazyAdapter;
 import com.ntu.dealsinterest.models.Product;
 import com.ntu.dealsinterest.models.Shop;
 
-
 import android.net.ParseException;
+import android.os.AsyncTask;
 import android.util.Log;
 
 public class ConnectDB
@@ -52,11 +52,20 @@ public class ConnectDB
 	String userEmail = "";
 	String userTwitID = "";
 	String userFbTwNmID = "";
+	String connectType = "";
+	RetrieveISTask reISTask;
+	String password = "";
+
+	String userType = "";
 
 	List<Shop> shop;
 	Shop[] shopArray;
 
+	ArrayList<NameValuePair> nameValuePairs;
+
 	private static int SETTINGS = 1, REGISTRATION = 2, PRODUCTDETAIL = 3, CONTAINER = 4, TWITTERAPP = 5, LOGINPAGE = 0;
+
+	private final String TAG = "CONNECTDB";
 
 	public Shop[] getShopArray()
 	{
@@ -83,6 +92,8 @@ public class ConnectDB
 
 	public ConnectDB(String email, String password, Integer LoginPageOrCONTAINER)
 	{
+		this.password = password;
+		this.userEmail = email;
 		if (LoginPageOrCONTAINER == LOGINPAGE)
 		{
 			// the data to send
@@ -91,30 +102,36 @@ public class ConnectDB
 
 			BufferedReader inSalt = null;
 
-			try
-			{
-				client = new DefaultHttpClient();
-				HttpPost emailRequest = new HttpPost(Constants.CONNECTIONSTRING + "getSalt.php");
-				emailRequest.setEntity(new UrlEncodedFormEntity(checkSalt));
-				HttpResponse emailResponse = client.execute(emailRequest);
-				HttpEntity saltEntity = emailResponse.getEntity();
-				inSalt = new BufferedReader(new InputStreamReader(saltEntity.getContent(), "iso-8859-1"), 8);
-				String bsalt = inSalt.readLine();
-				JSONObject jsonObj = new JSONObject(bsalt);
-				Log.d("Salt: ", jsonObj.getString("salt"));
-				salt = jsonObj.getString("salt");
-				inSalt.close();
+			connectType = "getSalt";
+			reISTask = new RetrieveISTask(connectType);
+			reISTask.setNameValuePairs(nameValuePairs);
+			reISTask.setConnectDB(this);
+			reISTask.setP("getSalt.php");
+			reISTask.execute();
+			// try
+			// {
+			// client = new DefaultHttpClient();
+			// HttpPost emailRequest = new HttpPost(Constants.CONNECTIONSTRING + "getSalt.php");
+			// emailRequest.setEntity(new UrlEncodedFormEntity(checkSalt));
+			// HttpResponse emailResponse = client.execute(emailRequest);
+			// HttpEntity saltEntity = emailResponse.getEntity();
+			// inSalt = new BufferedReader(new InputStreamReader(saltEntity.getContent(), "iso-8859-1"), 8);
+			// String bsalt = inSalt.readLine();
+			// JSONObject jsonObj = new JSONObject(bsalt);
+			// Log.d("Salt: ", jsonObj.getString("salt"));
+			// salt = jsonObj.getString("salt");
+			// inSalt.close();
 
-				String hashedPass = getHash(1, password, salt) + ":" + salt;
-				Log.d("Hashed Password: ", hashedPass);
+			// String hashedPass = getHash(1, password, salt) + ":" + salt;
+			// Log.d("Hashed Password: ", hashedPass);
+			//
+			// authenticateUser(email, hashedPass);
 
-				authenticateUser(email, hashedPass);
-
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			// }
+			// catch (Exception e)
+			// {
+			// e.printStackTrace();
+			// }
 		}
 		else
 		{
@@ -125,63 +142,71 @@ public class ConnectDB
 	private void authenticateUser(String email, String hashedPass)
 	{
 
-		BufferedReader in = null;
+//		BufferedReader in = null;
 		// TODO Auto-generated method stub
 		try
 		{
 
-			client = new DefaultHttpClient();
+//			client = new DefaultHttpClient();
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("email", email));
 			nameValuePairs.add(new BasicNameValuePair("password", hashedPass));
 
 			Log.d("email: ", email);
 			Log.d("pass: ", hashedPass);
-			HttpPost request = new HttpPost(Constants.CONNECTIONSTRING + "authenticateUser.php");
-			request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = client.execute(request);
-			HttpEntity entity = response.getEntity();
-			in = new BufferedReader(new InputStreamReader(entity.getContent()), 8);
-			result = in.readLine();
-			if (!result.equals("null"))
-			{
-				Log.d("HashedPass: ", hashedPass);
-				try
-				{
-					JSONArray jArray = new JSONArray(result);
-					JSONObject json_data = null;
-					for (int i = 0; i < jArray.length(); i++)
-					{
-						json_data = jArray.getJSONObject(i);
-						userID = json_data.getString("id");
-						userName = json_data.getString("name");
-						userEmail = json_data.getString("email");
-						userFbTwNmID = json_data.getString("acctid");
-						hpw = json_data.getString("password");
-					}
 
-				}
-				catch (JSONException e1)
-				{
-					Log.e("JSONException: ", e1.getMessage());
-				}
-				catch (ParseException e1)
-				{
-					e1.printStackTrace();
-				}
-			}
-			else
-			{
-				result = "0";
-			}
+			connectType = "authenticateUser";
+			reISTask = new RetrieveISTask(connectType);
+			reISTask.setNameValuePairs(nameValuePairs);
+			reISTask.setConnectDB(this);
+			reISTask.setP("authenticateUser.php");
+			reISTask.execute();
 
-			in.close();
-			client.getConnectionManager().shutdown();
+			// HttpPost request = new HttpPost(Constants.CONNECTIONSTRING + "authenticateUser.php");
+			// request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			// HttpResponse response = client.execute(request);
+			// HttpEntity entity = response.getEntity();
+			// in = new BufferedReader(new InputStreamReader(entity.getContent()), 8);
+			// result = in.readLine();
+			// if (!result.equals("null"))
+			// {
+			// Log.d("HashedPass: ", hashedPass);
+			// try
+			// {
+			// JSONArray jArray = new JSONArray(result);
+			// JSONObject json_data = null;
+			// for (int i = 0; i < jArray.length(); i++)
+			// {
+			// json_data = jArray.getJSONObject(i);
+			// userID = json_data.getString("id");
+			// userName = json_data.getString("name");
+			// userEmail = json_data.getString("email");
+			// userFbTwNmID = json_data.getString("acctid");
+			// hpw = json_data.getString("password");
+			// }
+			//
+			// }
+			// catch (JSONException e1)
+			// {
+			// Log.e("JSONException: ", e1.getMessage());
+			// }
+			// catch (ParseException e1)
+			// {
+			// e1.printStackTrace();
+			// }
+			// }
+			// else
+			// {
+			// result = "0";
+			// }
+
+			// in.close();
+//			client.getConnectionManager().shutdown();
 		}
 
 		catch (Exception exc)
 		{
-			Log.e("log_tag", "Error converting result " + exc.toString());
+			Log.e(TAG, "Error converting result " + exc.toString());
 		}
 
 	}
@@ -192,7 +217,7 @@ public class ConnectDB
 		Boolean twitter = (!sharedpref.getString("userDB_TWITID", "").equals(""));
 		Boolean fb = (!sharedpref.getString("userDB_FBID", "").equals(""));
 		Boolean norm = (!sharedpref.getString("userDB_NMID", "").equals(""));
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs = new ArrayList<NameValuePair>();
 		String hashedPass = "";
 
 		// the data to send
@@ -201,9 +226,9 @@ public class ConnectDB
 		Log.d("Class number: ", Integer.toString(classnumber));
 		if (classnumber == SETTINGS || classnumber == PRODUCTDETAIL)
 		{
-			Log.d("in ConnectDB, norm/twitter/fb: ", Boolean.toString(norm)+ " " + Boolean.toString(twitter) + " " + Boolean.toString(fb));
-			//nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
-			if(classnumber == SETTINGS)
+			Log.d("in ConnectDB, norm/twitter/fb: ", Boolean.toString(norm) + " " + Boolean.toString(twitter) + " " + Boolean.toString(fb));
+			// nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
+			if (classnumber == SETTINGS)
 			{
 				nameValuePairs.add(new BasicNameValuePair("connectType", "settings"));
 			}
@@ -214,7 +239,7 @@ public class ConnectDB
 			if (userType.equals("user_fb") && norm && twitter)
 			{
 				nameValuePairs.add(new BasicNameValuePair("accType", "1"));
-				
+
 			}
 			else if (userType.equals("user_fb") && norm && !twitter)
 			{
@@ -258,7 +283,7 @@ public class ConnectDB
 
 			nameValuePairs.add(new BasicNameValuePair("email", emailorScnName));
 			String saltstr = new String(Base64.encodeBase64(salt), "UTF8");
-			hashedPass = getHash(1, password, saltstr)+":"+saltstr;
+			hashedPass = getHash(1, password, saltstr) + ":" + saltstr;
 			nameValuePairs.add(new BasicNameValuePair("password", hashedPass));
 
 			for (int i = 0; i < 4; i++)
@@ -281,85 +306,33 @@ public class ConnectDB
 			nameValuePairs.add(new BasicNameValuePair("twitID", fbtwitID));
 		}
 		// http post
-		try
-		{
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
-			for (NameValuePair nvp : nameValuePairs)
-			{
-				Log.d("NameValuePairs: ", nvp.getName() + ": " + nvp.getValue());
-			}
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		}
-
-		catch (Exception ex)
-		{
-			Log.e("log_tag", "Error in http connection " + ex.toString());
-		}
+		connectType = "insertUser";
+		reISTask = new RetrieveISTask(connectType);
+		reISTask.setConnectDB(this);
+		reISTask.setHashedPass(hashedPass);
+		reISTask.setNameValuePairs(nameValuePairs);
+		reISTask.setP("insertUser.php");
+		reISTask.setUserType(userType);
+		reISTask.execute();
+		// try
+		// {
+		// HttpClient httpclient = new DefaultHttpClient();
+		// HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "insertUser.php");
+		// for (NameValuePair nvp : nameValuePairs)
+		// {
+		// Log.d("NameValuePairs: ", nvp.getName() + ": " + nvp.getValue());
+		// }
+		// httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		// HttpResponse response = httpclient.execute(httppost);
+		// HttpEntity entity = response.getEntity();
+		// is = entity.getContent();
+		// }
+		//
+		// catch (Exception ex)
+		// {
+		// Log.e(TAG, "Error in http connection " + ex.toString());
+		// }
 		// convert response to string
-		try
-		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-			String line = null;
-			line = reader.readLine();
-			is.close();
-
-			result = line;
-			if (result == null || result.equals("null"))
-			{
-				Log.d("Result in ConnectDB: ", "null");
-			}
-			if (!result.equals("null"))
-			{
-				Log.d("Result in ConnectDB: ", result);
-				try
-				{
-					JSONArray jArray = new JSONArray(result);
-					JSONObject json_data = null;
-					for (int i = 0; i < jArray.length(); i++)
-					{
-						json_data = jArray.getJSONObject(i);
-						userID = json_data.getString("id");
-						userName = json_data.getString("name");
-						userFbTwNmID = json_data.getString("acctid");
-						if (userType.equals("user_twit"))
-						{
-							userTwitID = json_data.getString("twitID");
-						}
-						else if (userType.equals("user_norm"))
-						{
-							Log.d("HashedPass: ", hashedPass);
-							hpw = json_data.getString("password");
-							userEmail = json_data.getString("email");
-						}
-						else
-						{
-							userEmail = json_data.getString("email");
-						}
-					}
-				}
-				catch (JSONException e1)
-				{
-					Log.e("JSONException: ", e1.getMessage());
-				}
-				catch (ParseException e1)
-				{
-					e1.printStackTrace();
-				}
-			}
-			else
-			{
-				result = "0";
-			}
-		}
-
-		catch (Exception exc)
-		{
-			Log.e("ConnectDB exception: ", "Error converting result " + exc.toString());
-		}
 
 	}
 
@@ -367,6 +340,7 @@ public class ConnectDB
 	{
 		JSONObject json = new JSONObject();
 		// http post
+		
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
@@ -384,7 +358,7 @@ public class ConnectDB
 
 		catch (Exception ex)
 		{
-			Log.e("log_tag", "Error in http connection " + ex.toString());
+			Log.e(TAG, "Error in http connection " + ex.toString());
 		}
 		// convert response to string
 		try
@@ -415,7 +389,7 @@ public class ConnectDB
 
 		catch (Exception exc)
 		{
-			Log.e("log_tag", "Error converting result " + exc.toString());
+			Log.e(TAG, "Error converting result " + exc.toString());
 		}
 	}
 
@@ -423,7 +397,7 @@ public class ConnectDB
 	{
 		// the data to send
 		JSONObject json = new JSONObject();
-		
+
 		// http post
 		try
 		{
@@ -450,7 +424,7 @@ public class ConnectDB
 
 		catch (Exception ex)
 		{
-			Log.e("log_tag", "Error in http connection " + ex.toString());
+			Log.e(TAG, "Error in http connection " + ex.toString());
 		}
 		// convert response to string
 		try
@@ -497,7 +471,7 @@ public class ConnectDB
 
 		catch (Exception exc)
 		{
-			Log.e("log_tag", "Error converting result " + exc.toString());
+			Log.e(TAG, "Error converting result " + exc.toString());
 		}
 	}
 
@@ -532,6 +506,115 @@ public class ConnectDB
 		}
 	}
 
+	public void processIS(String result, String connectType)
+	{
+		try
+		{
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+//			String line = null;
+//			line = reader.readLine();
+//			is.close();
+//
+//			result = line;
+			if (result == null || result.equals("null"))
+			{
+				Log.d("Result in ConnectDB: ", "null");
+			}
+			if (!result.equals("null"))
+			{
+				Log.d("Result in ConnectDB: ", result);
+
+				try
+				{
+					if (connectType.equals("insertUser"))
+					{
+						JSONArray jArray = new JSONArray(result);
+						JSONObject json_data = null;
+						for (int i = 0; i < jArray.length(); i++)
+						{
+							json_data = jArray.getJSONObject(i);
+							userID = json_data.getString("id");
+							userName = json_data.getString("name");
+							userFbTwNmID = json_data.getString("acctid");
+							if (userType.equals("user_twit"))
+							{
+								userTwitID = json_data.getString("twitID");
+							}
+							else if (userType.equals("user_norm"))
+							{
+								Log.d("HashedPass: ", hpw);
+								hpw = json_data.getString("password");
+								userEmail = json_data.getString("email");
+							}
+							else
+							{
+								userEmail = json_data.getString("email");
+							}
+						}
+					}
+					
+					else if (connectType.equals("getSalt"))
+					{
+						try
+						{
+							JSONObject jsonObj = new JSONObject(result);
+							Log.d("Salt: ", jsonObj.getString("salt"));
+							salt = jsonObj.getString("salt");
+							// inSalt.close();
+
+							String hashedPass = getHash(1, password, salt) + ":" + salt;
+							Log.d("Hashed Password: ", hashedPass);
+
+							authenticateUser(userEmail, hashedPass);
+						}
+						catch (JSONException e1)
+						{
+							Log.e("JSONException: ", e1.getMessage());
+						}
+						catch (ParseException e1)
+						{
+							e1.printStackTrace();
+						}
+					}
+
+					else if (connectType.equals("authenticateUser"))
+					{
+						JSONArray jArray = new JSONArray(result);
+						JSONObject json_data = null;
+						for (int i = 0; i < jArray.length(); i++)
+						{
+							json_data = jArray.getJSONObject(i);
+							userID = json_data.getString("id");
+							userName = json_data.getString("name");
+							userEmail = json_data.getString("email");
+							userFbTwNmID = json_data.getString("acctid");
+							hpw = json_data.getString("password");
+						}
+					}
+//					reader.close();
+				}
+				catch (JSONException e1)
+				{
+					Log.e("JSONException: ", e1.getMessage());
+				}
+				catch (ParseException e1)
+				{
+					e1.printStackTrace();
+				}
+
+			}
+			else
+			{
+				result = "0";
+			}
+		}
+
+		catch (Exception exc)
+		{
+			Log.e("ConnectDB exception: ", "Error converting result " + exc.toString());
+		}
+	}
+
 	public String getHash(int iterationNb, String password, String salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		String result = null;
@@ -546,8 +629,7 @@ public class ConnectDB
 		{
 			source = input.getBytes();
 		}
-		char hexDigits[] =
-		{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 		try
 		{
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -595,5 +677,25 @@ public class ConnectDB
 	public String getUserEmail()
 	{
 		return userEmail;
+	}
+
+	public String getHpw()
+	{
+		return hpw;
+	}
+
+	public void setHpw(String hpw)
+	{
+		this.hpw = hpw;
+	}
+
+	public String getUserType()
+	{
+		return userType;
+	}
+
+	public void setUserType(String userType)
+	{
+		this.userType = userType;
 	}
 }

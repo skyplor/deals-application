@@ -14,7 +14,7 @@
 			android:layout_alignParentLeft="true"
 			android:layout_marginLeft="10dp"
 			android:layout_marginTop="10dp"
-			android:apiKey="0fJKoBXvkjaxqXZ_loYfQEEXmINxngMMjOROQSQ">
+			android:apiKey="AIzaSyA2GB7QuSLGtQy9kf2-caX9pHgik4fUWzM">
 </com.google.android.maps.MapView>
     	     
 <TextView android:text="Shop name" 

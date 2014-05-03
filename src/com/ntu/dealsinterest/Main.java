@@ -44,6 +44,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ParseException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -65,9 +66,13 @@ public class Main extends MapActivity implements OnClickListener
 
 	public static DisplayMetrics metrics = new DisplayMetrics();
 	private static GlobalVariable globalVar;
+
+	private final String TAG = "MAIN";
 	
 	public static LocationManager locationManager;
 	public static GPSLocationListener locationListener;
+	String connectType = "";
+	RetrieveISTask reISTask;
 
 	public static GeoPoint point = new GeoPoint(1304256, 103832538);
 
@@ -75,7 +80,7 @@ public class Main extends MapActivity implements OnClickListener
 								// nearby
 	private boolean mapmode = false;
 
-	Handler mHandler = new Handler();	
+	Handler mHandler = new Handler();
 
 	protected String[] employees;
 	protected Integer[] employeesid;
@@ -106,6 +111,8 @@ public class Main extends MapActivity implements OnClickListener
 	Markers itemmarker;
 	Drawable drawableUser;
 	Drawable drawableItem;
+	
+	ArrayList<NameValuePair> nameValuePairs;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -128,28 +135,27 @@ public class Main extends MapActivity implements OnClickListener
 
 		browse.setEnabled(false);
 		searchResult = (ListView) findViewById(R.id.listBrowse);
-		
+
 		mapView = null;
 
 		latest.setOnClickListener(this);
 		nearby.setOnClickListener(this);
 		hot.setOnClickListener(this);
 		map.setOnClickListener(this);
-		
+
 		currentState = 1;
 		latest.setEnabled(false);
-		
+
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		locationListener = new GPSLocationListener();
 
-		globalVar = ((GlobalVariable) getApplicationContext()); 
+		globalVar = ((GlobalVariable) getApplicationContext());
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
 
 		init();
 		TestingClass.setEndTime();
-		Log.d("Main Browsing activity", Long.toString(TestingClass.calculateTime()));
+		Log.d(TAG, Long.toString(TestingClass.calculateTime()));
 
 	}
 
@@ -166,12 +172,15 @@ public class Main extends MapActivity implements OnClickListener
 		browse.setEnabled(false);
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		int type = metrics.densityDpi;
-		if (type > metrics.DENSITY_HIGH){
+		if (type > metrics.DENSITY_HIGH)
+		{
 			hot.getLayoutParams().width = 90;
-		}else{
+		}
+		else
+		{
 			hot.getLayoutParams().width = 65;
 		}
-		
+
 		latest.setImageResource(R.drawable.latestbuttondynamic);
 		hot.setImageResource(R.drawable.hotbuttondynamic);
 		nearby.setImageResource(R.drawable.nearbybuttondynamic);
@@ -246,44 +255,43 @@ public class Main extends MapActivity implements OnClickListener
 	{
 		switch (item.getItemId())
 		{
-		case R.id.dashboard:
-			Toast.makeText(getParent(), "You pressed the Dashboard!", Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(getParent(), Dashboard.class);
-			startActivity(intent);
-			break;
-		case R.id.settings:
-			Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
-			Intent intent2 = new Intent(getParent(), com.ntu.dealsinterest.Settings.class);
-			startActivity(intent2);
-			break;
+			case R.id.dashboard:
+				Toast.makeText(getParent(), "You pressed the Dashboard!", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getParent(), Dashboard.class);
+				startActivity(intent);
+				break;
+			case R.id.settings:
+				Toast.makeText(getParent(), "You pressed the Settings!", Toast.LENGTH_SHORT).show();
+				Intent intent2 = new Intent(getParent(), com.ntu.dealsinterest.Settings.class);
+				startActivity(intent2);
+				break;
 
-		case R.id.mapviews:
-			Toast.makeText(getParent(), "You pressed the Map!", Toast.LENGTH_SHORT).show();
-			Intent intent3 = new Intent(getParent(), com.ntu.dealsinterest.MapResult.class);
-			intent3.putExtra("main", true);
-			TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-			parentActivity.startChildActivity("Map Result" + TabGroup1Activity.intentCount, intent3);
-			TabGroup1Activity.intentCount++;
-			break;
+			case R.id.mapviews:
+				Toast.makeText(getParent(), "You pressed the Map!", Toast.LENGTH_SHORT).show();
+				Intent intent3 = new Intent(getParent(), com.ntu.dealsinterest.MapResult.class);
+				intent3.putExtra("main", true);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("Map Result" + TabGroup1Activity.intentCount, intent3);
+				TabGroup1Activity.intentCount++;
+				break;
 		}
 		return true;
 	}
 
 	private void init()
 	{
-		globalVar = ((GlobalVariable) getApplicationContext()); 
-		
+		globalVar = ((GlobalVariable) getApplicationContext());
+
 		getProduct("Latest");
 		// TODO Auto-generated method stub
 
-		
 	}
 
 	@Override
 	public void onClick(View v)
 	{
 		if (v == latest)
-		{			
+		{
 			getProduct("Latest");
 			currentState = 1;
 			latest.setEnabled(false);
@@ -551,7 +559,7 @@ public class Main extends MapActivity implements OnClickListener
 	public void getProduct(String mode)
 	{
 		searchResult.setAdapter(null);
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs = new ArrayList<NameValuePair>();
 		if (mode.equals("Latest"))
 		{
 			String lat = Double.toString(point.getLatitudeE6() / 1E6);
@@ -579,127 +587,152 @@ public class Main extends MapActivity implements OnClickListener
 			nameValuePairs.add(new BasicNameValuePair("lat", lat));
 			nameValuePairs.add(new BasicNameValuePair("lng", lng));
 		}
-		try
-		{
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "browse.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
-			if (response != null)
-			{
-				HttpEntity entity = response.getEntity();
-				is = entity.getContent();
-			}
-		}
-		catch (Exception e)
-		{
-			Log.e("log_tag", "Error in http connection" + e.toString());
-		}
+		
+		connectType="browse";
+		reISTask = new RetrieveISTask(connectType);
+		reISTask.setMain(this);
+		reISTask.setNameValuePairs(nameValuePairs);
+		reISTask.setP("browse.php");
+		reISTask.execute();
+		// try
+		// {
+		// HttpClient httpclient = new DefaultHttpClient();
+		// HttpPost httppost = new HttpPost(Constants.CONNECTIONSTRING + "browse.php");
+		// httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		// HttpResponse response = httpclient.execute(httppost);
+		// if (response != null)
+		// {
+		// HttpEntity entity = response.getEntity();
+		// is = entity.getContent();
+		// }
+		// }
+		// catch (Exception e)
+		// {
+		// Log.e(TAG, "Error in http connection" + e.toString());
+		// }
 		// convert response to string
+		
+	}
+	
+	public void processIS(String result)
+	{
 		try
 		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-			sb = new StringBuilder();
-			sb.append(reader.readLine() + "\n");
-			String line = "0";
-			while ((line = reader.readLine()) != null)
-			{
-				sb.append(line + "\n");
-			}
-			is.close();
-			result = sb.toString();
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+//			Log.d(TAG,reader.readLine());
+//			sb = new StringBuilder();
+//			sb.append(reader.readLine() + "\n");
+//			String line = "0";
+//			while ((line = reader.readLine()) != null)
+//			{
+//				sb.append(line + "\n");
+//			}
+//			is.close();
+//			result = sb.toString();
 			Log.d("result: ", result);
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		shoplist.clear();
-		try
-		{
-			jArray = new JSONArray(result);
-			JSONObject json_data = null;
-			arrPro = new Product[jArray.length()];
-			shop = new Shop[jArray.length()];
-			employees = new String[jArray.length()];
-			employeesid = new Integer[jArray.length()];
-			for (int i = 0; i < jArray.length(); i++)
-			{
-				json_data = jArray.getJSONObject(i);
-				arrPro[i] = new Product();
-				shop[i] = new Shop();
-				arrPro[i].setUser_name(json_data.getString("user_name"));
-
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				arrPro[i].setCreated((Date) formatter.parse(json_data.getString("created")));
-
-				JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
-				JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
-				String discountPercent = jextraObjPercent.getString("value");
-				JSONObject jextraObjPrice = jextraArr.getJSONObject(4);
-				String discountPrice = jextraObjPrice.getString("value");
-
-				arrPro[i].setDprice(discountPrice);
-				arrPro[i].setId(json_data.getInt("prod_id"));
-				arrPro[i].setFilename(json_data.getString("title"));
-				arrPro[i].setUrl("");
-				arrPro[i].setPercentdiscount(discountPercent);
-				arrPro[i].setCategory(json_data.getString("category"));
-				arrPro[i].setLikes(json_data.getInt("likes"));
-				arrPro[i].setRemarks(json_data.getInt("remarks"));
-				shop[i].setName(json_data.getString("shop_name"));
-				shopresult = new Shop(json_data.getInt("shop_id"), json_data.getString("address"), json_data.getString("shop_name"), json_data.getString("lat"), json_data.getString("lng"));// ,
-																																																// json_data.getString("shoptype"));
-				shoplist.add(shopresult);
-				shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
-			}
-			adapter = new LazyAdapter(this, arrPro, shop);
-			searchResult.setAdapter(adapter);
-			
-			searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener()
-			{
-				@Override
-				public void onItemClick(AdapterView<?> av, View v, int pos, long id)
-				{
-					runDialog(2);
-					TestingClass.setStartTime();
-					Intent intent = new Intent(getParent(), Productdetail.class);
-					intent.putExtra("lastproductid", arrPro[pos].getId());
-					TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-					parentActivity.startChildActivity("Product Detail "+ TabGroup1Activity.intentCount, intent);
-					TabGroup1Activity.intentCount++;
-				}
-			});
-		}
-		catch (JSONException e1)
+		if (result == null)
 		{
 			setContentView(R.layout.noproducts);
 		}
-		catch (ParseException e1)
+		else
 		{
-			e1.printStackTrace();
-		}
-		catch (java.text.ParseException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try
+			{
+				jArray = new JSONArray(result);
+				JSONObject json_data = null;
+				arrPro = new Product[jArray.length()];
+				shop = new Shop[jArray.length()];
+				employees = new String[jArray.length()];
+				employeesid = new Integer[jArray.length()];
+				for (int i = 0; i < jArray.length(); i++)
+				{
+					json_data = jArray.getJSONObject(i);
+					arrPro[i] = new Product();
+					shop[i] = new Shop();
+					arrPro[i].setUser_name(json_data.getString("user_name"));
+
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					arrPro[i].setCreated((Date) formatter.parse(json_data.getString("created")));
+
+					JSONArray jextraArr = new JSONArray(json_data.getString("extra_fields"));
+					JSONObject jextraObjPercent = jextraArr.getJSONObject(3);
+					String discountPercent = jextraObjPercent.getString("value");
+					JSONObject jextraObjPrice = jextraArr.getJSONObject(4);
+					String discountPrice = jextraObjPrice.getString("value");
+
+					arrPro[i].setDprice(discountPrice);
+					arrPro[i].setId(json_data.getInt("prod_id"));
+					arrPro[i].setFilename(json_data.getString("title"));
+					arrPro[i].setUrl("");
+					arrPro[i].setPercentdiscount(discountPercent);
+					arrPro[i].setCategory(json_data.getString("category"));
+					arrPro[i].setLikes(json_data.getInt("likes"));
+					arrPro[i].setRemarks(json_data.getInt("remarks"));
+					shop[i].setName(json_data.getString("shop_name"));
+					shopresult = new Shop(json_data.getInt("shop_id"), json_data.getString("address"), json_data.getString("shop_name"), json_data.getString("lat"), json_data.getString("lng"));// ,
+																																																	// json_data.getString("shoptype"));
+					shoplist.add(shopresult);
+					shop[i].setDistance(Double.toString(json_data.getDouble("distance")));
+				}
+				adapter = new LazyAdapter(this, arrPro, shop);
+				searchResult.setAdapter(adapter);
+
+				searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener()
+				{
+					@Override
+					public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+					{
+						runDialog(2);
+						TestingClass.setStartTime();
+						Intent intent = new Intent(getParent(), Productdetail.class);
+						intent.putExtra("lastproductid", arrPro[pos].getId());
+						TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+						parentActivity.startChildActivity("Product Detail " + TabGroup1Activity.intentCount, intent);
+						TabGroup1Activity.intentCount++;
+					}
+				});
+			}
+			catch (JSONException e1)
+			{
+				setContentView(R.layout.noproducts);
+			}
+			catch (ParseException e1)
+			{
+				e1.printStackTrace();
+			}
+			catch (java.text.ParseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	private void runDialog(final int seconds)
 	{
-	    	progress = ProgressDialog.show(getParent(), "", "Loading Product");
+		progress = ProgressDialog.show(getParent(), "", "Loading Product");
 
-	    	new Thread(new Runnable(){
-	    		public void run(){
-	    			try {
-				                Thread.sleep(seconds * 1000);
-						progress.dismiss();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-	    		}
-	    	}).start();
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					Thread.sleep(seconds * 1000);
+					progress.dismiss();
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
 	private class GPSLocationListener implements LocationListener

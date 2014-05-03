@@ -62,6 +62,8 @@ public class Search extends Activity implements OnClickListener
 	boolean isProduct;
 	public static List<Shop> shoplist = new ArrayList<Shop>();
 
+	private final String TAG = "SEARCH";
+
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -221,7 +223,7 @@ public class Search extends Activity implements OnClickListener
 			}
 			catch (Exception e)
 			{
-				Log.e("log_tag", "Error in http connection" + e.toString());
+				Log.e(TAG, "Error in http connection" + e.toString());
 			}
 		}
 		// convert response to string
@@ -241,7 +243,7 @@ public class Search extends Activity implements OnClickListener
 		}
 		catch (Exception e)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e(TAG, "Error converting result " + e.toString());
 		}
 		shoplist.clear();
 		try

@@ -14,6 +14,6 @@
     <string name="setBirthdate">Set/Change Birthdate</string>
     <string name="search_label">Search shop</string>
     <string name="search_hint">E.g. Watsons</string>
-    <string name="APIMapKey">INSERT GOOGLE MAPS API KEY HERE</string>
+    <string name="APIMapKey">AIzaSyA2GB7QuSLGtQy9kf2-caX9pHgik4fUWzM</string>
     
 </resources>

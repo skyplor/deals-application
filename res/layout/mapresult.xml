@@ -15,7 +15,7 @@
 			android:clickable="true"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:apiKey="INSERT GOOGLE MAPS API KEY HERE" />
+			android:apiKey="AIzaSyA2GB7QuSLGtQy9kf2-caX9pHgik4fUWzM" />
 
 	</RelativeLayout>
 
